@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <help_text/>
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>810</y>
+      <w>189</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Map: Class
+--
+--
+- map : MapElements[][]
+--
++ Map()
++ randomMapGeneration()
++ Map(str)
++ loadMapFile(str)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>621</x>
+      <y>432</y>
+      <w>189</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>Projectile: Class
+--
+--
+- damage : int
+- speed : int
+- range : int
+- movementAngle : int
+- position : Position
+--
++ hitTarget(Enemy)
++ updatePosition()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>477</x>
+      <y>486</y>
+      <w>63</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Position
+--
+--
++ x : int
++ y : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>864</x>
+      <y>711</y>
+      <w>189</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Enemy: Class
+--
+--
+- HP : int
+- speed : int
+- position : Position
+--
++ receiveProjectile(Projectile)
++ receiveDamage(int)
++ die()
++ updatePosition()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>99</x>
+      <y>477</y>
+      <w>189</w>
+      <h>234</h>
+    </coordinates>
+    <panel_attributes>MapElements: Enum
+--
+--
++ ARBRE
++ DALLE
++ CHEMIN_NORD
++ CHEMIN_SUD
++ CHEMIN_EST
++ CHEMIN_OUEST
++ SORTIE_NORD
++ SORTIE_SUD
++ SORTIE_EST
++ SORTIE_OUEST
++ DEPART_NORD
++ DEPART_SUD
++ DEPART_EST
++ DEPART_OUEST</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>279</x>
+      <y>513</y>
+      <w>99</w>
+      <h>351</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;90.0;370.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>909</x>
+      <y>549</y>
+      <w>243</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Wave: Class
+--
+--
+- isOver : boolean
+- enemies : LinkedHashMap&lt;Enemy, int&gt;
+          # Enemy &amp; timer until next one
+--
++ createWaveFromFile(str)
++ createWaveFromLevel(int)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>909</x>
+      <y>18</y>
+      <w>189</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Constants
+--
+--
++ WINDOW_LENGTH : int
++ WINDOW_WIDTH : int
++ MEDIA_FOLDER : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>621</x>
+      <y>171</y>
+      <w>189</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>Tower: Class
+--
+--
+- level : int
+- projectileSpeed : int
+- projectileRange : int
+- timer : int
+- sellPrice : int
+- updatePrice : int
+- position : Position
+--
++ findTargets()
++ sendProjectile()
++ canUpgrade()
++ upgrade()
++ destroy()
++ select()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>648</y>
+      <w>27</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>927</x>
+      <y>243</y>
+      <w>189</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Player: Class
+--
+--
+- remainingLives : int
+- credit : int
+--
+ </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>261</y>
+      <w>144</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>702</x>
+      <y>387</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>702</x>
+      <y>558</y>
+      <w>180</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>180.0;180.0;10.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>531</x>
+      <y>504</y>
+      <w>108</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>495</x>
+      <y>540</y>
+      <w>387</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>410.0;260.0;10.0;260.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>495</x>
+      <y>288</y>
+      <w>144</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>140.0;10.0;10.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+</diagram>
