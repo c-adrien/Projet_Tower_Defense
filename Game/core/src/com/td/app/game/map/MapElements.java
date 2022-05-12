@@ -1,4 +1,4 @@
-package com.td.game.map;
+package com.td.app.game.map;
 
 public enum MapElements {
     DALLE,

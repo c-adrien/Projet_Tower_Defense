@@ -1,4 +1,4 @@
-package com.td.game.map;
+package com.td.app.game.map;
 
 import com.badlogic.gdx.files.FileHandle;
 
