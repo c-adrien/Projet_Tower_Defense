@@ -1,7 +1,7 @@
 package com.td.app.game.tower;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.td.app.game.enemy.AbstractEnemy;
+import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Tile;
 
 
@@ -17,7 +17,7 @@ public abstract class AbstractTower extends Actor {
     private Tile hostingTile;
 
     // TODO
-    public AbstractEnemy findTarget(){
+    public StandardEnemy findTarget(){
         return null;
     }
 
