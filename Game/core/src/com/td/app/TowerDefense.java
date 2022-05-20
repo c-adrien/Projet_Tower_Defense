@@ -1,14 +1,12 @@
 package com.td.app;
 
 import com.badlogic.gdx.Game;
-import com.td.app.game.screen.ArcadeMenuScreen;
-import com.td.app.game.screen.CampaignMenuScreen;
-import com.td.app.game.screen.StartMenuScreen;
-import com.td.app.game.screen.SettingsScreen;
+import com.td.app.game.screen.*;
 
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
 	private CampaignMenuScreen campaignMenuScreen;
+	private CampaignGameScreen campaignGameScreen;
 	private StartMenuScreen startMenuScreen;
 	private SettingsScreen settingsScreen;
 
@@ -20,6 +18,7 @@ public class TowerDefense extends Game {
 		// TODO Check if save available
 
 		toStartMenu();
+		// toCampaignGameScreen();
 	}
 
 	@Override
@@ -29,8 +28,13 @@ public class TowerDefense extends Game {
 	
 	@Override
 	public void dispose () {
-
+		arcadeMenuScreen.dispose();
+		campaignMenuScreen.dispose();
+		startMenuScreen.dispose();
+		settingsScreen.dispose();
 	}
+
+
 	public void toArcadeMenuScreen() {
 		arcadeMenuScreen = new ArcadeMenuScreen(this);
 		setScreen(arcadeMenuScreen);
@@ -46,5 +50,9 @@ public class TowerDefense extends Game {
 	public void toSettingsScreen() {
 		settingsScreen = new SettingsScreen(this);
 		setScreen(settingsScreen);
+	}
+	public void toCampaignGameScreen() {
+		campaignGameScreen = new CampaignGameScreen(this);
+		setScreen(campaignGameScreen);
 	}
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
   <help_text/>
-  <zoom_level>9</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>774</y>
-      <w>189</w>
-      <h>108</h>
+      <x>800</x>
+      <y>672</y>
+      <w>168</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>Map: Class
 --
@@ -24,10 +24,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>207</x>
-      <y>675</y>
-      <w>189</w>
-      <h>135</h>
+      <x>184</x>
+      <y>584</y>
+      <w>168</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Projectile: Class
 --
@@ -45,10 +45,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>108</x>
-      <y>720</y>
-      <w>63</w>
-      <h>63</h>
+      <x>96</x>
+      <y>624</y>
+      <w>56</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Position
 --
@@ -60,10 +60,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>441</x>
-      <y>945</y>
-      <w>189</w>
-      <h>180</h>
+      <x>392</x>
+      <y>824</y>
+      <w>168</w>
+      <h>160</h>
     </coordinates>
     <panel_attributes>Enemy: Class
 --
@@ -84,10 +84,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>423</x>
-      <y>792</y>
-      <w>243</w>
-      <h>126</h>
+      <x>376</x>
+      <y>688</y>
+      <w>216</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>Wave: Class
 --
@@ -104,10 +104,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>666</x>
-      <y>216</y>
-      <w>189</w>
-      <h>63</h>
+      <x>592</x>
+      <y>176</y>
+      <w>168</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>Constants
 --
@@ -119,10 +119,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>207</x>
-      <y>405</y>
-      <w>189</w>
-      <h>243</h>
+      <x>184</x>
+      <y>344</y>
+      <w>168</w>
+      <h>216</h>
     </coordinates>
     <panel_attributes>Tower: Class
 --
@@ -147,10 +147,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>909</y>
-      <w>27</w>
-      <h>54</h>
+      <x>472</x>
+      <y>792</y>
+      <w>24</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
@@ -158,10 +158,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>459</x>
-      <y>405</y>
-      <w>171</w>
-      <h>153</h>
+      <x>408</x>
+      <y>344</y>
+      <w>152</w>
+      <h>136</h>
     </coordinates>
     <panel_attributes>Player: Class
 --
@@ -180,10 +180,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>387</x>
-      <y>423</y>
-      <w>90</w>
-      <h>36</h>
+      <x>344</x>
+      <y>360</y>
+      <w>80</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
@@ -191,10 +191,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>288</x>
-      <y>639</y>
-      <w>27</w>
-      <h>54</h>
+      <x>256</x>
+      <y>552</y>
+      <w>24</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
@@ -202,10 +202,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>288</x>
-      <y>801</y>
-      <w>171</w>
-      <h>171</h>
+      <x>256</x>
+      <y>696</y>
+      <w>152</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>170.0;170.0;10.0;170.0;10.0;10.0</additional_attributes>
@@ -213,10 +213,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>162</x>
-      <y>738</y>
-      <w>63</w>
-      <h>36</h>
+      <x>144</x>
+      <y>640</y>
+      <w>56</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
@@ -224,10 +224,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>774</y>
-      <w>333</w>
-      <h>252</h>
+      <x>112</x>
+      <y>672</y>
+      <w>296</w>
+      <h>224</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>350.0;260.0;10.0;260.0;10.0;10.0</additional_attributes>
@@ -235,10 +235,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>126</x>
-      <y>522</y>
-      <w>99</w>
-      <h>216</h>
+      <x>112</x>
+      <y>448</y>
+      <w>88</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>90.0;10.0;10.0;10.0;10.0;220.0</additional_attributes>
@@ -246,10 +246,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>837</x>
-      <y>387</y>
-      <w>189</w>
-      <h>126</h>
+      <x>744</x>
+      <y>328</y>
+      <w>168</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>Save: Class
 --
@@ -266,10 +266,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>927</y>
-      <w>189</w>
-      <h>108</h>
+      <x>800</x>
+      <y>808</y>
+      <w>168</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>Tile: Class
 --
@@ -284,10 +284,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1161</x>
-      <y>774</y>
-      <w>189</w>
-      <h>261</h>
+      <x>1032</x>
+      <y>672</y>
+      <w>168</w>
+      <h>232</h>
     </coordinates>
     <panel_attributes>MapElements: Enum
 --
@@ -311,10 +311,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>612</x>
-      <y>585</y>
-      <w>207</w>
-      <h>189</h>
+      <x>544</x>
+      <y>504</y>
+      <w>184</w>
+      <h>168</h>
     </coordinates>
     <panel_attributes>Game: Class
 --
@@ -335,10 +335,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>549</y>
-      <w>99</w>
-      <h>126</h>
+      <x>472</x>
+      <y>472</y>
+      <w>88</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;10.0;10.0;120.0;90.0;120.0</additional_attributes>
@@ -346,10 +346,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>666</y>
-      <w>99</w>
-      <h>144</h>
+      <x>472</x>
+      <y>576</y>
+      <w>88</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;140.0;10.0;10.0;90.0;10.0</additional_attributes>
@@ -357,10 +357,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>684</y>
-      <w>108</w>
-      <h>162</h>
+      <x>720</x>
+      <y>592</y>
+      <w>96</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;10.0;50.0;10.0;50.0;160.0;100.0;160.0</additional_attributes>
@@ -368,10 +368,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>981</x>
-      <y>873</y>
-      <w>27</w>
-      <h>72</h>
+      <x>872</x>
+      <y>760</y>
+      <w>24</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
@@ -379,10 +379,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1080</x>
-      <y>945</y>
-      <w>99</w>
-      <h>36</h>
+      <x>960</x>
+      <y>824</y>
+      <w>88</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
@@ -390,12 +390,59 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>756</x>
-      <y>468</y>
-      <w>99</w>
-      <h>135</h>
+      <x>672</x>
+      <y>400</y>
+      <w>88</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;130.0;10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>296</x>
+      <y>200</y>
+      <w>208</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>SoundHandler: Class
+--
+--
+- soundMap : HashMap&lt;String,Sound&gt;
+--
++ add(str)
++ play(str)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>1024</y>
+      <w>168</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>HealthBar: Class
+--
+--
+- maxHealth : int
+- currentHealth : int
+--
++ reduceHealth(int)
++ setHealth(int)
++ draw(Batch)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>472</x>
+      <y>976</y>
+      <w>24</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

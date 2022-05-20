@@ -1,11 +1,12 @@
 package com.td.app.game.map;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-public class Map {
+public class Map extends Actor {
 
     private final Tile[][] map;
 

@@ -75,6 +75,14 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
             dispose();
             return true;
         }
+
+        // TODO change
+        if (keycode == Input.Keys.ENTER){
+            Gdx.input.setInputProcessor(null);
+            game.toCampaignGameScreen();
+            dispose();
+            return true;
+        }
         return false;
     }
 

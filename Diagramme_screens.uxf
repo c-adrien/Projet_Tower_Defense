@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>12</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>336</x>
-      <y>528</y>
-      <w>156</w>
-      <h>36</h>
+      <x>18</x>
+      <y>567</y>
+      <w>117</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Intro</panel_attributes>
     <additional_attributes/>
@@ -15,10 +15,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>768</x>
-      <y>996</y>
-      <w>228</w>
-      <h>84</h>
+      <x>342</x>
+      <y>918</y>
+      <w>171</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Initialiser Partie
 --
@@ -29,10 +29,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>792</x>
-      <y>492</y>
-      <w>180</w>
-      <h>156</h>
+      <x>360</x>
+      <y>540</y>
+      <w>135</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>Menu
 --
@@ -46,10 +46,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>528</y>
-      <w>336</w>
-      <h>36</h>
+      <x>126</x>
+      <y>567</y>
+      <w>252</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>260.0;10.0;10.0;10.0</additional_attributes>
@@ -57,10 +57,10 @@
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>540</x>
-      <y>468</y>
-      <w>204</w>
-      <h>48</h>
+      <x>171</x>
+      <y>522</y>
+      <w>153</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>Si fichier de sauvegarde
 existe
@@ -70,10 +70,10 @@ existe
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>588</x>
-      <y>912</y>
-      <w>96</w>
-      <h>36</h>
+      <x>207</x>
+      <y>855</y>
+      <w>72</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Sinon</panel_attributes>
     <additional_attributes/>
@@ -81,10 +81,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>540</y>
-      <w>312</w>
-      <h>516</h>
+      <x>126</x>
+      <y>576</y>
+      <w>234</w>
+      <h>387</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>240.0;410.0;10.0;10.0</additional_attributes>
@@ -92,10 +92,10 @@ existe
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1188</x>
-      <y>528</y>
-      <w>204</w>
-      <h>120</h>
+      <x>657</x>
+      <y>567</y>
+      <w>153</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Menu Campagne
 --
@@ -108,10 +108,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>960</x>
-      <y>576</y>
-      <w>252</w>
-      <h>36</h>
+      <x>486</x>
+      <y>603</y>
+      <w>189</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>190.0;10.0;10.0;10.0</additional_attributes>
@@ -119,10 +119,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>960</x>
-      <y>624</y>
-      <w>252</w>
-      <h>144</h>
+      <x>486</x>
+      <y>639</y>
+      <w>189</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>190.0;100.0;10.0;10.0</additional_attributes>
@@ -130,10 +130,10 @@ existe
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1188</x>
-      <y>696</y>
-      <w>204</w>
-      <h>120</h>
+      <x>657</x>
+      <y>693</y>
+      <w>153</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Menu Arcade
 --
@@ -146,10 +146,10 @@ existe
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1188</x>
-      <y>960</y>
-      <w>204</w>
-      <h>120</h>
+      <x>657</x>
+      <y>891</y>
+      <w>153</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Menu Paramètres
 --
@@ -162,10 +162,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>984</x>
-      <y>1032</y>
-      <w>228</w>
-      <h>36</h>
+      <x>504</x>
+      <y>945</y>
+      <w>171</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;170.0;10.0</additional_attributes>
@@ -173,10 +173,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>852</x>
-      <y>636</y>
-      <w>360</w>
-      <h>408</h>
+      <x>405</x>
+      <y>648</y>
+      <w>270</w>
+      <h>306</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;280.0;320.0</additional_attributes>
@@ -184,10 +184,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>960</x>
-      <y>612</y>
-      <w>252</w>
-      <h>36</h>
+      <x>486</x>
+      <y>630</y>
+      <w>189</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;190.0;10.0</additional_attributes>
@@ -195,10 +195,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>912</x>
-      <y>636</y>
-      <w>300</w>
-      <h>180</h>
+      <x>450</x>
+      <y>648</y>
+      <w>225</w>
+      <h>135</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;230.0;130.0</additional_attributes>
@@ -206,10 +206,10 @@ existe
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1488</x>
-      <y>612</y>
-      <w>168</w>
-      <h>120</h>
+      <x>882</x>
+      <y>630</y>
+      <w>126</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Jeu
 --
@@ -222,10 +222,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1380</x>
-      <y>564</y>
-      <w>132</w>
-      <h>84</h>
+      <x>801</x>
+      <y>594</y>
+      <w>99</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>90.0;50.0;10.0;10.0</additional_attributes>
@@ -233,10 +233,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1380</x>
-      <y>708</y>
-      <w>132</w>
-      <h>84</h>
+      <x>801</x>
+      <y>702</y>
+      <w>99</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>90.0;10.0;10.0;50.0</additional_attributes>
@@ -244,10 +244,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>876</x>
-      <y>396</y>
-      <w>864</w>
-      <h>324</h>
+      <x>423</x>
+      <y>468</y>
+      <w>648</w>
+      <h>243</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0;700.0;10.0;700.0;250.0;650.0;250.0</additional_attributes>
@@ -255,10 +255,10 @@ existe
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1488</x>
-      <y>792</y>
-      <w>168</w>
-      <h>120</h>
+      <x>882</x>
+      <y>765</y>
+      <w>126</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Menu Pause
 --
@@ -270,10 +270,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1536</x>
-      <y>720</y>
-      <w>36</w>
-      <h>96</h>
+      <x>918</x>
+      <y>711</y>
+      <w>27</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
@@ -281,10 +281,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1572</x>
-      <y>720</y>
-      <w>36</w>
-      <h>96</h>
+      <x>945</x>
+      <y>711</y>
+      <w>27</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
@@ -292,10 +292,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1644</x>
+      <x>999</x>
       <y>684</y>
-      <w>96</w>
-      <h>192</h>
+      <w>72</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>60.0;10.0;60.0;140.0;10.0;140.0</additional_attributes>
@@ -303,10 +303,10 @@ existe
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>312</x>
-      <y>528</y>
-      <w>48</w>
-      <h>36</h>
+      <x>0</x>
+      <y>567</y>
+      <w>36</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>20.0;10.0;10.0;10.0</additional_attributes>
