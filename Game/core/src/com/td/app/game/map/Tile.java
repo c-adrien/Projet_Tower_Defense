@@ -13,20 +13,30 @@ public class Tile extends Actor {
 
     private final MapElements mapElement;
     private boolean isOccupied;
+    private boolean isSelected;
 
-    private Texture texture;
+    private final Texture texture;
+    private Texture alternativeTexture;
 
     //==============================================
 
     public Tile(MapElements mapElement) {
         this.mapElement = mapElement;
 
-        if (notOccupiedElements.contains(mapElement)){
-            isOccupied = true;
-        }
+        isOccupied = !notOccupiedElements.contains(mapElement);
+
+        isSelected = false;
 
         texture = new Texture(Gdx.files.internal(String.format(
                 "./textures/landscape/%s.png", mapElement.name())));
+        try {
+            alternativeTexture = new Texture(Gdx.files.internal(String.format(
+                    "./textures/landscape/%s_alt.png", mapElement.name())));
+        }
+        catch (Exception e){
+            alternativeTexture = null;
+        }
+
     }
 
     public boolean isOccupied() {
@@ -38,6 +48,21 @@ public class Tile extends Actor {
     }
 
     public Texture getTexture() {
+        if(isSelected && alternativeTexture != null){
+            return alternativeTexture;
+        }
         return texture;
+    }
+
+    public void select(){
+        isSelected = true;
+    }
+
+    public void unselect(){
+        isSelected = false;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 }

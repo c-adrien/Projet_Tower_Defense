@@ -15,14 +15,13 @@ public class CampaignGameScreen implements Screen, InputProcessor {
     private Stage stage;
     private SpriteBatch batch;
 
-    private boolean mapRendered;
-
     private final Map map;
 
     public CampaignGameScreen(TowerDefense game) {
         this.game = game;
         this.map = new Map(Gdx.files.internal("./maps/map_1.txt"));
-        this.mapRendered = false;
+
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -35,13 +34,9 @@ public class CampaignGameScreen implements Screen, InputProcessor {
     public void render(float delta) {
         batch.begin();
 
-        if(!mapRendered) {
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            map.draw(batch, 0);
-            mapRendered = !mapRendered;
-        }
-
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        map.draw(batch, 0);
 
         batch.end();
     }
@@ -88,6 +83,17 @@ public class CampaignGameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println("screen X : " + screenX);
+        System.out.println("screen Y : " + screenY);
+        System.out.println("pointer : " + pointer);
+        System.out.println("button : " + button + "\n");
+
+        if(screenX < 768 && screenY < 768){
+            int y = screenX / 64;
+            int x = screenY / 64;
+            map.toggleTile(x, y);
+        }
+
         return false;
     }
 

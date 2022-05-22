@@ -14,6 +14,9 @@ public class Map extends Actor {
 
     private final Tile[][] map;
 
+    int size = 64;
+    int nbTiles = 12;
+
     public Map() {
         this.map = createRandomMap();
     }
@@ -71,11 +74,22 @@ public class Map extends Actor {
         return map;
     }
 
+    public void toggleTile(int x, int y){
+        if(map[x][y].isSelected()){
+            map[x][y].unselect();
+            return;
+        }
+
+        for (int i = 0; i < nbTiles; i++) {
+            for (int j = 0; j < nbTiles; j++) {
+                map[i][j].unselect();
+            }
+        }
+        map[x][y].select();
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        int size = 64;
-        int nbTiles = 12;
-
         setBounds(0, 0, nbTiles*64, nbTiles*64);
 
         for (int i = 0; i < nbTiles; i++) {
