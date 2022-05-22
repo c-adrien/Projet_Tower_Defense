@@ -1,9 +1,13 @@
 package com.td.app.game.map;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
 public class Map extends Actor {
@@ -32,7 +36,8 @@ public class Map extends Actor {
 
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(fileHandle)));
+            File file = new File("./assets/"+fileHandle.path());
+            BufferedReader reader = new BufferedReader(new FileReader(file));
 
             int mapLength = Integer.parseInt(reader.readLine());
             int mapWidth = Integer.parseInt(reader.readLine());
@@ -64,5 +69,24 @@ public class Map extends Actor {
 
     public Tile[][] getMap() {
         return map;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        int size = 64;
+        int nbTiles = 12;
+
+        setBounds(0, 0, nbTiles*64, nbTiles*64);
+
+        for (int i = 0; i < nbTiles; i++) {
+            for (int j = 0; j < nbTiles; j++) {
+                Texture texture = map[nbTiles-1-j][i].getTexture();
+                Sprite sprite = new Sprite(texture);
+
+                batch.draw(sprite, size*i, size*j, size*i, size*i, size, size,
+                        1, 1,0);
+                super.draw(batch, parentAlpha);
+            }
+        }
     }
 }

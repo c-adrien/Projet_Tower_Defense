@@ -4,32 +4,46 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.td.app.TowerDefense;
+import com.td.app.game.map.Map;
 
 public class CampaignGameScreen implements Screen, InputProcessor {
 
     public TowerDefense game;
     private Stage stage;
+    private SpriteBatch batch;
+
+    private boolean mapRendered;
+
+    private final Map map;
 
     public CampaignGameScreen(TowerDefense game) {
         this.game = game;
+        this.map = new Map(Gdx.files.internal("./maps/map_1.txt"));
+        this.mapRendered = false;
     }
 
     @Override
     public void show() {
         stage = new Stage();
-
-
+        batch = new SpriteBatch();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
 
-        stage.act();
-        stage.draw();
+        if(!mapRendered) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            map.draw(batch, 0);
+            mapRendered = !mapRendered;
+        }
+
+
+        batch.end();
     }
 
     @Override

@@ -17,8 +17,10 @@ public class TowerDefense extends Game {
 	public void create () {
 		// TODO Check if save available
 
+		// TODO load audio
+
 		toStartMenu();
-		// toCampaignGameScreen();
+//		toCampaignGameScreen();
 	}
 
 	@Override

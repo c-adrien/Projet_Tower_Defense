@@ -2,9 +2,20 @@ package com.td.app.game.map;
 
 public enum MapElements {
     DALLE,
+
     ARBRE,
+    BOIS,
+    BUISSON,
+    CAILLOU,
+    WATER_FULL,
+
     CHEMIN_HORIZONTAL,
     CHEMIN_VERTICAL,
+    CHEMIN_BAS_DROITE,
+    CHEMIN_GAUCHE_BAS,
+    CHEMIN_GAUCHE_HAUT,
+    CHEMIN_HAUT_DROITE,
+
     SORTIE_NORD,
     SORTIE_SUD,
     SORTIE_EST,
