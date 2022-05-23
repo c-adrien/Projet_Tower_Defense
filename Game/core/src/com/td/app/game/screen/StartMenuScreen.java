@@ -7,12 +7,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.PointerTexture;
 import com.td.app.game.gui.ScreenButtonTexture;
+
+import java.util.Iterator;
 
 public class StartMenuScreen implements Screen, InputProcessor {
     public TowerDefense game;
@@ -30,35 +32,41 @@ public class StartMenuScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        stage = new Stage();
-        backgroundImage = new Image(new Texture(Gdx.files.internal("textures/menu/startMenu.jpg")));
-        backgroundImage.setPosition(0, 0);
+        if (stage == null) {
+            if (TowerDefense.pref.getBoolean("music")) {
+                game.music.play();
+            }
+            stage = new Stage();
 
-        arcadeButton = new ScreenButtonTexture("textures/button/arcadeButton.png", ScreenButtonTexture.ButtonType.ARCADE);
-        arcadeButton.setPosition(900, 340);
+            backgroundImage = new Image(new Texture(Gdx.files.internal("textures/menu/startMenu.jpg")));
+            backgroundImage.setPosition(0, 0);
 
-        campaignButton = new ScreenButtonTexture("textures/button/campaignButton.png", ScreenButtonTexture.ButtonType.CAMPAIGN);
-        campaignButton.setPosition(120, 330);
+            arcadeButton = new ScreenButtonTexture("textures/button/arcadeButton.png", ScreenButtonTexture.ButtonType.ARCADE);
+            arcadeButton.setPosition(stage.getWidth() / 1.42F, stage.getHeight() / 2.11F);
 
-        settingsButton = new ScreenButtonTexture("textures/button/settingsButton.png", ScreenButtonTexture.ButtonType.SETTINGS);
-        settingsButton.setPosition(stage.getWidth()-170, stage.getHeight()/300);
+            campaignButton = new ScreenButtonTexture("textures/button/campaignButton.png", ScreenButtonTexture.ButtonType.CAMPAIGN);
+            campaignButton.setPosition(stage.getWidth() / 10.66F, stage.getHeight() / 2.18F);
 
-        backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-        backButton.setPosition(stage.getWidth()/100, stage.getHeight()/300);
+            settingsButton = new ScreenButtonTexture("textures/button/settingsButton.png", ScreenButtonTexture.ButtonType.SETTINGS);
+            settingsButton.setPosition(stage.getWidth() - stage.getWidth() / 200 - settingsButton.getWidth(), stage.getHeight() / 200);
 
-        pointer = new PointerTexture("textures/menu/pointer.png", null, arcadeButton);
-        pointer.setPosition(arcadeButton.getX()/8, arcadeButton.getY());
+            backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
+            backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
 
-        stage.addActor(backgroundImage);
-        stage.addActor(arcadeButton);
-        stage.addActor(campaignButton);
-        stage.addActor(settingsButton);
-        stage.addActor(backButton);
-        stage.addActor(pointer);
+            pointer = new PointerTexture("textures/menu/pointer.png", campaignButton);
+            pointer.setSize(pointer.getWidth() * 0.7F, pointer.getHeight() * 0.7F);
+            pointer.setPosition(campaignButton.getX() - 95, campaignButton.getY() + campaignButton.getHeight() / 2 - pointer.getHeight() / 2);
+
+            stage.addActor(backgroundImage);
+            stage.addActor(arcadeButton);
+            stage.addActor(campaignButton);
+            stage.addActor(settingsButton);
+            stage.addActor(backButton);
+            stage.addActor(pointer);
+        }
 
         Gdx.input.setInputProcessor(this);
     }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -96,25 +104,25 @@ public class StartMenuScreen implements Screen, InputProcessor {
         if (keycode == Input.Keys.DPAD_DOWN) {
             if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
                 pointer.setPointedButton(campaignButton);
-                pointer.setPosition(campaignButton.getX()/8, campaignButton.getY());
+                pointer.setPosition(campaignButton.getX() - 95, campaignButton.getY() + campaignButton.getHeight()/2 - pointer.getHeight()/2);
             } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
                 pointer.setPointedButton(settingsButton);
-                pointer.setPosition(settingsButton.getX()/8, settingsButton.getY());
+                pointer.setPosition(settingsButton.getX() - 95, settingsButton.getY() + settingsButton.getHeight()/2 - pointer.getHeight()/2);
             } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
                 pointer.setPointedButton(arcadeButton);
-                pointer.setPosition(arcadeButton.getX()/8, arcadeButton.getY());
+                pointer.setPosition(arcadeButton.getX() - 95, arcadeButton.getY() + arcadeButton.getHeight()/2 - pointer.getHeight()/2);
             }
 
         } else if (keycode == Input.Keys.DPAD_UP) {
             if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
                 pointer.setPointedButton(settingsButton);
-                pointer.setPosition(settingsButton.getX()/8, settingsButton.getY());
+                pointer.setPosition(settingsButton.getX() - 95, settingsButton.getY() + settingsButton.getHeight()/2 - pointer.getHeight()/2);
             } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
                 pointer.setPointedButton(arcadeButton);
-                pointer.setPosition(arcadeButton.getX()/8, arcadeButton.getY());
+                pointer.setPosition(arcadeButton.getX() - 95, arcadeButton.getY() + arcadeButton.getHeight()/2 - pointer.getHeight()/2);
             } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
                 pointer.setPointedButton(campaignButton);
-                pointer.setPosition(campaignButton.getX()/8, campaignButton.getY());
+                pointer.setPosition(campaignButton.getX() - 95, campaignButton.getY() + campaignButton.getHeight()/2 - pointer.getHeight()/2);
             }
 
         } else if (keycode == Input.Keys.ENTER) {
@@ -152,14 +160,36 @@ public class StartMenuScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public boolean touchUp(int screenX, int screenY, int pointer, final int button) {
         Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
         Actor actor = stage.hit(hover.x,hover.y,true);
 
         if (actor instanceof ScreenButtonTexture) {
             ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
             if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
-                Gdx.app.exit();
+                Gdx.input.setInputProcessor(stage);
+                new Dialog("Quit the game", new Skin(Gdx.files.internal("skin/uiskin.json"))) {
+                    {
+                        text("Are you sure you want to quit ?");
+                        button("Yes", "Yes");
+                        button("No", "No");
+                    }
+                    @Override
+                    protected void result(Object object) {
+                        if (object.equals("Yes")) {
+                            Gdx.app.exit();
+                        } else {
+                            Iterator<Actor> it = stage.getActors().iterator();
+                            while (it.hasNext()) {
+                                if (it.next().equals(this)) {
+                                    it.remove();
+                                    break;
+                                }
+                            }
+                            StartMenuScreen.this.show();
+                        }
+                    }
+                }.show(stage);
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.ARCADE) {
                 Gdx.input.setInputProcessor(null);
                 game.toArcadeMenuScreen();

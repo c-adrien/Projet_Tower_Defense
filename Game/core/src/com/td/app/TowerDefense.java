@@ -1,28 +1,51 @@
 package com.td.app;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.assets.loaders.AssetLoader;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.td.app.game.screen.*;
+
+import java.util.Objects;
 
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
-	private ArcadeGameScreen arcadeGameScreen;
 	private CampaignMenuScreen campaignMenuScreen;
 	private CampaignGameScreen campaignGameScreen;
 	private StartMenuScreen startMenuScreen;
 	private SettingsScreen settingsScreen;
+	public Music music;
+
+	public static Preferences pref;
 
 	public TowerDefense() {
 		super();
 	}
 	@Override
 	public void create () {
-		// TODO Check if save available
+		pref = Gdx.app.getPreferences("towerDefensePrefs");
+		music = Gdx.audio.newMusic(Gdx.app.getFiles().internal("sound/backgroundMusic.mp3"));
+		music.setVolume(0.7F);
+		music.setLooping(true);
+		// TODO Load sound files
 
-		// TODO load audio
+		arcadeMenuScreen = new ArcadeMenuScreen(this);
+		campaignMenuScreen = new CampaignMenuScreen(this);
+		startMenuScreen = new StartMenuScreen(this);
+		settingsScreen = new SettingsScreen(this);
+		campaignGameScreen = new CampaignGameScreen(this);
 
-//		toStartMenu();
+		if (!pref.contains("user")) {
+			setScreen(new NewUserScreen(this));
+			pref.putBoolean("music", true);
+			pref.putBoolean("sound", true);
+		} else {
+			toStartMenu();
+		}
 //		toCampaignGameScreen();
-		toArcadeGameScreen();
 	}
 
 	@Override
@@ -32,38 +55,37 @@ public class TowerDefense extends Game {
 	
 	@Override
 	public void dispose () {
+		// TODO Save prefs
+		pref.putBoolean("music", music.isPlaying());
+		pref.flush();
+
 		arcadeMenuScreen.dispose();
 		campaignMenuScreen.dispose();
 		startMenuScreen.dispose();
 		settingsScreen.dispose();
-		arcadeGameScreen.dispose();
-		campaignGameScreen.dispose();
+		music.dispose();
 	}
 
 
 	public void toArcadeMenuScreen() {
-		arcadeMenuScreen = new ArcadeMenuScreen(this);
 		setScreen(arcadeMenuScreen);
 	}
 	public void toCampaignMenuScreen() {
-		campaignMenuScreen = new CampaignMenuScreen(this);
 		setScreen(campaignMenuScreen);
 	}
 	public void toStartMenu() {
-		startMenuScreen = new StartMenuScreen(this);
 		setScreen(startMenuScreen);
 	}
 	public void toSettingsScreen() {
-		settingsScreen = new SettingsScreen(this);
 		setScreen(settingsScreen);
 	}
 	public void toCampaignGameScreen() {
-		// TODO chose level
-		campaignGameScreen = new CampaignGameScreen(this, 1);
 		setScreen(campaignGameScreen);
 	}
-	public void toArcadeGameScreen() {
-		arcadeGameScreen = new ArcadeGameScreen(this);
-		setScreen(arcadeGameScreen);
+
+	public void newGame() {
+		pref.clear();
+		pref.flush();
+		create();
 	}
 }

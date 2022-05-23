@@ -39,7 +39,8 @@ public class Map extends Actor {
 
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
-            File file = new File("./assets/"+fileHandle.path());
+            File file = new File("Game/assets/"+fileHandle.path());
+            System.out.println(file);
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             int mapLength = Integer.parseInt(reader.readLine());
@@ -66,6 +67,7 @@ public class Map extends Actor {
         }
         catch (Exception e){
             System.out.println("Unable to read file");
+            e.printStackTrace();
             return null;
         }
     }

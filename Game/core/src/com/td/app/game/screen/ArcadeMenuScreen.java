@@ -25,14 +25,16 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        stage = new Stage();
-        background = new Image(new Texture(Gdx.files.internal("textures/menu/arcadeMenu.png")));
+        if (stage == null) {
+            stage = new Stage();
+            background = new Image(new Texture(Gdx.files.internal("textures/menu/arcadeMenu.png")));
 
-        backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-        backButton.setPosition(stage.getWidth()/30, stage.getHeight()/30);
+            backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
+            backButton.setPosition(stage.getWidth() / 30, stage.getHeight() / 30);
 
-        stage.addActor(background);
-        stage.addActor(backButton);
+            stage.addActor(background);
+            stage.addActor(backButton);
+        }
         Gdx.input.setInputProcessor(this);
     }
 

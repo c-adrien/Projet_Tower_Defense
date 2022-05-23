@@ -28,10 +28,11 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
         stage = new Stage();
         background = new Image(new Texture(Gdx.files.internal("textures/menu/campaignMenu.png")));
         backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-        backButton.setPosition(stage.getWidth()/30, stage.getHeight()/30);
+        backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
 
         stage.addActor(background);
         stage.addActor(backButton);
+
         Gdx.input.setInputProcessor(this);
     }
 

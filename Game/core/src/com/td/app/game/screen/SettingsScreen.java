@@ -13,11 +13,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.ScreenButtonTexture;
 
+import java.util.Iterator;
+
 public class SettingsScreen implements Screen, InputProcessor {
     public TowerDefense game;
     private Stage stage;
     private Image background;
+    private Image musicTexture;
+    private ScreenButtonTexture musicDisplay;
     private ScreenButtonTexture backButton;
+    private ScreenButtonTexture newGameButton;
 
     public SettingsScreen(TowerDefense game) {
         this.game = game;
@@ -25,13 +30,33 @@ public class SettingsScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        stage = new Stage();
-        background = new Image(new Texture(Gdx.files.internal("textures/menu/settingsMenu.png")));
-        backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-        backButton.setPosition(stage.getWidth()/30, stage.getHeight()/30);
+        if (stage == null) {
+            stage = new Stage();
+            background = new Image(new Texture(Gdx.files.internal("textures/menu/settingsMenu.png")));
 
-        stage.addActor(background);
-        stage.addActor(backButton);
+            musicTexture = new Image(new Texture(Gdx.files.internal("textures/menu/musicTexture.png")));
+            musicTexture.setPosition(stage.getWidth() * 0.3F, stage.getHeight() * 0.6F);
+
+            if (TowerDefense.pref.getBoolean("music")) {
+                musicDisplay = new ScreenButtonTexture("textures/button/musicOn.png", ScreenButtonTexture.ButtonType.MUSICON);
+            } else {
+                musicDisplay = new ScreenButtonTexture("textures/button/musicOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
+            }
+            musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+
+            backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
+            backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
+
+            newGameButton = new ScreenButtonTexture("textures/button/newGameButton.png", ScreenButtonTexture.ButtonType.NEWGAME);
+            newGameButton.setPosition(stage.getWidth() * 0.4F, stage.getHeight() * 0.1F);
+
+            stage.addActor(background);
+            stage.addActor(musicTexture);
+            stage.addActor(musicDisplay);
+            stage.addActor(backButton);
+            stage.addActor(newGameButton);
+        }
+
         Gdx.input.setInputProcessor(this);
     }
 
@@ -104,6 +129,36 @@ public class SettingsScreen implements Screen, InputProcessor {
                 Gdx.input.setInputProcessor(null);
                 game.toStartMenu();
                 dispose();
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.MUSICON) {
+                Iterator<Actor> it = stage.getActors().iterator();
+                while (it.hasNext()) {
+                    if (it.next().equals(musicDisplay)) {
+                        it.remove();
+                        musicDisplay = new ScreenButtonTexture("textures/button/musicOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
+                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+                        stage.addActor(musicDisplay);
+                        break;
+                    }
+                }
+                game.music.stop();
+                TowerDefense.pref.putBoolean("music", false);
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.MUSICOFF) {
+                Iterator<Actor> it = stage.getActors().iterator();
+                while (it.hasNext()) {
+                    if (it.next().equals(musicDisplay)) {
+                        it.remove();
+                        musicDisplay = new ScreenButtonTexture("textures/button/musicOn.png", ScreenButtonTexture.ButtonType.MUSICON);
+                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+                        stage.addActor(musicDisplay);
+                        break;
+                    }
+                }
+                game.music.play();
+                TowerDefense.pref.putBoolean("music", true);
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.NEWGAME) {
+                Gdx.input.setInputProcessor(null);
+                game.music.stop();
+                game.newGame();
             }
         }
         return false;

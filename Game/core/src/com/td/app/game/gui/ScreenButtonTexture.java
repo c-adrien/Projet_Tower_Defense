@@ -11,7 +11,7 @@ public class ScreenButtonTexture extends Actor {
     private final Sprite sprite;
     private final ButtonType type;
 
-    public enum ButtonType {ARCADE, CAMPAIGN, RETURN, SETTINGS}
+    public enum ButtonType {ARCADE, CAMPAIGN, MUSICON, MUSICOFF, NEWGAME, RETURN, SETTINGS, SOUNDON, SOUNDOFF}
 
     public ScreenButtonTexture(String imgPath, ButtonType type) {
         this.type = type;
