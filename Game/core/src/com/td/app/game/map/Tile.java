@@ -48,7 +48,7 @@ public class Tile {
     }
 
     public Texture getTexture() {
-        if(isSelected && alternativeTexture != null){
+        if(isSelected && alternativeTexture != null && !isOccupied){
             return alternativeTexture;
         }
         return texture;

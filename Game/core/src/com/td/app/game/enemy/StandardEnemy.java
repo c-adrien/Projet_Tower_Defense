@@ -43,5 +43,4 @@ public class StandardEnemy extends Actor {
     public void die(){
         this.isAlive = false;
     }
-
 }

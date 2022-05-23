@@ -5,11 +5,13 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
+import com.td.app.game.tower.SimpleTower;
 
 public abstract class GameScreen implements Screen, InputProcessor {
 
@@ -18,9 +20,17 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private Stage stage;
     private SpriteBatch batch;
 
+    // Debug
+    ShapeRenderer shapeRenderer;
+    int x = 0;
+    int y = 0;
+
     public GameScreen(TowerDefense game) {
         this.game = game;
         Gdx.input.setInputProcessor(this);
+
+        // Debug
+        shapeRenderer = new ShapeRenderer();
     }
 
     public void initGamePlay(Map map){
@@ -45,6 +55,13 @@ public abstract class GameScreen implements Screen, InputProcessor {
         stage.draw();
 
         batch.end();
+
+        // Debug
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1, 0, 0, 1); // Red line
+        shapeRenderer.line(x, y, x+64, y+64);
+        shapeRenderer.end();
+
     }
 
     @Override
@@ -69,6 +86,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        batch.dispose();
         stage.dispose();
     }
 
@@ -95,11 +113,30 @@ public abstract class GameScreen implements Screen, InputProcessor {
         System.out.println("button : " + button + "\n");
 
         if(screenX < 768 && screenY < 768){
-            int y = screenX / 64;
-            int x = screenY / 64;
+            int x = screenX / 64;
+            int y = screenY / 64;
 
-            gamePlay.getMap().toggleTile(x, y);
+            int line = y;
+            int column = x;
+
+            Tile tile = gamePlay.getMap().getMap()[line][column];
+
+            if(tile.isSelected() && !tile.isOccupied()){
+                System.out.println("place x :" + x*64);
+                System.out.println("place y :" + y*64);
+
+                SimpleTower simpleTower = new SimpleTower(0, 0, tile, x*64, 704 - y*64);
+                stage.addActor(simpleTower);
+            }
+
+
+
+            gamePlay.getMap().toggleTile(line, column);
             System.out.println(Tile.SELECTED_TILE);
+
+            // Debug
+            this.x = x*64;
+            this.y = 704 - y*64;
         }
 
         return false;

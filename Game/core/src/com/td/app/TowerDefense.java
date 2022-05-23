@@ -36,6 +36,8 @@ public class TowerDefense extends Game {
 		campaignMenuScreen.dispose();
 		startMenuScreen.dispose();
 		settingsScreen.dispose();
+		arcadeGameScreen.dispose();
+		campaignGameScreen.dispose();
 	}
 
 
