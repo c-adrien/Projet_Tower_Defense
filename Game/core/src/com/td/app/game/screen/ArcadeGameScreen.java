@@ -1,41 +1,16 @@
 package com.td.app.game.screen;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Gdx;
+import com.td.app.TowerDefense;
+import com.td.app.game.map.Map;
 
-public class ArcadeGameScreen implements Screen {
+public class ArcadeGameScreen extends GameScreen {
 
-    @Override
-    public void show() {
+    public ArcadeGameScreen(TowerDefense game) {
+        super(game);
 
-    }
-
-    @Override
-    public void render(float delta) {
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
+        // TODO select/create random map
+        Map map = new Map(Gdx.files.internal("./maps/map_1.txt"));
+        initGamePlay(map);
     }
 }

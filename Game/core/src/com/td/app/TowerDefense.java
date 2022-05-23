@@ -5,6 +5,7 @@ import com.td.app.game.screen.*;
 
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
+	private ArcadeGameScreen arcadeGameScreen;
 	private CampaignMenuScreen campaignMenuScreen;
 	private CampaignGameScreen campaignGameScreen;
 	private StartMenuScreen startMenuScreen;
@@ -19,8 +20,9 @@ public class TowerDefense extends Game {
 
 		// TODO load audio
 
-		toStartMenu();
+//		toStartMenu();
 //		toCampaignGameScreen();
+		toArcadeGameScreen();
 	}
 
 	@Override
@@ -54,7 +56,12 @@ public class TowerDefense extends Game {
 		setScreen(settingsScreen);
 	}
 	public void toCampaignGameScreen() {
-		campaignGameScreen = new CampaignGameScreen(this);
+		// TODO chose level
+		campaignGameScreen = new CampaignGameScreen(this, 1);
 		setScreen(campaignGameScreen);
+	}
+	public void toArcadeGameScreen() {
+		arcadeGameScreen = new ArcadeGameScreen(this);
+		setScreen(arcadeGameScreen);
 	}
 }

@@ -2,14 +2,14 @@ package com.td.app.game.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Tile extends Actor {
+public class Tile {
 
     private static final List<MapElements> notOccupiedElements = Arrays.asList(MapElements.DALLE);
+    public static Tile SELECTED_TILE;
 
     private final MapElements mapElement;
     private boolean isOccupied;
@@ -56,10 +56,12 @@ public class Tile extends Actor {
 
     public void select(){
         isSelected = true;
+        SELECTED_TILE = this;
     }
 
     public void unselect(){
         isSelected = false;
+        SELECTED_TILE = null;
     }
 
     public boolean isSelected() {

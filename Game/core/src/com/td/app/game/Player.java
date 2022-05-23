@@ -24,7 +24,7 @@ public class Player {
         return true;
     }
 
-    public void removeLive(){
+    public void removeLife(){
         this.remainingLives--;
         if(this.remainingLives <= 0){
             this.gameOver = true;
