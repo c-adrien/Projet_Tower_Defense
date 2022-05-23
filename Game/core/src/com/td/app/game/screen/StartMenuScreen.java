@@ -35,16 +35,16 @@ public class StartMenuScreen implements Screen, InputProcessor {
         backgroundImage.setPosition(0, 0);
 
         arcadeButton = new ScreenButtonTexture("textures/button/arcadeButton.png", ScreenButtonTexture.ButtonType.ARCADE);
-        arcadeButton.setPosition(stage.getWidth()/2 - arcadeButton.getWidth()/2, stage.getHeight() - stage.getHeight()/3);
+        arcadeButton.setPosition(900, 340);
 
         campaignButton = new ScreenButtonTexture("textures/button/campaignButton.png", ScreenButtonTexture.ButtonType.CAMPAIGN);
-        campaignButton.setPosition(stage.getWidth()/2 - campaignButton.getWidth()/2, stage.getHeight() - 2*stage.getHeight()/3);
+        campaignButton.setPosition(120, 330);
 
         settingsButton = new ScreenButtonTexture("textures/button/settingsButton.png", ScreenButtonTexture.ButtonType.SETTINGS);
-        settingsButton.setPosition(stage.getWidth()/2 - settingsButton.getWidth()/2, stage.getHeight()/30);
+        settingsButton.setPosition(stage.getWidth()-170, stage.getHeight()/300);
 
         backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-        backButton.setPosition(stage.getWidth()/30, stage.getHeight()/30);
+        backButton.setPosition(stage.getWidth()/100, stage.getHeight()/300);
 
         pointer = new PointerTexture("textures/menu/pointer.png", null, arcadeButton);
         pointer.setPosition(arcadeButton.getX()/8, arcadeButton.getY());
