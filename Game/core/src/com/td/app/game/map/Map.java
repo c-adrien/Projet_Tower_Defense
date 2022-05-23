@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.List;
 
 public class Map extends Actor {
 
@@ -39,9 +42,7 @@ public class Map extends Actor {
 
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
-            File file = new File("Game/assets/"+fileHandle.path());
-            System.out.println(file);
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = getBufferedReader(fileHandle);
 
             int mapLength = Integer.parseInt(reader.readLine());
             int mapWidth = Integer.parseInt(reader.readLine());
@@ -70,6 +71,19 @@ public class Map extends Actor {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private BufferedReader getBufferedReader(FileHandle fileHandle){
+
+        List<String> patterns = Arrays.asList("Game/assets/", "./assets/");
+
+        for (String pattern: patterns) {
+            try {
+                File file = new File(pattern+ fileHandle.path());
+                return new BufferedReader(new FileReader(file));
+            } catch (FileNotFoundException ignored) {}
+        }
+        return null;
     }
 
     public Tile[][] getMap() {

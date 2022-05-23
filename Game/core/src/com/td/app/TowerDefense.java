@@ -1,15 +1,10 @@
 package com.td.app;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.assets.loaders.AssetLoader;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.td.app.game.screen.*;
-
-import java.util.Objects;
 
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
@@ -36,7 +31,7 @@ public class TowerDefense extends Game {
 		campaignMenuScreen = new CampaignMenuScreen(this);
 		startMenuScreen = new StartMenuScreen(this);
 		settingsScreen = new SettingsScreen(this);
-		campaignGameScreen = new CampaignGameScreen(this);
+		campaignGameScreen = new CampaignGameScreen(this, 1);
 
 		if (!pref.contains("user")) {
 			setScreen(new NewUserScreen(this));
@@ -79,7 +74,8 @@ public class TowerDefense extends Game {
 	public void toSettingsScreen() {
 		setScreen(settingsScreen);
 	}
-	public void toCampaignGameScreen() {
+	public void toCampaignGameScreen(int level) {
+		campaignGameScreen = new CampaignGameScreen(this, level);
 		setScreen(campaignGameScreen);
 	}
 
