@@ -23,5 +23,7 @@ public enum MapElements {
     DEPART_NORD,
     DEPART_SUD,
     DEPART_EST,
-    DEPART_OUEST
+    DEPART_OUEST,
+
+    WATER_LINE
 }

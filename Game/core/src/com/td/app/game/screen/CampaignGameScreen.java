@@ -10,7 +10,10 @@ public class CampaignGameScreen extends GameScreen {
         super(game);
 
         // TODO select map
-        Map map = new Map(Gdx.files.internal(String.format("./maps/map_%s.txt", level)));
+//        Map map = new Map(Gdx.files.internal(String.format("./maps/map_%s.txt", level)));
+
+        // TODO ############# RANDOM MAP
+        Map map = new Map();
         initGamePlay(map);
 
     }

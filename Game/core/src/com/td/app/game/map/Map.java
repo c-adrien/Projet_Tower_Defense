@@ -10,8 +10,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Map extends Actor {
 
@@ -33,12 +35,97 @@ public class Map extends Actor {
             map1 = createRandomMap();
         }
         map = map1;
+
     }
 
     // TODO
     private Tile[][] createRandomMap(){
-        return null;
+
+        /** FILLING MAP WITH DALLE
+         * (0,0) at top corner left
+         */
+        Tile[][] map = new Tile[nbTiles][nbTiles];
+
+        for (int i = 0; i < nbTiles; i++) {
+            for (int j = 0; j < nbTiles; j++) {
+                if (map[i][j] == null){
+                    map[i][j] = new Tile(MapElements.DALLE);
+                    System.out.println(map[i][j].getTexture().toString().contains("DALLE"));
+                }
+            }
+        }
+
+
+        /** CREATING START OF PATH */
+        boolean isStartCreated = false;
+        int i = 0;
+        int j = 0;
+
+        if (!isStartCreated){
+            int RANDOM_START = new Random().nextInt(12);
+            System.out.println("RANDOM START " + RANDOM_START);
+            i = RANDOM_START;
+//            map[i][j] = new Tile(MapElements.CHEMIN_HORIZONTAL);
+            map[i][j] = new Tile(MapElements.BUISSON);
+//            map[i][j] = new Tile(MapElements.values()[0]);
+//            System.out.println(" is null " + map[i][j].getTexture() == null);
+//            System.out.println(map[i][j].getTexture().toString().contains("CHEMIN_HORIZONTAL"));
+
+            isStartCreated = true;
+        }
+
+        /** CREATING REST OF PATH */
+        int up = 0;
+        int right = 1;
+        int down = 2;
+
+        while(j<nbTiles-1){
+            int direction = new Random().nextInt(3);
+            System.out.println(" i,j = " + i + "," + j + " | DIRECTION = " + direction);
+
+            if (direction == right){
+                j++;
+            }
+//            else if(direction == up){
+//                i--;
+//            }
+//            else if(direction == down){
+//                i++;
+//            }
+            map[i][j] = new Tile(MapElements.CHEMIN_HORIZONTAL);
+
+        }
+
+        /** FILLING MAP WITH LANDSCAPE ELEMENTS */
+        int nbOfElt = 0;
+        for (int k = 0; k < nbTiles-1; k++) {
+            for (int l = 0; l < nbTiles-1; l++) {
+
+                if (nbOfElt == 20){ // max of 20 elt on the map
+                    break;
+                }
+
+                double toFill = Math.random();
+                System.out.println("toFill + " + toFill);
+                if (toFill>0.2){
+                    continue;
+                }
+                else if (toFill<0.2){
+                    if (map[k][l].getTexture().toString().contains("DALLE")){
+                        int eltChoice = new Random().nextInt(6);
+                        map[k][l] = new Tile(MapElements.values()[eltChoice]);
+//                        map[k][l] = new Tile(MapElements.BUISSON);
+                        nbOfElt++;
+                    }
+                }
+                System.out.println(map[i][j].getTexture().toString().contains("DALLE"));
+            }
+        }
+
+        return map;
     }
+
+
 
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
