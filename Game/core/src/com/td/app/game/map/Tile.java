@@ -68,6 +68,10 @@ public class Tile {
         return isSelected;
     }
 
+    public static void clearSelection(){
+        SELECTED_TILE = null;
+    }
+
 //    public boolean isDalle(){
 //        return this.getTexture().toString().contains("CHEMIN_HORIZONTAL");
 //    }

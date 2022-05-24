@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -175,6 +174,33 @@ public class Map extends Actor {
 
     public Tile[][] getMap() {
         return map;
+    }
+
+    public Tile getTileFromPosition(int x, int y){
+        x = x / 64;
+        y = y / 64;
+
+        int line = y;
+        int column = x;
+
+        Tile tile = map[line][column];
+        return tile;
+    }
+
+    public void toggleTile(Tile tile){
+        if(tile.isSelected()){
+            tile.unselect();
+            return;
+        }
+
+        for (int i = 0; i < nbTiles; i++) {
+            for (int j = 0; j < nbTiles; j++) {
+                if (!map[i][j].equals(tile)) {
+                    map[i][j].unselect();
+                }
+            }
+        }
+        tile.select();
     }
 
     public void toggleTile(int x, int y){

@@ -8,6 +8,7 @@ import com.td.app.game.screen.*;
 
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
+	private ArcadeGameScreen arcadeGameScreen;
 	private CampaignMenuScreen campaignMenuScreen;
 	private CampaignGameScreen campaignGameScreen;
 	private StartMenuScreen startMenuScreen;
@@ -25,13 +26,13 @@ public class TowerDefense extends Game {
 		music = Gdx.audio.newMusic(Gdx.app.getFiles().internal("sound/backgroundMusic.mp3"));
 		music.setVolume(0.7F);
 		music.setLooping(true);
+
 		// TODO Load sound files
 
 		arcadeMenuScreen = new ArcadeMenuScreen(this);
 		campaignMenuScreen = new CampaignMenuScreen(this);
 		startMenuScreen = new StartMenuScreen(this);
 		settingsScreen = new SettingsScreen(this);
-		campaignGameScreen = new CampaignGameScreen(this, 1);
 
 		if (!pref.contains("user")) {
 			setScreen(new NewUserScreen(this));
@@ -40,7 +41,9 @@ public class TowerDefense extends Game {
 		} else {
 			toStartMenu();
 		}
-//		toCampaignGameScreen();
+
+		toCampaignGameScreen(1);
+//		toArcadeGameScreen();
 	}
 
 	@Override
@@ -58,6 +61,8 @@ public class TowerDefense extends Game {
 		campaignMenuScreen.dispose();
 		startMenuScreen.dispose();
 		settingsScreen.dispose();
+		arcadeGameScreen.dispose();
+		campaignGameScreen.dispose();
 		music.dispose();
 	}
 
@@ -77,6 +82,10 @@ public class TowerDefense extends Game {
 	public void toCampaignGameScreen(int level) {
 		campaignGameScreen = new CampaignGameScreen(this, level);
 		setScreen(campaignGameScreen);
+	}
+	public void toArcadeGameScreen() {
+		arcadeGameScreen = new ArcadeGameScreen(this);
+		setScreen(arcadeGameScreen);
 	}
 
 	public void newGame() {

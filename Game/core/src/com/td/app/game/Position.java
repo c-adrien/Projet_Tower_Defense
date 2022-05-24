@@ -1,8 +1,9 @@
 package com.td.app.game;
 
 public class Position {
-    private int X;
-    private int Y;
+
+    private float X;
+    private float Y;
     private int angle;
 
     public Position(int x, int y) {
@@ -16,18 +17,18 @@ public class Position {
     }
 
     public int getX() {
-        return X;
-    }
-
-    public void setX(int x) {
-        X = x;
+        return (int) X;
     }
 
     public int getY() {
-        return Y;
+        return (int) Y;
     }
 
-    public void setY(int y) {
+    public void setX(float x) {
+        X = x;
+    }
+
+    public void setY(float y) {
         Y = y;
     }
 
@@ -38,4 +39,13 @@ public class Position {
     public void setAngle(int angle) {
         this.angle = angle;
     }
+
+    public void updateX(float i){
+        this.X += i;
+    }
+
+    public void updateY(float i){
+        this.Y += i;
+    }
+
 }
