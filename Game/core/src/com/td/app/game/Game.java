@@ -2,6 +2,9 @@ package com.td.app.game;
 
 import com.td.app.game.enemy.Wave;
 import com.td.app.game.map.Map;
+import com.td.app.game.tower.AbstractTower;
+
+import java.util.ArrayList;
 
 public class Game {
 
@@ -10,6 +13,8 @@ public class Game {
 
     private int numberOfWaves;
     private Wave[] waves;
+
+    private final ArrayList<AbstractTower> towerArrayList = new ArrayList<>();
 
 
     public Game(Map map) {
@@ -23,11 +28,17 @@ public class Game {
         initWaves(level);
     }
 
-
-
     public void initWaves(int level){
         waves = new Wave[]{};
         numberOfWaves = waves.length;
+    }
+
+    public void addTower(AbstractTower tower){
+        towerArrayList.add(tower);
+    }
+
+    public void removeTower(AbstractTower tower){
+        towerArrayList.remove(tower);
     }
 
     public Map getMap() {
