@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.td.app.game.Position;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -250,6 +251,17 @@ public class Map extends Actor {
             }
         }
         tile.select();
+    }
+
+    public Position getEntryTilePosition(){
+        for (int i = 0; i < nbTiles; i++) {
+                if (map[i][0].mapElement.name().contains("CHEMIN_GAUCHE") ||
+                        map[i][0].mapElement.name().contains("CHEMIN_HORIZONTAL")) {
+//                    System.out.println((nbTiles - 1 - i));
+                    return new Position(0, (nbTiles-1 - i) * 64);
+                }
+            }
+        return null;
     }
 
     public void toggleTile(int x, int y){

@@ -4,7 +4,7 @@ public class Position {
 
     private float X;
     private float Y;
-    private int angle;
+    private double angle;
 
     public Position(int x, int y) {
         this(x, y, 0);
@@ -32,11 +32,11 @@ public class Position {
         Y = y;
     }
 
-    public int getAngle() {
+    public double getAngle() {
         return angle;
     }
 
-    public void setAngle(int angle) {
+    public void setAngle(double angle) {
         this.angle = angle;
     }
 

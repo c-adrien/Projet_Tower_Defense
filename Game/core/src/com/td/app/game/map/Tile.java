@@ -11,7 +11,7 @@ public class Tile {
     private static final List<MapElements> notOccupiedElements = Arrays.asList(MapElements.DALLE);
     public static Tile SELECTED_TILE;
 
-    private final MapElements mapElement;
+    public final MapElements mapElement;
     private boolean isOccupied;
     private boolean isSelected;
 

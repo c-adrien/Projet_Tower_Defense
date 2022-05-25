@@ -23,10 +23,15 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private Stage stage;
     private SpriteBatch batch;
 
+    protected Position entryTilePosition;
+
     // Debug
     ShapeRenderer shapeRenderer;
     int x = 0;
     int y = 0;
+    StandardEnemy enemy;
+    float i = 0;
+    float j = 0;
 
     public GameScreen(TowerDefense game) {
         this.game = game;
@@ -46,11 +51,15 @@ public abstract class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         stage.addActor(gamePlay.getMap());
+
+        entryTilePosition = this.gamePlay.getMap().getEntryTilePosition();
+        System.out.println(entryTilePosition.getX());
+        System.out.println(entryTilePosition.getY());
     }
 
     @Override
     public void render(float delta) {
-        StandardEnemy.updateEnemies(delta);
+        StandardEnemy.updateEnemies(delta, this.gamePlay.getMap());
 
         batch.begin();
 
@@ -63,9 +72,31 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
         // Debug
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        // Selected tile
         shapeRenderer.setColor(1, 0, 0, 1); // Red line
         shapeRenderer.line(x, y, x+64, y+64);
         shapeRenderer.end();
+
+        // Enemy
+        if(enemy != null){
+            i = enemy.getPosition().getX();
+            j = enemy.getPosition().getY();
+        }
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(0, 0, 1, 1); // Blue line
+        shapeRenderer.line(i, j, i+32, j+32);
+        shapeRenderer.end();
+
+        /*
+        // Grid
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (int k = 0; k < 24; k++) {
+            shapeRenderer.setColor(0, 0, 1, 1); // Blue line
+            shapeRenderer.line(0, k*32, 768, k*32);
+        }
+        shapeRenderer.end();
+         */
+
 
     }
 
@@ -127,19 +158,18 @@ public abstract class GameScreen implements Screen, InputProcessor {
             Tile tile = gamePlay.getMap().getTileFromPosition(screenX, screenY);
 
             if(tile.isSelected() && !tile.isOccupied()){
-                System.out.println("place x :" + x*64);
-                System.out.println("place y :" + y*64);
+//                System.out.println("place x :" + x*64);
+//                System.out.println("place y :" + y*64);
 
                 SimpleTower simpleTower = new SimpleTower(tile, x*64, 704 - y*64);
                 gamePlay.addTower(simpleTower);
                 stage.addActor(simpleTower);
 
-                StandardEnemy standardEnemy = new StandardEnemy(1, 1, 1, new Position(-64, 64*4+24),
-                        new Texture(Gdx.files.internal("textures/tower/simple_tower_0.png")));
-                StandardEnemy.addEnemy(standardEnemy);
-                stage.addActor(standardEnemy);
+                enemy = new StandardEnemy(1, 1, new Position(-64, entryTilePosition.getY()+32),
+                        new Texture(Gdx.files.internal("textures/enemy/test.png")));
+                StandardEnemy.addEnemy(enemy);
+                stage.addActor(enemy);
             }
-
 
 
 //            gamePlay.getMap().toggleTile(line, column);
