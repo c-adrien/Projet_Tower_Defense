@@ -3,11 +3,20 @@ package com.td.app.game.map;
 public enum MapElements {
     DALLE,
 
+    DALLE2,
     ARBRE,
+    ARBRE2,
+    ARBRE3,
+    ARBRE4,
     BOIS,
     BUISSON,
     CAILLOU,
+    EAU_PETIT2,
+    FOIN1,
+    FOIN2,
+
     WATER_FULL,
+    WATER_LINE,
 
     CHEMIN_HORIZONTAL,
     CHEMIN_VERTICAL,
@@ -23,7 +32,5 @@ public enum MapElements {
     DEPART_NORD,
     DEPART_SUD,
     DEPART_EST,
-    DEPART_OUEST,
-
-    WATER_LINE
+    DEPART_OUEST
 }
