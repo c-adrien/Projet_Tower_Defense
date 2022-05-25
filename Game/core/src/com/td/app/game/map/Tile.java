@@ -69,8 +69,10 @@ public class Tile {
     }
 
 //    public boolean isDalle(){
-//        return this.getTexture().toString().contains("CHEMIN_HORIZONTAL");
+//        return texture.toString().contains("CHEMIN_HORIZONTAL");
 //    }
+
+
 
 
 }
