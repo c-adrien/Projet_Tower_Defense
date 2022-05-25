@@ -37,7 +37,7 @@ public class Map extends Actor {
 
     }
 
-    // TODO
+
     private Tile[][] createRandomMap(){
 
         /** FILLING MAP WITH DALLE
@@ -144,7 +144,7 @@ public class Map extends Actor {
 
         /** FILLING REST OF MAP WITH LANDSCAPE ELEMENTS */
         int nbOfElt = 0;
-        int nbOfEltMax = 25;
+        int nbOfEltMax = 35;
 
         for (int k = 0; k < nbTiles-1; k++) {
             for (int l = 0; l < nbTiles-1; l++) {
@@ -156,15 +156,20 @@ public class Map extends Actor {
 
                 double toFill = Math.random();
                 double chanceOfElt = 0.20;
-                if (toFill>chanceOfElt){
-                    continue;
-                }
-                else if (toFill<chanceOfElt){ // distributing evenly elements through the map
-                    if (map[k][l].getTexture().toString().contains("DALLE")){
-                        int eltChoice = new Random().nextInt(6);
-                        map[k][l] = new Tile(MapElements.values()[eltChoice]);
+                double chanceOfGrass = 0.90;
+                if (map[k][l].getTexture().toString().contains("DALLE")){
+
+                    if (toFill>chanceOfGrass){
+                        map[k][l] = new Tile(MapElements.DALLE2);
+//                        continue;
+                    }
+                    else if (toFill<chanceOfElt){ // distributing evenly elements through the map
+                        if (map[k][l].getTexture().toString().contains("DALLE")){
+                            int eltChoice = new Random().nextInt(11)+1;
+                            map[k][l] = new Tile(MapElements.values()[eltChoice]);
 //                        map[k][l] = new Tile(MapElements.BUISSON);
-                        nbOfElt++;
+                            nbOfElt++;
+                        }
                     }
                 }
             }
