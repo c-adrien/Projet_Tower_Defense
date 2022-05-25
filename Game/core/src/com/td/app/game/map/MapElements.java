@@ -25,6 +25,7 @@ public enum MapElements {
     CHEMIN_GAUCHE_HAUT,
     CHEMIN_HAUT_DROITE,
 
+    /*
     SORTIE_NORD,
     SORTIE_SUD,
     SORTIE_EST,
@@ -33,4 +34,6 @@ public enum MapElements {
     DEPART_SUD,
     DEPART_EST,
     DEPART_OUEST
+
+     */
 }

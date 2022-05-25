@@ -42,8 +42,8 @@ public class TowerDefense extends Game {
 			toStartMenu();
 		}
 
-		toCampaignGameScreen(1);
-//		toArcadeGameScreen();
+//		toCampaignGameScreen(1);
+		toArcadeGameScreen();
 	}
 
 	@Override
