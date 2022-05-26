@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.PointerTexture;
 import com.td.app.game.gui.ScreenButtonTexture;
@@ -34,7 +33,7 @@ public class StartMenuScreen implements Screen, InputProcessor {
     public void show() {
         if (stage == null) {
             if (TowerDefense.pref.getBoolean("music")) {
-                game.music.play();
+                TowerDefense.music.play();
             }
             stage = new Stage();
 

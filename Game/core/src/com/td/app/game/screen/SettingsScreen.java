@@ -135,12 +135,12 @@ public class SettingsScreen implements Screen, InputProcessor {
                     if (it.next().equals(musicDisplay)) {
                         it.remove();
                         musicDisplay = new ScreenButtonTexture("textures/button/musicOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
-                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+                        musicDisplay.setPosition(screenButton.getWidth(), screenButton.getHeight());
                         stage.addActor(musicDisplay);
                         break;
                     }
                 }
-                game.music.stop();
+                TowerDefense.music.stop();
                 TowerDefense.pref.putBoolean("music", false);
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.MUSICOFF) {
                 Iterator<Actor> it = stage.getActors().iterator();
@@ -148,16 +148,16 @@ public class SettingsScreen implements Screen, InputProcessor {
                     if (it.next().equals(musicDisplay)) {
                         it.remove();
                         musicDisplay = new ScreenButtonTexture("textures/button/musicOn.png", ScreenButtonTexture.ButtonType.MUSICON);
-                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+                        musicDisplay.setPosition(screenButton.getWidth(), screenButton.getHeight());
                         stage.addActor(musicDisplay);
                         break;
                     }
                 }
-                game.music.play();
+                TowerDefense.music.play();
                 TowerDefense.pref.putBoolean("music", true);
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.NEWGAME) {
                 Gdx.input.setInputProcessor(null);
-                game.music.stop();
+                TowerDefense.music.stop();
                 game.newGame();
             }
         }

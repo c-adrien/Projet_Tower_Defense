@@ -13,8 +13,8 @@ public class TowerDefense extends Game {
 	private CampaignGameScreen campaignGameScreen;
 	private StartMenuScreen startMenuScreen;
 	private SettingsScreen settingsScreen;
-	public Music music;
 
+	public static Music music;
 	public static Preferences pref;
 
 	public TowerDefense() {
@@ -36,6 +36,7 @@ public class TowerDefense extends Game {
 
 		if (!pref.contains("user")) {
 			setScreen(new NewUserScreen(this));
+			pref.putInteger("unlockedLevels", 1);
 			pref.putBoolean("music", true);
 			pref.putBoolean("sound", true);
 		} else {
@@ -43,7 +44,7 @@ public class TowerDefense extends Game {
 		}
 
 //		toCampaignGameScreen(1);
-		toArcadeGameScreen();
+//		toArcadeGameScreen();
 	}
 
 	@Override
@@ -53,17 +54,7 @@ public class TowerDefense extends Game {
 	
 	@Override
 	public void dispose () {
-		// TODO Save prefs
-		pref.putBoolean("music", music.isPlaying());
 		pref.flush();
-
-		arcadeMenuScreen.dispose();
-		campaignMenuScreen.dispose();
-		startMenuScreen.dispose();
-		settingsScreen.dispose();
-		arcadeGameScreen.dispose();
-		campaignGameScreen.dispose();
-		music.dispose();
 	}
 
 
@@ -92,5 +83,9 @@ public class TowerDefense extends Game {
 		pref.clear();
 		pref.flush();
 		create();
+	}
+
+	private void unlockCampaignLevels() {
+
 	}
 }
