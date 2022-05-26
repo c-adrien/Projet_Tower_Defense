@@ -135,7 +135,7 @@ public class SettingsScreen implements Screen, InputProcessor {
                     if (it.next().equals(musicDisplay)) {
                         it.remove();
                         musicDisplay = new ScreenButtonTexture("textures/button/musicOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
-                        musicDisplay.setPosition(screenButton.getWidth(), screenButton.getHeight());
+                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
                         stage.addActor(musicDisplay);
                         break;
                     }
@@ -148,7 +148,7 @@ public class SettingsScreen implements Screen, InputProcessor {
                     if (it.next().equals(musicDisplay)) {
                         it.remove();
                         musicDisplay = new ScreenButtonTexture("textures/button/musicOn.png", ScreenButtonTexture.ButtonType.MUSICON);
-                        musicDisplay.setPosition(screenButton.getWidth(), screenButton.getHeight());
+                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
                         stage.addActor(musicDisplay);
                         break;
                     }
