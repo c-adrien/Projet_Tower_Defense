@@ -6,7 +6,7 @@ public class SimpleTower extends AbstractTower {
 
     private static final String IMAGE_PATH = "textures/tower/simple_tower.png";
     private static final int PROJECTILE_SPEED = 1;
-    private static final int PROJECTILE_RANGE = 1;
+    private static final int PROJECTILE_RANGE = 100;
     private static final int timer = 1;
     private static final int sellPrice = 0;
     private static final int upgradePrice = 0;
@@ -14,9 +14,13 @@ public class SimpleTower extends AbstractTower {
     public SimpleTower(Tile hostingTile, int x, int y) {
         super(PROJECTILE_SPEED, PROJECTILE_RANGE, timer, sellPrice, upgradePrice, hostingTile,
                 IMAGE_PATH, x, y);
+
     }
 
     @Override
     public void sendProjectile() {
+
     }
+
+
 }

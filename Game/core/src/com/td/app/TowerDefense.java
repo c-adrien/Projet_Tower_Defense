@@ -43,7 +43,7 @@ public class TowerDefense extends Game {
 			toStartMenu();
 		}
 
-//		toCampaignGameScreen(1);
+		toCampaignGameScreen(1);
 //		toArcadeGameScreen();
 	}
 

@@ -14,6 +14,7 @@ import com.td.app.game.Position;
 import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
+import com.td.app.game.tower.AbstractTower;
 import com.td.app.game.tower.SimpleTower;
 
 public abstract class GameScreen implements Screen, InputProcessor {
@@ -60,6 +61,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         StandardEnemy.updateEnemies(delta, this.gamePlay.getMap());
+
+        AbstractTower.updateTowers();
 
         batch.begin();
 
@@ -169,6 +172,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
                         new Texture(Gdx.files.internal("textures/enemy/test.png")));
                 StandardEnemy.addEnemy(enemy);
                 stage.addActor(enemy);
+
+
             }
 
 
