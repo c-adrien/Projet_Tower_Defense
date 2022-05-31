@@ -36,7 +36,6 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(TowerDefense game) {
         this.game = game;
-        Gdx.input.setInputProcessor(this);
 
         // Debug
         shapeRenderer = new ShapeRenderer();
@@ -56,13 +55,15 @@ public abstract class GameScreen implements Screen, InputProcessor {
         entryTilePosition = this.gamePlay.getMap().getEntryTilePosition();
         System.out.println(entryTilePosition.getX());
         System.out.println(entryTilePosition.getY());
+
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render(float delta) {
-        StandardEnemy.updateEnemies(delta, this.gamePlay.getMap());
-
+        StandardEnemy.updateEnemies(delta, this.gamePlay.getMap(), stage);
         AbstractTower.updateTowers();
+        gamePlay.updateWaves(stage);
 
         batch.begin();
 
@@ -159,7 +160,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
 //            int column = x;
 
             Tile tile = gamePlay.getMap().getTileFromPosition(screenX, screenY);
-
+            System.out.println(tile.isSelected());
+            System.out.println(tile.isOccupied());
             if(tile.isSelected() && !tile.isOccupied()){
 //                System.out.println("place x :" + x*64);
 //                System.out.println("place y :" + y*64);
@@ -168,14 +170,12 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 gamePlay.addTower(simpleTower);
                 stage.addActor(simpleTower);
 
-                enemy = new StandardEnemy(1, 1, new Position(-64, entryTilePosition.getY()+32),
+                enemy = new StandardEnemy(60, 10, new Position(entryTilePosition.getX(), entryTilePosition.getY()+32),
                         new Texture(Gdx.files.internal("textures/enemy/test.png")));
                 StandardEnemy.addEnemy(enemy);
                 stage.addActor(enemy);
 
-
             }
-
 
 //            gamePlay.getMap().toggleTile(line, column);
             gamePlay.getMap().toggleTile(tile);

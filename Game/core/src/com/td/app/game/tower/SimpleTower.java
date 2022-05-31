@@ -11,9 +11,9 @@ public class SimpleTower extends AbstractTower {
     private static final int sellPrice = 0;
     private static final int upgradePrice = 0;
 
-    public SimpleTower(Tile hostingTile, int x, int y) {
+    public SimpleTower(Tile hostingTile, int positionX, int positionY) {
         super(PROJECTILE_SPEED, PROJECTILE_RANGE, timer, sellPrice, upgradePrice, hostingTile,
-                IMAGE_PATH, x, y);
+                IMAGE_PATH, positionX, positionY);
 
     }
 

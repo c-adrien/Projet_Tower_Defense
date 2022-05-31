@@ -43,8 +43,8 @@ public class TowerDefense extends Game {
 			toStartMenu();
 		}
 
-		toCampaignGameScreen(1);
-//		toArcadeGameScreen();
+//		toCampaignGameScreen(1);
+		toArcadeGameScreen();
 	}
 
 	@Override
@@ -83,9 +83,5 @@ public class TowerDefense extends Game {
 		pref.clear();
 		pref.flush();
 		create();
-	}
-
-	private void unlockCampaignLevels() {
-
 	}
 }

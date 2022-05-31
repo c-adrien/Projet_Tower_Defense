@@ -1,6 +1,10 @@
 package com.td.app.game.enemy;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.td.app.game.Position;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,7 +24,7 @@ public class Wave {
         isOver = false;
     }
 
-    private Wave(FileHandle fileHandle) {
+    private Wave(FileHandle fileHandle, Position position) {
         enemies = new LinkedHashMap<>();
         isOver = false;
 
@@ -31,10 +35,9 @@ public class Wave {
             while ((line = reader.readLine()) != null){
                 String[] splits = line.split(" ");
 
-                // TODO enemies
-                enemies.put(null, Integer.parseInt(splits[1]));
+                enemies.put(new StandardEnemy(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]), new Position(position.getX(), position.getY() + 32),
+                        new Texture(Gdx.files.internal(splits[2]))), 60);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,6 +47,12 @@ public class Wave {
         this.isOver = true;
     }
 
+    public boolean isOver() {
+        return isOver;
+    }
+    public LinkedHashMap<StandardEnemy, Integer> getEnemies() {
+        return enemies;
+    }
 
     //=====================================================
 
@@ -51,7 +60,8 @@ public class Wave {
         return new Wave(level);
     }
 
-    public static Wave createWaveFromFile(FileHandle fileHandle){
-        return new Wave(fileHandle);
+    public static Wave createWaveFromFile(FileHandle fileHandle, Position position){
+        return new Wave(fileHandle, position);
     }
+
 }

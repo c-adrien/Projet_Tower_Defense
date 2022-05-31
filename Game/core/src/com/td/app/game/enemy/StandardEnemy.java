@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.td.app.game.Position;
+import com.td.app.game.gui.ScreenButtonTexture;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.MapElements;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.Projectile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class StandardEnemy extends Actor {
 
@@ -81,7 +84,7 @@ public class StandardEnemy extends Actor {
         return n >= low && n <= high;
     }
 
-    public void update(float delta, Map map){
+    public boolean update(float delta, Map map){
         if(freezeRemainingTime > 0){
             freezeRemainingTime = Math.max(0, freezeRemainingTime-delta);
         }
@@ -93,7 +96,9 @@ public class StandardEnemy extends Actor {
 
             // Si sorti du cadre
             if (x >= 12*64 || y >= 12*64){
-                return;
+                // TODO : remove texture from stage
+                removeEnemy(this); // Debug end of wave
+                return false;
             }
 
             // Si entré dans le cadre
@@ -145,6 +150,7 @@ public class StandardEnemy extends Actor {
 
             updatePosition(i, j);
         }
+        return true;
     }
 
     public void updatePosition(float i, float j){
@@ -162,14 +168,23 @@ public class StandardEnemy extends Actor {
         enemies.remove(enemy);
     }
 
-    public static void updateEnemies(float delta, Map map){
-        delta *= 10;
-
-        // faster debug
-        delta *= 10;
-
-        for (StandardEnemy enemy: enemies) {
-            enemy.update(delta, map);
+    public static void updateEnemies(float delta, Map map, Stage stage) {
+        for (StandardEnemy enemy : enemies) {
+            if (!enemy.isAlive) {
+                Iterator<Actor> actorIterator = stage.getActors().iterator();
+                while (actorIterator.hasNext()) {
+                    if (actorIterator.next().equals(enemy)) {
+                        actorIterator.remove();
+                        break;
+                    }
+                }
+                removeEnemy(enemy);
+                break;
+            } else {
+                if (!enemy.update(delta * enemy.speed, map)) {
+                    break;
+                }
+            }
         }
     }
 

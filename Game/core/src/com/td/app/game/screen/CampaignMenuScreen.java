@@ -14,8 +14,6 @@ import com.td.app.TowerDefense;
 import com.td.app.game.gui.ScreenButtonTexture;
 import com.td.app.game.gui.CampaignLevel;
 
-import java.util.Iterator;
-
 public class CampaignMenuScreen implements Screen, InputProcessor {
     public TowerDefense game;
     private Stage stage;
@@ -29,27 +27,25 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        if (stage == null) {
-            stage = new Stage();
+        stage = new Stage();
 
-            background = new Image(new Texture(Gdx.files.internal("textures/menu/campaignMenu.png")));
-            backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-            backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
+        background = new Image(new Texture(Gdx.files.internal("textures/menu/campaignMenu.png")));
+        backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
+        backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
 
-            stage.addActor(background);
-            stage.addActor(backButton);
+        stage.addActor(background);
+        stage.addActor(backButton);
 
-            for (int i = 0; i < TowerDefense.pref.getInteger("unlockedLevels"); i++) {
-                CampaignLevel levelButton = new CampaignLevel(String.format("textures/level/level%s.png", i + 1), i + 1);
-                levelButton.unlockLevel();
-                levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
-                stage.addActor(levelButton);
-            }
-            for (int i = TowerDefense.pref.getInteger("unlockedLevels"); i < NUMBER_OF_LEVEL; i++) {
-                CampaignLevel levelButton = new CampaignLevel("textures/level/lock.png", i + 1);
-                levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
-                stage.addActor(levelButton);
-            }
+        for (int i = 0; i < TowerDefense.pref.getInteger("unlockedLevels"); i++) {
+            CampaignLevel levelButton = new CampaignLevel(String.format("textures/level/level%s.png", i + 1), i + 1);
+            levelButton.unlockLevel();
+            levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
+            stage.addActor(levelButton);
+        }
+        for (int i = TowerDefense.pref.getInteger("unlockedLevels"); i < NUMBER_OF_LEVEL; i++) {
+            CampaignLevel levelButton = new CampaignLevel("textures/level/lock.png", i + 1);
+            levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
+            stage.addActor(levelButton);
         }
 
         Gdx.input.setInputProcessor(this);

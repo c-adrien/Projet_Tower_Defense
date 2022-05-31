@@ -29,13 +29,10 @@ public class Map extends Actor {
     // FileHandle : Gdx.files.internal("./maps/map_*.txt")
     public Map(FileHandle fileHandle) {
         Tile[][] map1;
-        map1 = createMapFromFile(fileHandle);
-
-        if(map1 == null){
+        if ((map1 = createMapFromFile(fileHandle)) == null) {
             map1 = createRandomMap();
         }
         map = map1;
-
     }
 
 

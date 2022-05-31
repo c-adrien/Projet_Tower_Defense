@@ -32,7 +32,7 @@ public abstract class AbstractTower extends Actor {
     private Sprite sprite;
 
     public AbstractTower(int projectileSpeed, int projectileRange,  int timer, int sellPrice, int upgradePrice,
-                         Tile hostingTile, String imgPath, int X, int Y) {
+                         Tile hostingTile, String imgPath, int positionX, int positionY) {
         this.level = 1;
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
@@ -44,7 +44,7 @@ public abstract class AbstractTower extends Actor {
 
         this.texture = new Texture(Gdx.files.internal(imgPath));
 
-        this.position = new Position(X, Y);
+        this.position = new Position(positionX, positionY);
         towers.add(this);
 
     }
