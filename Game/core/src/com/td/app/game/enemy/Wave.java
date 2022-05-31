@@ -3,11 +3,10 @@ package com.td.app.game.enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.td.app.Helper;
 import com.td.app.game.Position;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.LinkedHashMap;
 
 public class Wave {
@@ -29,13 +28,14 @@ public class Wave {
         isOver = false;
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(String.valueOf(fileHandle)));
+            BufferedReader reader = Helper.getBufferedReader(fileHandle);
             String line;
 
             while ((line = reader.readLine()) != null){
                 String[] splits = line.split(" ");
 
-                enemies.put(new StandardEnemy(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]), new Position(position.getX(), position.getY() + 32),
+                enemies.put(new StandardEnemy(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]),
+                        new Position(position.getX(), position.getY() + 32),
                         new Texture(Gdx.files.internal(splits[2]))), 60);
             }
         } catch (Exception e) {

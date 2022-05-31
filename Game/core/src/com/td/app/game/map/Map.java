@@ -5,25 +5,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.td.app.Helper;
 import com.td.app.game.Position;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class Map extends Actor {
 
     private final Tile[][] map;
+    protected Position entryTilePosition;
 
     private static final int size = 64;
     private static final int nbTiles = 12;
 
     public Map() {
         this.map = createRandomMap();
+        this.entryTilePosition = findEntryTilePosition();
     }
 
     // FileHandle : Gdx.files.internal("./maps/map_*.txt")
@@ -33,6 +31,8 @@ public class Map extends Actor {
             map1 = createRandomMap();
         }
         map = map1;
+
+        this.entryTilePosition = findEntryTilePosition();
     }
 
 
@@ -180,7 +180,7 @@ public class Map extends Actor {
 
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
-            BufferedReader reader = getBufferedReader(fileHandle);
+            BufferedReader reader = Helper.getBufferedReader(fileHandle);
 
             int mapLength = Integer.parseInt(reader.readLine());
             int mapWidth = Integer.parseInt(reader.readLine());
@@ -211,21 +211,12 @@ public class Map extends Actor {
         }
     }
 
-    private BufferedReader getBufferedReader(FileHandle fileHandle){
-
-        List<String> patterns = Arrays.asList("Game/assets/", "./assets/");
-
-        for (String pattern: patterns) {
-            try {
-                File file = new File(pattern+ fileHandle.path());
-                return new BufferedReader(new FileReader(file));
-            } catch (FileNotFoundException ignored) {}
-        }
-        return null;
-    }
-
     public Tile[][] getMap() {
         return map;
+    }
+
+    public Position getEntryTilePosition() {
+        return entryTilePosition;
     }
 
     public Tile getTileFromPosition(int x, int y){
@@ -255,7 +246,7 @@ public class Map extends Actor {
         tile.select();
     }
 
-    public Position getEntryTilePosition(){
+    private Position findEntryTilePosition(){
         for (int i = 0; i < nbTiles; i++) {
                 if (map[i][0].mapElement.name().contains("CHEMIN_GAUCHE") ||
                         map[i][0].mapElement.name().contains("CHEMIN_HORIZONTAL")) {

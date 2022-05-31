@@ -16,11 +16,4 @@ public class SimpleTower extends AbstractTower {
                 IMAGE_PATH, positionX, positionY);
 
     }
-
-    @Override
-    public void sendProjectile() {
-
-    }
-
-
 }

@@ -13,9 +13,6 @@ import java.util.ArrayList;
 
 
 public abstract class AbstractTower extends Actor {
-
-    public static ArrayList<AbstractTower> towers = new ArrayList<>();
-
     private int level;
     private static int MAXIMUM_LEVEL = 5;
     private int projectileSpeed;
@@ -32,7 +29,7 @@ public abstract class AbstractTower extends Actor {
     private Sprite sprite;
 
     public AbstractTower(int projectileSpeed, int projectileRange,  int timer, int sellPrice, int upgradePrice,
-                         Tile hostingTile, String imgPath, int positionX, int positionY) {
+                         Tile hostingTile, String imgPath, int X, int Y) {
         this.level = 1;
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
@@ -44,36 +41,30 @@ public abstract class AbstractTower extends Actor {
 
         this.texture = new Texture(Gdx.files.internal(imgPath));
 
-        this.position = new Position(positionX, positionY);
-        towers.add(this);
-
+        this.position = new Position(X, Y);
     }
 
-    // TODO
-    public StandardEnemy findTarget(){
+    public StandardEnemy findTarget(ArrayList<StandardEnemy> enemies){
 
-        for(int i = 0; i< StandardEnemy.enemies.size(); i++){
-            int ennemiesPosX = StandardEnemy.enemies.get(i).getPosition().getX();
-            int ennemiesPosY = StandardEnemy.enemies.get(i).getPosition().getY();
-            double distance = Math.sqrt( Math.pow(position.getX() - ennemiesPosX, 2) + Math.pow(position.getY()-ennemiesPosY,2) );
- //           System.out.println("LOOKING FOR TARGET");
+        for (StandardEnemy standardEnemy : enemies) {
+
+            int enemyX = standardEnemy.getPosition().getX();
+            int enemyY = standardEnemy.getPosition().getY();
+
+            double distance = Math.sqrt(Math.pow(position.getX() - enemyX, 2)
+                    + Math.pow(position.getY() - enemyY, 2) );
+
             if(distance < projectileRange){
                 System.out.println("ENEMY IN RANGE");
-                sendProjectile();
-                return StandardEnemy.enemies.get(i);
-
-                }
+                return standardEnemy;
+            }
         }
 
         return null;
     }
 
-    public abstract void sendProjectile();
-
-    public static void updateTowers(){
-        for(AbstractTower tower : AbstractTower.towers){
-            tower.findTarget();
-        }
+    public void sendProjectile(StandardEnemy enemy){
+        //
     }
 
     public boolean canUpgrade(){

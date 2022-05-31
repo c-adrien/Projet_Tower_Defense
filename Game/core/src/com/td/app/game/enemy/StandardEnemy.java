@@ -4,26 +4,27 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.td.app.game.Position;
-import com.td.app.game.gui.ScreenButtonTexture;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.MapElements;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.Projectile;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 public class StandardEnemy extends Actor {
 
-    public static ArrayList<StandardEnemy> enemies = new ArrayList<>();
+//    public static ArrayList<StandardEnemy> enemies = new ArrayList<>();
+
+    public final static int TEXTURE_SIZE = 64/2;
 
     protected int MAXIMUM_HP;
     protected int HP;
+    protected HealthBar healthBar;
+
     protected int speed;
     protected Position position;
+
     protected boolean isAlive;
+
     protected Texture texture;
     protected Sprite sprite;
     protected Tile currentTile;
@@ -40,6 +41,8 @@ public class StandardEnemy extends Actor {
         this.texture = texture;
         this.currentTile = null;
         this.freezeRemainingTime = 0;
+
+        this.healthBar = new HealthBar(this);
     }
 
     @Override
@@ -52,11 +55,14 @@ public class StandardEnemy extends Actor {
             return;
         }
 
+        // Render HealthBar
+        healthBar.draw(batch);
+
         setBounds(0, 0, texture.getWidth(), texture.getHeight());
         sprite = new Sprite(texture);
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
-                64/2, 64/2, 1, 1,0);
+                TEXTURE_SIZE, TEXTURE_SIZE, 1, 1,0);
         super.draw(batch, parentAlpha);
     }
 
@@ -85,6 +91,9 @@ public class StandardEnemy extends Actor {
     }
 
     public boolean update(float delta, Map map){
+
+        delta = delta * speed;
+
         if(freezeRemainingTime > 0){
             freezeRemainingTime = Math.max(0, freezeRemainingTime-delta);
         }
@@ -96,8 +105,9 @@ public class StandardEnemy extends Actor {
 
             // Si sorti du cadre
             if (x >= 12*64 || y >= 12*64){
-                // TODO : remove texture from stage
-                removeEnemy(this); // Debug end of wave
+                this.isAlive = false;
+//                // TODO : remove texture from stage
+//                removeEnemy(this); // Debug end of wave
                 return false;
             }
 
@@ -160,35 +170,32 @@ public class StandardEnemy extends Actor {
 
     //==================================================
 
-    public static void addEnemy(StandardEnemy enemy){
-        enemies.add(enemy);
-    }
 
-    public static void removeEnemy(StandardEnemy enemy){
-        enemies.remove(enemy);
-    }
-
-    public static void updateEnemies(float delta, Map map, Stage stage) {
-        for (StandardEnemy enemy : enemies) {
-            if (!enemy.isAlive) {
-                Iterator<Actor> actorIterator = stage.getActors().iterator();
-                while (actorIterator.hasNext()) {
-                    if (actorIterator.next().equals(enemy)) {
-                        actorIterator.remove();
-                        break;
-                    }
-                }
-                removeEnemy(enemy);
-                break;
-            } else {
-                if (!enemy.update(delta * enemy.speed, map)) {
-                    break;
-                }
-            }
-        }
-    }
+//    public static void updateEnemies(float delta, Map map, Stage stage) {
+//        for (StandardEnemy enemy : enemies) {
+//            if (!enemy.isAlive) {
+//                Iterator<Actor> actorIterator = stage.getActors().iterator();
+//                while (actorIterator.hasNext()) {
+//                    if (actorIterator.next().equals(enemy)) {
+//                        actorIterator.remove();
+//                        break;
+//                    }
+//                }
+//                removeEnemy(enemy);
+//                break;
+//            } else {
+//                if (!enemy.update(delta * enemy.speed, map)) {
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     public Position getPosition() {
         return position;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 }
