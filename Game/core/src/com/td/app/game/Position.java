@@ -10,7 +10,7 @@ public class Position {
         this(x, y, 0);
     }
 
-    public Position(int x, int y, int angle) {
+    public Position(int x, int y, double angle) {
         X = x;
         Y = y;
         this.angle = angle;
