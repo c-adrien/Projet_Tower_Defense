@@ -1,0 +1,21 @@
+startwave
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+endwave
+startwave
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+endwave
+startwave
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+100 2 textures/enemy/test.png
+endwave

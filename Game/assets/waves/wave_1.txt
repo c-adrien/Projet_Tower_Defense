@@ -1,5 +1,0 @@
-100 10 textures/enemy/test.png
-100 50 textures/enemy/test.png
-100 30 textures/enemy/test.png
-100 50 textures/enemy/test.png
-100 20 textures/enemy/test.png

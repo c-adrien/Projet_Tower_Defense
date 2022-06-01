@@ -38,7 +38,7 @@ public class Map extends Actor {
 
     private Tile[][] createRandomMap(){
 
-        /** FILLING MAP WITH DALLE
+        /* FILLING MAP WITH DALLE
          * (0,0) at top corner left
          */
         Tile[][] map = new Tile[nbTiles][nbTiles];
@@ -53,7 +53,7 @@ public class Map extends Actor {
         }
 
 
-        /** CREATING START OF PATH */
+        /* CREATING START OF PATH */
         int i = 0;
         int j = 0;
 
@@ -65,7 +65,7 @@ public class Map extends Actor {
 
 
 
-        /** CREATING REST OF PATH */
+        /* CREATING REST OF PATH */
         int up = 0; // i--
         int right = 1; // j++
         int down = 2; // i++
@@ -78,14 +78,14 @@ public class Map extends Actor {
             int direction = new Random().nextInt(3);
             System.out.println(" i,j = " + i + "," + j + " | DIRECTION = " + direction);
 
-            /***************
-             *** RIGHT → ***
-             ***************/
+            /*==============
+             === RIGHT → ===
+             ==============*/
             if (direction == right){
                 j++; // →
                 map[i][j] = new Tile(MapElements.CHEMIN_HORIZONTAL);
 
-                /** ADAPTING PREVIOUS TILE TO ACTUAL TILE */
+                /* ADAPTING PREVIOUS TILE TO ACTUAL TILE */
                 if (!map[i][j-1].getTexture().toString().contains("DALLE")){ // previous tile
                     if (!map[i-1][j-1].getTexture().toString().contains("DALLE")){ // previous previous tile
                         map[i][j-1] = new Tile(MapElements.CHEMIN_HAUT_DROITE);
@@ -96,38 +96,38 @@ public class Map extends Actor {
                 }
             }
 
-            /**************
-             *** TURN ↑↓ **
-             **************/
+            /*==============
+             === TURN ↑↓ ===
+             ==============*/
             else if (nbOfTurns < nbOfTurnsMax){
 
                 double randomNb = Math.random(); // creating turn with a 10% chance
                 if (randomNb < 0.1){
 
-                    /*********
-                     *** UP **
-                     *********/
+                    /*=========
+                     === UP ===
+                     =========*/
                     if(direction == up && i>1){
                         if (map[i-1][j].getTexture().toString().contains("DALLE")){
                             i--; // ↑
                             map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
 
-                            /** ADAPTING PREVIOUS TILE TO ACTUAL TILE */
+                            /* ADAPTING PREVIOUS TILE TO ACTUAL TILE */
                             if (map[i+1][j].getTexture().toString().contains("CHEMIN_HORIZONTAL")){ // previous tile
                                 map[i+1][j] = new Tile(MapElements.CHEMIN_GAUCHE_HAUT);
                             }
                         }
                     }
 
-                    /*********
-                     * DOWN **
-                     *********/
+                    /*===========
+                     === DOWN ===
+                     ===========*/
                     else if(direction == down && i<nbTiles-2){
                         if (map[i+1][j].getTexture().toString().contains("DALLE")){
                             i++; // ↓
                             map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
 
-                            /** ADAPTING PREVIOUS TILE TO ACTUAL TILE */
+                            /* ADAPTING PREVIOUS TILE TO ACTUAL TILE */
                             if (map[i-1][j].getTexture().toString().contains("CHEMIN_HORIZONTAL")){ // previous tile
                                 map[i-1][j] = new Tile(MapElements.CHEMIN_GAUCHE_BAS);
                             }
@@ -140,7 +140,7 @@ public class Map extends Actor {
 
         }
 
-        /** FILLING REST OF MAP WITH LANDSCAPE ELEMENTS */
+        /* FILLING REST OF MAP WITH LANDSCAPE ELEMENTS */
         int nbOfElt = 0;
         int nbOfEltMax = 35;
 

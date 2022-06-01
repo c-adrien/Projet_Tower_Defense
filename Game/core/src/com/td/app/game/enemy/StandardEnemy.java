@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.td.app.game.Player;
 import com.td.app.game.Position;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.MapElements;
@@ -90,10 +91,11 @@ public class StandardEnemy extends Actor {
         return n >= low && n <= high;
     }
 
-    public boolean update(float delta, Map map){
+    public boolean update(float delta, Map map, Player player){
 
         delta = delta * speed;
 
+        // TODO FIX
         if(freezeRemainingTime > 0){
             freezeRemainingTime = Math.max(0, freezeRemainingTime-delta);
         }
@@ -106,8 +108,7 @@ public class StandardEnemy extends Actor {
             // Si sorti du cadre
             if (x >= 12*64 || y >= 12*64){
                 this.isAlive = false;
-//                // TODO : remove texture from stage
-//                removeEnemy(this); // Debug end of wave
+                player.removeLife();
                 return false;
             }
 

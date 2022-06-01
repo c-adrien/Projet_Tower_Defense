@@ -144,6 +144,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
         if(screenX < 768 && screenY < 768){
             int x = screenX / 64;
             int y = screenY / 64;
+
 //
 //            int line = y;
 //            int column = x;
@@ -156,7 +157,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 stage.addActor(tower);
 
                 // Debug
-                enemy = new StandardEnemy(10, 1, new Position(-64,
+                enemy = new StandardEnemy(50, 1, new Position(-64,
                         gamePlay.getMap().getEntryTilePosition().getY()+32),
                         new Texture(Gdx.files.internal("textures/enemy/test.png")));
 

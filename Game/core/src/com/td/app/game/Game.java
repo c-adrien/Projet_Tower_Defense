@@ -43,8 +43,7 @@ public class Game {
     }
 
     public void initWaves(int level){
-        waves = new LinkedList<>(Arrays.asList(Wave.createWaveFromFile(Gdx.files.internal("waves/wave_1.txt"), map.getEntryTilePosition()),
-                Wave.createWaveFromFile(Gdx.files.internal("waves/wave_1.txt"), map.getEntryTilePosition())));
+        waves = Wave.createWaveFromFile(Gdx.files.internal("waves/waveLevel1.txt"), map.getEntryTilePosition());
         actualWave = waves.pop();
         numberOfWaves = waves.size();
     }
@@ -53,9 +52,15 @@ public class Game {
         // TODO delta debug
         delta = delta * 20;
 
-        updateTowers();
-        updateWaves(stage);
+        updateTowers(stage);
+        updateProjectiles(delta, stage);
         updateEnemies(delta, stage);
+        updateWaves(stage);
+
+        if (player.isGameOver()) {
+            // TODO: end game
+            System.out.println("GAME OVER");
+        }
     }
 
     // Player commands
@@ -75,12 +80,20 @@ public class Game {
     // Towers
     //======================================================
 
-    public void updateTowers(){
+    public void updateTowers(Stage stage){
         for(AbstractTower tower : towerArrayList){
             StandardEnemy enemy = tower.findTarget(enemyArrayList);
 
             if(enemy != null){
-                tower.sendProjectile(enemy);
+                tower.setTimer(tower.getTimer() - 1);
+                if (tower.getTimer() <= 0) {
+                    if (tower instanceof SimpleTower) {
+                        tower.setTimer(SimpleTower.timer);
+                    }
+                    Projectile projectile = tower.sendProjectile(enemy);
+                    addProjectile(projectile);
+                    stage.addActor(projectile);
+                }
             }
         }
     }
@@ -94,18 +107,33 @@ public class Game {
         towerArrayList.remove(tower);
     }
 
+    // Projectiles
+    //======================================================
+    public void addProjectile(Projectile projectile) {
+        projectileArrayList.add(projectile);
+    }
+
+    public void removeProjectile(Projectile projectile, Stage stage) {
+        Helper.removeActorFromStage(projectile, stage);
+        projectileArrayList.remove(projectile);
+    }
+    public void updateProjectiles(float delta, Stage stage) {
+        for (Projectile projectile : projectileArrayList) {
+            if (!projectile.update(delta)) {
+                removeProjectile(projectile, stage);
+                break;
+            }
+        }
+    }
+
     // Enemies
     //======================================================
 
     public void updateEnemies(float delta, Stage stage) {
         for (StandardEnemy enemy : enemyArrayList) {
-            if (!enemy.isAlive()) {
+            if (!enemy.isAlive() || !enemy.update(delta, map, player)) {
                 removeEnemy(enemy, stage);
                 break;
-            } else {
-                if (!enemy.update(delta, map)) {
-                    break;
-                }
             }
         }
     }
@@ -136,13 +164,13 @@ public class Game {
             } else if (enemyArrayList.isEmpty()) {
                 actualWave.waveEnded();
             }
-        } else if (delayBeforeNextWave-- <= 0) {
-            delayBeforeNextWave = 600;
-            if (waves.size() != 0) {
+        } else if (waves.size() != 0) {
+            if (delayBeforeNextWave-- <= 0) {
+                delayBeforeNextWave = 600;
                 actualWave = waves.pop();
-            } else {
-                // TODO : win the game and unlock next level if from campaign
             }
+        } else {
+            // TODO : win the game and unlock next level if from campaign
         }
     }
 

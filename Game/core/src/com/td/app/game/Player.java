@@ -30,6 +30,9 @@ public class Player {
             this.gameOver = true;
         }
     }
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
     // TODO
     public boolean PlaceTower(AbstractTower tower){

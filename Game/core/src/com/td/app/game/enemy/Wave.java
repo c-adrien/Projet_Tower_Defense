@@ -8,6 +8,7 @@ import com.td.app.game.Position;
 
 import java.io.BufferedReader;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 public class Wave {
 
@@ -23,20 +24,18 @@ public class Wave {
         isOver = false;
     }
 
-    private Wave(FileHandle fileHandle, Position position) {
+    private Wave(BufferedReader reader, Position position) {
         enemies = new LinkedHashMap<>();
         isOver = false;
 
         try {
-            BufferedReader reader = Helper.getBufferedReader(fileHandle);
             String line;
-
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null && !line.equals("endwave")) {
                 String[] splits = line.split(" ");
-
                 enemies.put(new StandardEnemy(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]),
                         new Position(position.getX(), position.getY() + 32),
-                        new Texture(Gdx.files.internal(splits[2]))), 60);
+                        new Texture(Gdx.files.internal(splits[2]))), 60
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,8 +59,19 @@ public class Wave {
         return new Wave(level);
     }
 
-    public static Wave createWaveFromFile(FileHandle fileHandle, Position position){
-        return new Wave(fileHandle, position);
+    public static LinkedList<Wave> createWaveFromFile(FileHandle fileHandle, Position position) {
+        LinkedList<Wave> waves = new LinkedList<>();
+
+        try {
+            BufferedReader reader = Helper.getBufferedReader(fileHandle);
+            while (reader.readLine() != null) {
+                waves.add(new Wave(reader, position));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return waves;
     }
 
 }

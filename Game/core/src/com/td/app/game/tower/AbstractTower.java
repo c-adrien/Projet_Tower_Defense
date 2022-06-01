@@ -51,11 +51,12 @@ public abstract class AbstractTower extends Actor {
             int enemyX = standardEnemy.getPosition().getX();
             int enemyY = standardEnemy.getPosition().getY();
 
-            double distance = Math.sqrt(Math.pow(position.getX() - enemyX, 2)
-                    + Math.pow(position.getY() - enemyY, 2) );
+            double distance = Math.sqrt(Math.pow((position.getX() + 16) - enemyX, 2)
+                    + Math.pow((position.getY() + 32) - enemyY, 2)
+            );
+
 
             if(distance < projectileRange){
-                System.out.println("ENEMY IN RANGE");
                 return standardEnemy;
             }
         }
@@ -63,9 +64,7 @@ public abstract class AbstractTower extends Actor {
         return null;
     }
 
-    public void sendProjectile(StandardEnemy enemy){
-        //
-    }
+    public abstract Projectile sendProjectile(StandardEnemy enemy);
 
     public boolean canUpgrade(){
         return level < MAXIMUM_LEVEL;
