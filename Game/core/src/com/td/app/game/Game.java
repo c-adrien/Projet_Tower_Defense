@@ -8,7 +8,6 @@ import com.td.app.game.enemy.Wave;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.AbstractTower;
-import com.td.app.game.tower.Projectile;
 import com.td.app.game.tower.SimpleTower;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class Game {
     private int delayBeforeNextWave = 600;
 
     private final ArrayList<AbstractTower> towerArrayList = new ArrayList<>();
-    private final ArrayList<Projectile> projectileArrayList = new ArrayList<>();
     private final ArrayList<StandardEnemy> enemyArrayList = new ArrayList<>();
 
 
@@ -53,7 +51,7 @@ public class Game {
         // TODO delta debug
         delta = delta * 20;
 
-        updateTowers();
+        updateTowers(delta);
         updateWaves(stage);
         updateEnemies(delta, stage);
     }
@@ -75,8 +73,9 @@ public class Game {
     // Towers
     //======================================================
 
-    public void updateTowers(){
+    public void updateTowers(float delta){
         for(AbstractTower tower : towerArrayList){
+            tower.updateProjectiles(delta);
             StandardEnemy enemy = tower.findTarget(enemyArrayList);
 
             if(enemy != null){

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public abstract class AbstractTower extends Actor {
     private int level;
     private static int MAXIMUM_LEVEL = 5;
+    private int projectileDamage;
     private int projectileSpeed;
     private int projectileRange;
 
@@ -28,9 +29,12 @@ public abstract class AbstractTower extends Actor {
     private Texture texture;
     private Sprite sprite;
 
-    public AbstractTower(int projectileSpeed, int projectileRange,  int timer, int sellPrice, int upgradePrice,
+    private final ArrayList<Projectile> projectileArrayList = new ArrayList<>();
+
+    public AbstractTower(int projectileDamage, int projectileSpeed, int projectileRange,  int timer, int sellPrice, int upgradePrice,
                          Tile hostingTile, String imgPath, int X, int Y) {
         this.level = 1;
+        this.projectileDamage = projectileDamage;
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
         this.timer = timer;
@@ -63,8 +67,12 @@ public abstract class AbstractTower extends Actor {
         return null;
     }
 
-    public void sendProjectile(StandardEnemy enemy){
-        //
+    public void sendProjectile(StandardEnemy target){
+
+        Projectile projectile = new Projectile(projectileDamage, projectileSpeed, this.position, target,
+                new Texture(Gdx.files.internal("textures/projectile/projectileTest.png")));
+
+        addProjectile(projectile);
     }
 
     public boolean canUpgrade(){
@@ -74,6 +82,27 @@ public abstract class AbstractTower extends Actor {
     public void upgrade(){
     }
 
+    // Projectiles
+    //======================================================
+
+    public void updateProjectiles(float delta) {
+        for (Projectile projectile : projectileArrayList) {
+            projectile.update(delta);
+
+            if(projectile.hasReachedDestination()){
+                projectile.getTarget().receiveProjectile(projectile);
+            }
+        }
+    }
+
+    public void addProjectile(Projectile projectile){
+        projectileArrayList.add(projectile);
+    }
+
+    public void removeProjectile(Projectile projectile){
+        projectileArrayList.remove(projectile);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         setBounds(0, 0, texture.getWidth(), texture.getHeight());
@@ -81,6 +110,15 @@ public abstract class AbstractTower extends Actor {
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
                 texture.getWidth(), texture.getHeight(), 1, 1,0);
+
+        for (Projectile projectile : projectileArrayList) {
+            setBounds(0, 0, projectile.getTexture().getWidth(), projectile.getTexture().getHeight());
+            sprite = new Sprite(projectile.getTexture());
+            batch.draw(sprite, projectile.getPosition().getX(), projectile.getPosition().getY(),
+                    projectile.getPosition().getX(), projectile.getPosition().getY(),
+                    projectile.getTexture().getWidth(), projectile.getTexture().getHeight(), 1, 1,0);
+        }
+
         super.draw(batch, parentAlpha);
     }
 
