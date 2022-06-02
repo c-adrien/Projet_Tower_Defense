@@ -28,6 +28,11 @@ public class TowerDefense extends Game {
 		music.setLooping(true);
 
 		// TODO Load sound files
+		SoundHandler.add("click", "sound/click.mp3");
+		SoundHandler.add("coins", "sound/coins.mp3");
+		SoundHandler.add("walking", "sound/walking.mp3");
+		SoundHandler.add("hit_enemy", "sound/hit_enemy.mp3");
+		SoundHandler.add("kill_enemy", "sound/kill_enemy.mp3");
 
 		arcadeMenuScreen = new ArcadeMenuScreen(this);
 		campaignMenuScreen = new CampaignMenuScreen(this);
@@ -44,7 +49,7 @@ public class TowerDefense extends Game {
 		}
 
 //		toCampaignGameScreen(1);
-		toArcadeGameScreen();
+//		toArcadeGameScreen();
 	}
 
 	@Override

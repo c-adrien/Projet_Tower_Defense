@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.td.app.Helper;
+import com.td.app.SoundHandler;
 import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.enemy.Wave;
 import com.td.app.game.map.Map;
@@ -44,8 +45,10 @@ public class Game {
 
     public void initWaves(int level){
         // TODO waves
-        waves = Wave.createWaveFromFile(Gdx.files.internal("waves/waveLevel1.txt"), new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY()));
+        waves = Wave.createWaveFromFile(Gdx.files.internal("waves/waveLevel1.txt"),
+                new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY()));
         actualWave = waves.pop();
+        SoundHandler.playLooping("walking");
         numberOfWaves = waves.size();
     }
 
@@ -60,6 +63,8 @@ public class Game {
         updateWaves(stage);
 
         if (player.isGameOver()) {
+            SoundHandler.stop("walking");
+
             // TODO: end game
             System.out.println("GAME OVER");
         }
@@ -71,8 +76,12 @@ public class Game {
     public AbstractTower placeTower(AbstractTower selectedTower, Tile tile, int screenX, int screenY) {
         if (player.removeCredit(selectedTower.getPrice())) {
             System.out.println(player.getCredit());
-            AbstractTower tower = selectedTower.createTower(tile, screenX / 64 * 64, 704 - screenY / 64 * 64);
+            AbstractTower tower = selectedTower.createTower(tile,
+                    screenX / 64 * 64, 704 - screenY / 64 * 64);
             addTower(tower);
+
+            SoundHandler.play("coins");
+
             return tower;
         }
 
@@ -140,9 +149,9 @@ public class Game {
                 removeEnemy(enemy, stage);
                 player.removeLife();
                 lifeLabel.setText(player.getRemainingLives());
-                if (player.getRemainingLives() <= 0) {
-                    player.setGameOver();
-                }
+//                if (player.getRemainingLives() <= 0) { // déjà fait
+//                    player.setGameOver();
+//                }
                 break;
             }
         }
@@ -172,12 +181,14 @@ public class Game {
                     actualWave.getEnemies().remove(enemy.getKey());
                 }
             } else if (enemyArrayList.isEmpty()) {
+                SoundHandler.stop("walking");
                 actualWave.waveEnded();
             }
         } else if (waves.size() != 0) {
             if (--delayBeforeNextWave <= 0) {
                 delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
                 actualWave = waves.pop();
+                SoundHandler.playLooping("walking");
             }
         } else {
             // TODO : win the game and unlock next level if from campaign

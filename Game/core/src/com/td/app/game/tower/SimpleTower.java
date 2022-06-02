@@ -21,9 +21,11 @@ public class SimpleTower extends AbstractTower {
     public SimpleTower(Position position, int price) {
         super(new Texture(Gdx.files.internal(IMAGE_PATH)), position, price);
     }
+
     @Override
     public Projectile sendProjectile(StandardEnemy enemy) {
-        return new Projectile(enemy, 30, getProjectileSpeed(), new Position(getPosition().getX() + PROJECTILE_OFFSET_X, getPosition().getY() + PROJECTILE_OFFSET_Y));
+        return new Projectile(enemy, 30, getProjectileSpeed(),
+                new Position(getPosition().getX() + PROJECTILE_OFFSET_X, getPosition().getY() + PROJECTILE_OFFSET_Y));
     }
 
     @Override

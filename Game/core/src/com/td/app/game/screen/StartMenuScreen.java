@@ -7,13 +7,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.td.app.Helper;
+import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.PointerTexture;
 import com.td.app.game.gui.ScreenButtonTexture;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StartMenuScreen implements Screen, InputProcessor {
     public TowerDefense game;
@@ -100,29 +106,46 @@ public class StartMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.DPAD_DOWN) {
-            if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
-                pointer.setPointedButton(campaignButton);
-                pointer.setPosition(campaignButton.getX() - 95, campaignButton.getY() + campaignButton.getHeight()/2 - pointer.getHeight()/2);
-            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
-                pointer.setPointedButton(settingsButton);
-                pointer.setPosition(settingsButton.getX() - 95, settingsButton.getY() + settingsButton.getHeight()/2 - pointer.getHeight()/2);
-            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
-                pointer.setPointedButton(arcadeButton);
-                pointer.setPosition(arcadeButton.getX() - 95, arcadeButton.getY() + arcadeButton.getHeight()/2 - pointer.getHeight()/2);
+
+        // Order of menu buttons
+        ArrayList<ScreenButtonTexture> order = new ArrayList<>(
+                Arrays.asList(campaignButton, arcadeButton, settingsButton));
+
+        int index;
+        ScreenButtonTexture nextButton;
+
+        if (keycode == Input.Keys.DPAD_DOWN || keycode == Input.Keys.DPAD_UP) {
+
+            SoundHandler.play("click");
+
+            switch (pointer.getPointedButton().getType()){
+                case ARCADE:
+                    index = order.indexOf(arcadeButton);
+                    break;
+                case CAMPAIGN:
+                    index = order.indexOf(campaignButton);
+                    break;
+                case SETTINGS:
+                    index = order.indexOf(settingsButton);
+                    break;
+                default:
+                    index = 0;
             }
 
-        } else if (keycode == Input.Keys.DPAD_UP) {
-            if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
-                pointer.setPointedButton(settingsButton);
-                pointer.setPosition(settingsButton.getX() - 95, settingsButton.getY() + settingsButton.getHeight()/2 - pointer.getHeight()/2);
-            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
-                pointer.setPointedButton(arcadeButton);
-                pointer.setPosition(arcadeButton.getX() - 95, arcadeButton.getY() + arcadeButton.getHeight()/2 - pointer.getHeight()/2);
-            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
-                pointer.setPointedButton(campaignButton);
-                pointer.setPosition(campaignButton.getX() - 95, campaignButton.getY() + campaignButton.getHeight()/2 - pointer.getHeight()/2);
+            if(keycode == Input.Keys.DPAD_DOWN){
+                nextButton = order.get((index+1) % 3);
             }
+            else {
+                if((index-1) % 3 < 0){
+                    index += 3;
+                }
+
+                nextButton = order.get((index-1) % 3);
+            }
+
+            pointer.setPointedButton(nextButton);
+            pointer.setPosition(nextButton.getX() - 95,
+                    nextButton.getY() + nextButton.getHeight()/2 - pointer.getHeight()/2);
 
         } else if (keycode == Input.Keys.ENTER) {
             if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
@@ -178,13 +201,7 @@ public class StartMenuScreen implements Screen, InputProcessor {
                         if (object.equals("Yes")) {
                             Gdx.app.exit();
                         } else {
-                            Iterator<Actor> it = stage.getActors().iterator();
-                            while (it.hasNext()) {
-                                if (it.next().equals(this)) {
-                                    it.remove();
-                                    break;
-                                }
-                            }
+                            Helper.removeActorFromStage(this, stage);
                             StartMenuScreen.this.show();
                         }
                     }

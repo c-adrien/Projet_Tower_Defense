@@ -1,10 +1,11 @@
 package com.td.app.game.enemy;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.td.app.game.Player;
+import com.td.app.SoundHandler;
 import com.td.app.game.Position;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.MapElements;
@@ -28,6 +29,10 @@ public class StandardEnemy extends Actor {
     protected boolean isAlive;
 
     protected Texture texture;
+
+    protected Texture texture2;
+    private float elapsedTime;
+
     protected Sprite sprite;
     protected Tile currentTile;
 
@@ -46,6 +51,9 @@ public class StandardEnemy extends Actor {
         this.creditDeathValue = 10;
 
         this.healthBar = new HealthBar(this);
+
+        // TODO Walking texture
+        texture2 = new Texture(Gdx.files.internal("textures/enemy/test2.png"));
     }
 
     @Override
@@ -62,10 +70,21 @@ public class StandardEnemy extends Actor {
         healthBar.draw(batch);
 
         setBounds(position.getX(), position.getY(), TEXTURE_SIZE, TEXTURE_SIZE);
-        sprite = new Sprite(texture);
+
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        if(elapsedTime % 1 > 0.5){
+            sprite = new Sprite(texture);
+        }
+        else {
+            sprite = new Sprite(texture2);
+        }
+
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
                 TEXTURE_SIZE, TEXTURE_SIZE, 1, 1,0);
+
+
+
         super.draw(batch, parentAlpha);
     }
 
@@ -83,9 +102,13 @@ public class StandardEnemy extends Actor {
         if (this.HP <= 0){
             die();
         }
+        else {
+            SoundHandler.play("hit_enemy");
+        }
     }
 
     public void die(){
+        SoundHandler.play("kill_enemy");
         this.isAlive = false;
     }
 
