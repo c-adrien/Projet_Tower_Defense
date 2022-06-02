@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 public class Wave {
 
+    public static int DELAY_BETWEEN_WAVES = 600;
     // Wave status
     protected boolean isOver;
 

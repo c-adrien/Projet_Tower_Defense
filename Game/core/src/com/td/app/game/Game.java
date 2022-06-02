@@ -2,6 +2,7 @@ package com.td.app.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.td.app.Helper;
 import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.enemy.Wave;
@@ -9,10 +10,8 @@ import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.AbstractTower;
 import com.td.app.game.tower.Projectile;
-import com.td.app.game.tower.SimpleTower;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Game {
@@ -24,7 +23,8 @@ public class Game {
     private LinkedList<Wave> waves;
     private Wave actualWave;
 
-    private int delayBeforeNextWave = 600;
+    private int delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
+    private int passiveCreditTimer = Player.PASSIVE_CREDIT_TIMER;
 
     private final ArrayList<AbstractTower> towerArrayList = new ArrayList<>();
     private final ArrayList<Projectile> projectileArrayList = new ArrayList<>();
@@ -43,18 +43,20 @@ public class Game {
     }
 
     public void initWaves(int level){
-        waves = Wave.createWaveFromFile(Gdx.files.internal("waves/waveLevel1.txt"), map.getEntryTilePosition());
+        // TODO waves
+        waves = Wave.createWaveFromFile(Gdx.files.internal("waves/waveLevel1.txt"), new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY()));
         actualWave = waves.pop();
         numberOfWaves = waves.size();
     }
 
-    public void update(Stage stage, float delta){
+    public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel){
         // TODO delta debug
         delta = delta * 20;
 
+        updateCredit(creditLabel);
         updateTowers(stage);
         updateProjectiles(delta, stage);
-        updateEnemies(delta, stage);
+        updateEnemies(delta, stage, lifeLabel);
         updateWaves(stage);
 
         if (player.isGameOver()) {
@@ -66,15 +68,15 @@ public class Game {
     // Player commands
     //======================================================
 
-    public AbstractTower placeTower(Tile tile, int screenX, int screenY){
+    public AbstractTower placeTower(AbstractTower selectedTower, Tile tile, int screenX, int screenY) {
+        if (player.removeCredit(selectedTower.getPrice())) {
+            System.out.println(player.getCredit());
+            AbstractTower tower = selectedTower.createTower(tile, screenX / 64 * 64, 704 - screenY / 64 * 64);
+            addTower(tower);
+            return tower;
+        }
 
-        int x = screenX / 64;
-        int y = screenY / 64;
-
-        // TODO tower type
-        SimpleTower simpleTower = new SimpleTower(tile, x*64, 704 - y*64);
-        addTower(simpleTower);
-        return simpleTower;
+        return null;
     }
 
     // Towers
@@ -87,9 +89,7 @@ public class Game {
             if(enemy != null){
                 tower.setTimer(tower.getTimer() - 1);
                 if (tower.getTimer() <= 0) {
-                    if (tower instanceof SimpleTower) {
-                        tower.setTimer(SimpleTower.timer);
-                    }
+                    tower.setTimer(tower.getINITIAL_TIMER());
                     Projectile projectile = tower.sendProjectile(enemy);
                     addProjectile(projectile);
                     stage.addActor(projectile);
@@ -129,10 +129,20 @@ public class Game {
     // Enemies
     //======================================================
 
-    public void updateEnemies(float delta, Stage stage) {
+    public void updateEnemies(float delta, Stage stage, Label lifeLabel) {
         for (StandardEnemy enemy : enemyArrayList) {
-            if (!enemy.isAlive() || !enemy.update(delta, map, player)) {
+            if (!enemy.isAlive()) {
+                player.addCredit(enemy.getCreditDeathValue());
                 removeEnemy(enemy, stage);
+                break;
+            }
+            if (!enemy.update(delta, map)) {
+                removeEnemy(enemy, stage);
+                player.removeLife();
+                lifeLabel.setText(player.getRemainingLives());
+                if (player.getRemainingLives() <= 0) {
+                    player.setGameOver();
+                }
                 break;
             }
         }
@@ -165,8 +175,8 @@ public class Game {
                 actualWave.waveEnded();
             }
         } else if (waves.size() != 0) {
-            if (delayBeforeNextWave-- <= 0) {
-                delayBeforeNextWave = 600;
+            if (--delayBeforeNextWave <= 0) {
+                delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
                 actualWave = waves.pop();
             }
         } else {
@@ -177,7 +187,18 @@ public class Game {
     // Others
     //======================================================
 
+    public void updateCredit(Label creditLabel) {
+        if (--passiveCreditTimer <= 0) {
+            passiveCreditTimer = Player.PASSIVE_CREDIT_TIMER;
+            player.addCredit(1);
+            creditLabel.setText(player.getCredit());
+        }
+    }
+
     public Map getMap() {
         return map;
+    }
+    public Player getPlayer() {
+        return player;
     }
 }

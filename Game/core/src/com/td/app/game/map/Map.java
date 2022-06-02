@@ -18,6 +18,7 @@ public class Map extends Actor {
 
     private static final int size = 64;
     private static final int nbTiles = 12;
+    public static final int TOTAL_SIZE = size * nbTiles;
 
     public Map() {
         this.map = createRandomMap();

@@ -3,7 +3,7 @@ package com.td.app.game;
 import com.td.app.game.tower.AbstractTower;
 
 public class Player {
-
+    public static int PASSIVE_CREDIT_TIMER = 60;
     private int remainingLives;
     private int credit;
     private boolean gameOver;
@@ -19,7 +19,9 @@ public class Player {
     }
 
     public boolean removeCredit(int amount){
-        if(this.credit < amount) return false;
+        if(this.credit < amount) {
+            return false;
+        }
         this.credit -= amount;
         return true;
     }
@@ -32,6 +34,17 @@ public class Player {
     }
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public void setGameOver() {
+        gameOver = true;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+    public int getRemainingLives() {
+        return remainingLives;
     }
 
     // TODO

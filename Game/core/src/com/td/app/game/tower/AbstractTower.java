@@ -15,27 +15,31 @@ import java.util.ArrayList;
 public abstract class AbstractTower extends Actor {
     private int level;
     private static int MAXIMUM_LEVEL = 5;
+    protected static final int PROJECTILE_OFFSET_X = 16;
+    protected static final int PROJECTILE_OFFSET_Y = 32;
     private int projectileSpeed;
     private int projectileRange;
 
+    private int INITIAL_TIMER;
     private int timer;
-    private int sellPrice;
-    private int upgradePrice;
-    private final Tile hostingTile;
+    private int price;
+    private int sellPrice = (int) (0.7*price);
+    private int upgradePrice = 2*price;
+    private Tile hostingTile;
 
     private Position position;
 
     private Texture texture;
     private Sprite sprite;
 
-    public AbstractTower(int projectileSpeed, int projectileRange,  int timer, int sellPrice, int upgradePrice,
+    public AbstractTower(int projectileSpeed, int projectileRange, int timer, int price,
                          Tile hostingTile, String imgPath, int X, int Y) {
         this.level = 1;
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
         this.timer = timer;
-        this.sellPrice = sellPrice;
-        this.upgradePrice = upgradePrice;
+        this.INITIAL_TIMER = timer;
+        this.price = price;
         this.hostingTile = hostingTile;
         hostingTile.setOccupied(true);
 
@@ -44,17 +48,27 @@ public abstract class AbstractTower extends Actor {
         this.position = new Position(X, Y);
     }
 
+    /**
+     * Constructor for texture shop
+     * @param texture tower's texture
+     * @param position tower's position
+     * @param price tower's price
+     */
+    public AbstractTower(Texture texture, Position position, int price) {
+        this.texture = texture;
+        this.position = position;
+        this.price = price;
+    }
+
     public StandardEnemy findTarget(ArrayList<StandardEnemy> enemies){
 
         for (StandardEnemy standardEnemy : enemies) {
-
             int enemyX = standardEnemy.getPosition().getX();
             int enemyY = standardEnemy.getPosition().getY();
 
             double distance = Math.sqrt(Math.pow((position.getX() + 16) - enemyX, 2)
                     + Math.pow((position.getY() + 32) - enemyY, 2)
             );
-
 
             if(distance < projectileRange){
                 return standardEnemy;
@@ -66,6 +80,8 @@ public abstract class AbstractTower extends Actor {
 
     public abstract Projectile sendProjectile(StandardEnemy enemy);
 
+    public abstract AbstractTower createTower(Tile hostingTile, int positionX, int positionY);
+
     public boolean canUpgrade(){
         return level < MAXIMUM_LEVEL;
     }
@@ -75,7 +91,7 @@ public abstract class AbstractTower extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        setBounds(0, 0, texture.getWidth(), texture.getHeight());
+        setBounds(position.getX(), position.getY(), texture.getWidth(), texture.getHeight());
         sprite = new Sprite(texture);
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
@@ -121,6 +137,10 @@ public abstract class AbstractTower extends Actor {
         this.timer = timer;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public int getSellPrice() {
         return sellPrice;
     }
@@ -155,5 +175,9 @@ public abstract class AbstractTower extends Actor {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
+    }
+
+    public int getINITIAL_TIMER() {
+        return INITIAL_TIMER;
     }
 }

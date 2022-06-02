@@ -20,6 +20,7 @@ public class StandardEnemy extends Actor {
     protected int MAXIMUM_HP;
     protected int HP;
     protected HealthBar healthBar;
+    protected int creditDeathValue;
 
     protected int speed;
     protected Position position;
@@ -42,6 +43,7 @@ public class StandardEnemy extends Actor {
         this.texture = texture;
         this.currentTile = null;
         this.freezeRemainingTime = 0;
+        this.creditDeathValue = 10;
 
         this.healthBar = new HealthBar(this);
     }
@@ -59,7 +61,7 @@ public class StandardEnemy extends Actor {
         // Render HealthBar
         healthBar.draw(batch);
 
-        setBounds(0, 0, texture.getWidth(), texture.getHeight());
+        setBounds(position.getX(), position.getY(), TEXTURE_SIZE, TEXTURE_SIZE);
         sprite = new Sprite(texture);
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
@@ -91,7 +93,7 @@ public class StandardEnemy extends Actor {
         return n >= low && n <= high;
     }
 
-    public boolean update(float delta, Map map, Player player){
+    public boolean update(float delta, Map map){
 
         delta = delta * speed;
 
@@ -106,9 +108,8 @@ public class StandardEnemy extends Actor {
             int y = this.position.getY();
 
             // Si sorti du cadre
-            if (x >= 12*64 || y >= 12*64){
+            if (x >= Map.TOTAL_SIZE || y >= Map.TOTAL_SIZE){
                 this.isAlive = false;
-                player.removeLife();
                 return false;
             }
 
@@ -191,6 +192,10 @@ public class StandardEnemy extends Actor {
 //            }
 //        }
 //    }
+
+    public int getCreditDeathValue() {
+        return creditDeathValue;
+    }
 
     public Position getPosition() {
         return position;
