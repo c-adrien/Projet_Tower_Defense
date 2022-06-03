@@ -22,13 +22,14 @@ public class SoundHandler {
     public static void playLooping(String name){
         if(soundMap.containsKey(name)){
             long id = soundMap.get(name).play();
+            if(id == -1) return;
             soundMap.get(name).setLooping(id, true);
         }
     }
 
     public static void stop(String name){
         if(soundMap.containsKey(name)){
-            soundMap.get(name).dispose();
+            soundMap.get(name).stop();
         }
     }
 }

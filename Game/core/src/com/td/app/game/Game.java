@@ -115,7 +115,7 @@ public class Game {
     }
     public void updateProjectiles(float delta, Stage stage) {
         for (Projectile projectile : projectileArrayList) {
-            if (!projectile.update(delta)) {
+            if (!projectile.update(delta, enemyArrayList)) {
                 removeProjectile(projectile, stage);
                 break;
             }
@@ -211,5 +211,9 @@ public class Game {
     }
     public Player getPlayer() {
         return player;
+    }
+
+    public ArrayList<StandardEnemy> getEnemyArrayList() {
+        return enemyArrayList;
     }
 }

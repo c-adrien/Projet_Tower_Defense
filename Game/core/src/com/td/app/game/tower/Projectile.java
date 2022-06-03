@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.td.app.game.Position;
 import com.td.app.game.enemy.StandardEnemy;
 
+import java.util.ArrayList;
+
 public class Projectile extends Actor {
     private Texture texture;
     private final Sprite sprite;
@@ -33,13 +35,13 @@ public class Projectile extends Actor {
         super.draw(batch, parentAlpha);
     }
 
-    public boolean update(float delta) {
+    public boolean update(float delta, ArrayList<StandardEnemy> enemyArrayList) {
         if(!target.isAlive()){
             return false;
         }
 
         if (position.getX() == target.getPosition().getX() && position.getY() == target.getPosition().getY()) {
-            target.receiveProjectile(this);
+            target.receiveProjectile(this, enemyArrayList);
             return false;
         }
 

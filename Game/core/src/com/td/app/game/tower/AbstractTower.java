@@ -1,9 +1,11 @@
 package com.td.app.game.tower;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.td.app.game.Position;
 import com.td.app.game.enemy.StandardEnemy;
@@ -26,6 +28,7 @@ public abstract class AbstractTower extends Actor {
     private int sellPrice = (int) (0.7*price);
     private int upgradePrice = 2*price;
     private Tile hostingTile;
+    private boolean isSelected;
 
     private Position position;
 
@@ -91,6 +94,22 @@ public abstract class AbstractTower extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if(isSelected){
+
+            batch.end(); // pause batch drawing and start shape drawing
+
+            // Init renderer
+            ShapeRenderer shapeRenderer = new ShapeRenderer();
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.FIREBRICK);
+            shapeRenderer.circle(position.getX() + 32, position.getY() + 32, projectileRange);
+            shapeRenderer.end();
+
+            batch.begin(); // restart batch drawing
+        }
+
         setBounds(position.getX(), position.getY(), texture.getWidth(), texture.getHeight());
         sprite = new Sprite(texture);
 
@@ -179,5 +198,13 @@ public abstract class AbstractTower extends Actor {
 
     public int getINITIAL_TIMER() {
         return INITIAL_TIMER;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }
