@@ -9,7 +9,7 @@ import com.td.app.game.map.Tile;
 public class SimpleTower extends AbstractTower {
 
     private static final String IMAGE_PATH = "textures/tower/simple_tower.png";
-    private static final int PROJECTILE_SPEED = 10;
+    private static final int PROJECTILE_SPEED = 200;
     private static final int PROJECTILE_RANGE = 100;
     public static final int TIMER = 60;
     public static final int price = 100;

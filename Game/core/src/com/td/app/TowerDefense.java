@@ -44,7 +44,7 @@ public class TowerDefense extends Game {
 		}
 
 //		toCampaignGameScreen(1);
-		toArcadeGameScreen();
+		toArcadeGameScreen(1);
 	}
 
 	@Override
@@ -74,8 +74,8 @@ public class TowerDefense extends Game {
 		campaignGameScreen = new CampaignGameScreen(this, level);
 		setScreen(campaignGameScreen);
 	}
-	public void toArcadeGameScreen() {
-		arcadeGameScreen = new ArcadeGameScreen(this);
+	public void toArcadeGameScreen(int difficulty) {
+		arcadeGameScreen = new ArcadeGameScreen(this, difficulty);
 		setScreen(arcadeGameScreen);
 	}
 

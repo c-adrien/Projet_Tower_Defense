@@ -15,11 +15,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
+    public enum GameState { GAME_RUNNING, GAME_PAUSED, GAME_WON, GAME_LOST }
 
+    private GameState gameState = GameState.GAME_RUNNING;
     private final Player player;
     private final Map map;
 
-    private int numberOfWaves;
     private LinkedList<Wave> waves;
     private Wave actualWave;
 
@@ -30,39 +31,30 @@ public class Game {
     private final ArrayList<Projectile> projectileArrayList = new ArrayList<>();
     private final ArrayList<StandardEnemy> enemyArrayList = new ArrayList<>();
 
-
-    public Game(Map map) {
-        this(map, 0);
-    }
-
     public Game(Map map, int level) {
         this.map = map;
         this.player = new Player();
-
         initWaves(level);
     }
 
     public void initWaves(int level){
-        // TODO waves
-        waves = Wave.createWaveFromFile(Gdx.files.internal("waves/waveLevel1.txt"), new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY()));
+        waves = Wave.createWaveFromFile(Gdx.files.internal(String.format("waves/waveLevel%s.txt", level)),
+                new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY())
+        );
         actualWave = waves.pop();
-        numberOfWaves = waves.size();
     }
 
-    public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel){
-        // TODO delta debug
-        delta = delta * 20;
+    public void initInfiniteWaves(int difficulty) {
+        // TODO create random waves
 
+    }
+
+    public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel) {
         updateCredit(creditLabel);
         updateTowers(stage);
         updateProjectiles(delta, stage);
         updateEnemies(delta, stage, lifeLabel);
         updateWaves(stage);
-
-        if (player.isGameOver()) {
-            // TODO: end game
-            System.out.println("GAME OVER");
-        }
     }
 
     // Player commands
@@ -70,8 +62,7 @@ public class Game {
 
     public AbstractTower placeTower(AbstractTower selectedTower, Tile tile, int screenX, int screenY) {
         if (player.removeCredit(selectedTower.getPrice())) {
-            System.out.println(player.getCredit());
-            AbstractTower tower = selectedTower.createTower(tile, screenX / 64 * 64, 704 - screenY / 64 * 64);
+            AbstractTower tower = selectedTower.createTower(tile, screenX / 64 * 64, 704 - screenY / 64 * 64); // Center texture on tile
             addTower(tower);
             return tower;
         }
@@ -140,8 +131,8 @@ public class Game {
                 removeEnemy(enemy, stage);
                 player.removeLife();
                 lifeLabel.setText(player.getRemainingLives());
-                if (player.getRemainingLives() <= 0) {
-                    player.setGameOver();
+                if (player.isGameOver()) {
+                    loseGame();
                 }
                 break;
             }
@@ -176,11 +167,11 @@ public class Game {
             }
         } else if (waves.size() != 0) {
             if (--delayBeforeNextWave <= 0) {
-                delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
                 actualWave = waves.pop();
+                delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
             }
         } else {
-            // TODO : win the game and unlock next level if from campaign
+            winGame();
         }
     }
 
@@ -193,6 +184,18 @@ public class Game {
             player.addCredit(1);
             creditLabel.setText(player.getCredit());
         }
+    }
+    public void winGame() {
+        gameState = GameState.GAME_WON;
+    }
+    public void loseGame() {
+        gameState = GameState.GAME_LOST;
+    }
+    public GameState getGameState() {
+        return gameState;
+    }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public Map getMap() {

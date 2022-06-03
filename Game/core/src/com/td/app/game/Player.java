@@ -1,7 +1,4 @@
 package com.td.app.game;
-
-import com.td.app.game.tower.AbstractTower;
-
 public class Player {
     public static int PASSIVE_CREDIT_TIMER = 60;
     private int remainingLives;
@@ -47,8 +44,4 @@ public class Player {
         return remainingLives;
     }
 
-    // TODO
-    public boolean PlaceTower(AbstractTower tower){
-        return false;
-    }
 }

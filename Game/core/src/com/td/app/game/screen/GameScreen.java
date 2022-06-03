@@ -1,6 +1,7 @@
 package com.td.app.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,10 +10,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.td.app.Helper;
 import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.Position;
@@ -21,8 +27,6 @@ import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.AbstractTower;
 import com.td.app.game.tower.SimpleTower;
-
-import java.util.Iterator;
 
 public abstract class GameScreen implements Screen, InputProcessor {
     public TowerDefense game;
@@ -34,6 +38,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private Label creditLabel;
     private Image lifeTexture;
     private Label lifeLabel;
+    private boolean isPaused;
 
     // Debug
     ShapeRenderer shapeRenderer;
@@ -50,8 +55,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
         shapeRenderer = new ShapeRenderer();
     }
 
-    public void initGamePlay(Map map){
-        this.gamePlay = new Game(map);
+    public void initGamePlay(Map map, int level) {
+        this.gamePlay = new Game(map, level);
     }
 
     @Override
@@ -87,24 +92,126 @@ public abstract class GameScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
     }
 
-    @Override
-    public void render(float delta) {
-        gamePlay.update(stage, delta, creditLabel, lifeLabel);
-
+    private void cleanStage() {
         batch.begin();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.draw();
 
         batch.end();
+    }
+
+    private void updateStage(float delta) {
+        gamePlay.update(stage, delta, creditLabel, lifeLabel);
+
         if (selectedTower != null) {
+            // TODO create class to load texture to show selected tower
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(0, 0, 1, 1);
             shapeRenderer.rect(selectedTower.getX(), selectedTower.getY(), selectedTower.getWidth(), selectedTower.getHeight());
             shapeRenderer.end();
         }
+
+    }
+
+    private void pauseScreen() {
+        if (!isPaused) {
+            isPaused = true;
+            final Image pauseGame = new Image(new Texture(Gdx.files.internal("textures/game/gamePause.png")));
+            pauseGame.setScale(0.7F);
+            pauseGame.setPosition(stage.getWidth() * 0.15F, stage.getHeight() * 0.15F);
+            // TODO remove debug
+            pauseGame.debug();
+
+            final TextButton playButton = new TextButton("Play", new Skin(Gdx.files.internal("skin/uiskin.json")));
+            final TextButton quitButton = new TextButton("Quit", new Skin(Gdx.files.internal("skin/uiskin.json")));
+            playButton.addListener(new ClickListener() {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    Gdx.input.setInputProcessor(null);
+                    Helper.removeActorFromStage(pauseGame, stage);
+                    Helper.removeActorFromStage(playButton, stage);
+                    Helper.removeActorFromStage(quitButton, stage);
+                    resume();
+                }
+            });
+            playButton.setSize(pauseGame.getWidth() * 0.25F, 50);
+            playButton.setPosition(pauseGame.getX() * 1.5F, pauseGame.getY() + 50);
+            quitButton.addListener(new ClickListener() {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    Helper.removeActorFromStage(pauseGame, stage);
+                    Helper.removeActorFromStage(playButton, stage);
+                    Helper.removeActorFromStage(quitButton, stage);
+                    Gdx.input.setInputProcessor(null);
+                    game.toStartMenu();
+                    dispose();
+                }
+            });
+            quitButton.setSize(pauseGame.getWidth() * 0.25F, 50);
+            quitButton.setPosition(pauseGame.getX() * 3.5F, pauseGame.getY() + 50);
+
+            stage.addActor(pauseGame);
+            stage.addActor(playButton);
+            stage.addActor(quitButton);
+
+            Gdx.input.setInputProcessor(stage);
+        }
+    }
+
+    public void endGameDisplay() {
+        if (!isPaused) {
+            isPaused = true;
+            Image endGame;
+            if (gamePlay.getGameState().equals(Game.GameState.GAME_WON)) {
+                endGame = new Image(new Texture(Gdx.files.internal("textures/game/gameWin.png")));
+            } else {
+                endGame = new Image(new Texture(Gdx.files.internal("textures/game/gameLost.png")));
+            }
+            endGame.setScale(0.7F);
+            endGame.setPosition(stage.getWidth() * 0.15F, stage.getHeight() * 0.15F);
+            // TODO remove debug
+            endGame.debug();
+
+            TextButton exitButton = new TextButton("Exit", new Skin(Gdx.files.internal("skin/uiskin.json")));
+            exitButton.addListener(new ClickListener() {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    Gdx.input.setInputProcessor(null);
+                    game.toStartMenu();
+                    dispose();
+                }
+            });
+            exitButton.setSize(endGame.getWidth() * 0.3F, 50);
+            exitButton.setPosition(endGame.getX() * 2.3F, endGame.getY() + 50);
+
+            stage.addActor(endGame);
+            stage.addActor(exitButton);
+
+            Gdx.input.setInputProcessor(stage);
+        }
+    }
+
+    @Override
+    public void render(float delta) {
+        if (delta > 0.1F) delta = 0.1F;
+        switch (gamePlay.getGameState()) {
+            case GAME_RUNNING:
+                updateStage(delta);
+                break;
+
+            case GAME_PAUSED:
+                pauseScreen();
+                break;
+
+            case GAME_WON:
+            case GAME_LOST:
+                endGameDisplay();
+                break;
+        }
+        cleanStage();
+
 
         // Debug
         /*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -142,12 +249,14 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause() {
-
+        gamePlay.setGameState(Game.GameState.GAME_PAUSED);
     }
 
     @Override
     public void resume() {
-
+        Gdx.input.setInputProcessor(this);
+        gamePlay.setGameState(Game.GameState.GAME_RUNNING);
+        isPaused = false;
     }
 
     @Override
@@ -163,6 +272,9 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) {
+            pause();
+        }
         return false;
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.td.app.game.Player;
 import com.td.app.game.Position;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.MapElements;

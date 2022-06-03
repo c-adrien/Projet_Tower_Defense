@@ -18,6 +18,7 @@ public class Wave {
 
     // Enemy & timer until next one
     protected LinkedHashMap<StandardEnemy, Integer> enemies;
+    protected int delayBetweenEnnemies;
 
 
     private Wave(int level) {
@@ -31,6 +32,9 @@ public class Wave {
 
         try {
             String line;
+            line = reader.readLine();
+            delayBetweenEnnemies = Integer.parseInt(line.split("=")[1]);
+
             while ((line = reader.readLine()) != null && !line.equals("endwave")) {
                 String[] splits = line.split(" ");
                 enemies.put(new StandardEnemy(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]),

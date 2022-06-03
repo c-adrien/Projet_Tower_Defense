@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.td.app.Helper;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.PointerTexture;
 import com.td.app.game.gui.ScreenButtonTexture;
@@ -178,13 +179,7 @@ public class StartMenuScreen implements Screen, InputProcessor {
                         if (object.equals("Yes")) {
                             Gdx.app.exit();
                         } else {
-                            Iterator<Actor> it = stage.getActors().iterator();
-                            while (it.hasNext()) {
-                                if (it.next().equals(this)) {
-                                    it.remove();
-                                    break;
-                                }
-                            }
+                            Helper.removeActorFromStage(this, stage);
                             StartMenuScreen.this.show();
                         }
                     }
