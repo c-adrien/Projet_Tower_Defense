@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.td.app.Helper;
+import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.Position;
@@ -290,6 +291,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
     @Override
     public void pause() {
         gamePlay.setGameState(Game.GameState.GAME_PAUSED);
+        SoundHandler.stop("walking");
     }
 
     @Override
@@ -339,6 +341,11 @@ public abstract class GameScreen implements Screen, InputProcessor {
         Actor actor = stage.hit(hover.x,hover.y,true);
 
         if(actor instanceof Map){
+
+            if(selectedTower != null){
+                selectedTower.setSelected(false);
+            }
+
             int x = screenX / 64;
             int y = screenY / 64;
 
@@ -369,13 +376,20 @@ public abstract class GameScreen implements Screen, InputProcessor {
             }
 
             gamePlay.getMap().toggleTile(tile);
-            System.out.println(Tile.SELECTED_TILE);
+            // System.out.println(Tile.SELECTED_TILE);
 
             // Debug
             this.x = x*64;
             this.y = 704 - y*64;
-        } else if (actor instanceof AbstractTower) {
+        }
+
+        // Select tower
+        else if (actor instanceof AbstractTower) {
+            if(selectedTower != null && selectedTower != actor){
+                selectedTower.setSelected(false);
+            }
             selectedTower = (AbstractTower) actor;
+            selectedTower.setSelected(!selectedTower.isSelected());
         }
 
         return false;

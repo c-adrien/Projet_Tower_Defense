@@ -12,6 +12,8 @@ import com.td.app.game.map.MapElements;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.Projectile;
 
+import java.util.ArrayList;
+
 public class StandardEnemy extends Actor {
 
 //    public static ArrayList<StandardEnemy> enemies = new ArrayList<>();
@@ -36,7 +38,7 @@ public class StandardEnemy extends Actor {
     protected Sprite sprite;
     protected Tile currentTile;
 
-    protected float freezeRemainingTime;
+    protected float freezeTime;
 
     public StandardEnemy(int MAXIMUM_HP, int speed, Position position, Texture texture) {
         this.MAXIMUM_HP = MAXIMUM_HP;
@@ -47,7 +49,7 @@ public class StandardEnemy extends Actor {
 
         this.texture = texture;
         this.currentTile = null;
-        this.freezeRemainingTime = 0;
+        this.freezeTime = 0;
         this.creditDeathValue = 10;
 
         this.healthBar = new HealthBar(this);
@@ -85,12 +87,38 @@ public class StandardEnemy extends Actor {
         super.draw(batch, parentAlpha);
     }
 
-    // TODO fix
     public void freeze(int time){
-        this.freezeRemainingTime += time;
+        this.freezeTime = elapsedTime + time;
     }
 
-    public void receiveProjectile(Projectile projectile){
+    public void impactNeighbours(ArrayList<StandardEnemy> enemyArrayList, int range, int damage){
+
+//        ArrayList<StandardEnemy> standardEnemies = new ArrayList<>();
+
+        for (StandardEnemy standardEnemy : enemyArrayList) {
+            int enemyX = standardEnemy.getPosition().getX();
+            int enemyY = standardEnemy.getPosition().getY();
+
+            double distance = Math.sqrt(Math.pow((position.getX() + 16) - enemyX, 2)
+                    + Math.pow((position.getY() + 32) - enemyY, 2)
+            );
+
+            if(distance < range){
+                standardEnemy.receiveDamage(damage);
+            }
+        }
+
+//        for (StandardEnemy standardEnemy: standardEnemies) {
+//            if (freezeTime > 0){
+//                standardEnemy.freeze(freezeTime);
+//            }
+//            standardEnemy.receiveDamage(damage);
+//        }
+
+    }
+
+    // TODO Override w/ impactNeighbours or freeze
+    public void receiveProjectile(Projectile projectile, ArrayList<StandardEnemy> enemyArrayList){
         receiveDamage(projectile.getDamage());
     }
 
@@ -117,12 +145,11 @@ public class StandardEnemy extends Actor {
 
         delta = delta * speed;
 
-        // TODO FIX
-        if(freezeRemainingTime > 0){
-            freezeRemainingTime = Math.max(0, freezeRemainingTime-delta);
+        if(freezeTime > elapsedTime){
+            return true;
         }
 
-        if(isAlive && freezeRemainingTime <= 0) {
+        if(isAlive && freezeTime <= 0) {
 
             int x = this.position.getX();
             int y = this.position.getY();
