@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.td.app.Helper;
+import com.td.app.SoundHandler;
 import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.enemy.Wave;
 import com.td.app.game.map.Map;
@@ -41,6 +42,7 @@ public class Game {
         waves = Wave.createWaveFromFile(Gdx.files.internal(String.format("waves/waveLevel%s.txt", level)),
                 new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY())
         );
+        SoundHandler.playLooping("walking");
         actualWave = waves.pop();
     }
 
@@ -64,6 +66,9 @@ public class Game {
         if (player.removeCredit(selectedTower.getPrice())) {
             AbstractTower tower = selectedTower.createTower(tile, screenX / 64 * 64, 704 - screenY / 64 * 64); // Center texture on tile
             addTower(tower);
+
+            SoundHandler.play("coins");
+
             return tower;
         }
 
@@ -163,12 +168,14 @@ public class Game {
                     actualWave.getEnemies().remove(enemy.getKey());
                 }
             } else if (enemyArrayList.isEmpty()) {
+                SoundHandler.stop("walking");
                 actualWave.waveEnded();
             }
         } else if (waves.size() != 0) {
             if (--delayBeforeNextWave <= 0) {
                 actualWave = waves.pop();
                 delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
+                SoundHandler.playLooping("walking");
             }
         } else {
             winGame();
@@ -190,6 +197,7 @@ public class Game {
     }
     public void loseGame() {
         gameState = GameState.GAME_LOST;
+        SoundHandler.stop("walking");
     }
     public GameState getGameState() {
         return gameState;

@@ -221,6 +221,14 @@ public abstract class GameScreen implements Screen, InputProcessor {
         shapeRenderer.end();
 
         // Enemy
+//        if(enemy != null){
+//            i = enemy.getPosition().getX();
+//            j = enemy.getPosition().getY();
+//        }
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.setColor(0, 0, 1, 1); // Blue line
+//        shapeRenderer.line(i, j, i+32, j+32);
+//        shapeRenderer.end();
         if(enemy != null){
             i = enemy.getPosition().getX();
             j = enemy.getPosition().getY();

@@ -7,7 +7,7 @@ public class Player {
 
     public Player() {
         this.remainingLives = 10;
-        this.credit = 100;
+        this.credit = 200;
         this.gameOver = false;
     }
 
@@ -40,6 +40,7 @@ public class Player {
     public int getCredit() {
         return credit;
     }
+
     public int getRemainingLives() {
         return remainingLives;
     }

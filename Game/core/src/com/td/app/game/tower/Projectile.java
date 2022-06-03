@@ -34,6 +34,10 @@ public class Projectile extends Actor {
     }
 
     public boolean update(float delta) {
+        if(!target.isAlive()){
+            return false;
+        }
+
         if (position.getX() == target.getPosition().getX() && position.getY() == target.getPosition().getY()) {
             target.receiveProjectile(this);
             return false;
