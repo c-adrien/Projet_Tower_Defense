@@ -18,11 +18,25 @@ public class Projectile extends Actor {
     private final int speed;
     private Position position;
 
+    private final int freeze;
+    private final int hitNeighboursInRange;
+
     public Projectile(StandardEnemy target, int damage, int speed, Position position) {
+        this(target, damage, speed, position, 0, 0);
+    }
+
+    public Projectile(StandardEnemy target, int damage, int speed, Position position, int freeze) {
+        this(target, damage, speed, position, freeze, 0);
+    }
+
+    public Projectile(StandardEnemy target, int damage, int speed, Position position,
+                      int freeze, int hitNeighboursInRange) {
         this.target = target;
         this.damage = damage;
         this.speed = speed;
         this.position = position;
+        this.freeze = freeze;
+        this.hitNeighboursInRange = hitNeighboursInRange;
 
         texture = new Texture(Gdx.files.internal("textures/projectile/projectileTest.png"));
         setBounds(0, 0, texture.getWidth(), texture.getHeight());
@@ -60,5 +74,13 @@ public class Projectile extends Actor {
 
     public int getDamage() {
         return damage;
+    }
+
+    public int getFreeze() {
+        return freeze;
+    }
+
+    public int getHitNeighboursInRange() {
+        return hitNeighboursInRange;
     }
 }

@@ -80,7 +80,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
         lifeLabel.setPosition(lifeTexture.getX() - 15, lifeTexture.getY() + 15);
         lifeLabel.setFontScale(1.2F);
 
-        AbstractTower simpleTower = new SimpleTower(new Position(Map.TOTAL_SIZE + 30, Map.TOTAL_SIZE - 300), SimpleTower.price);
+        AbstractTower simpleTower = new SimpleTower(new Position(Map.TOTAL_SIZE + 30, Map.TOTAL_SIZE - 300));
 
         stage.addActor(gamePlay.getMap());
         stage.addActor(lifeTexture);

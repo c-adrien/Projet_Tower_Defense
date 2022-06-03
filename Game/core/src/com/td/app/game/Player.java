@@ -1,13 +1,13 @@
 package com.td.app.game;
 public class Player {
-    public static int PASSIVE_CREDIT_TIMER = 60;
+    public static int PASSIVE_CREDIT_TIMER = 120;
     private int remainingLives;
     private int credit;
     private boolean gameOver;
 
     public Player() {
         this.remainingLives = 10;
-        this.credit = 200;
+        this.credit = 50;
         this.gameOver = false;
     }
 

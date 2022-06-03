@@ -117,9 +117,17 @@ public class StandardEnemy extends Actor {
 
     }
 
-    // TODO Override w/ impactNeighbours or freeze
+    // TODO implement hit options
     public void receiveProjectile(Projectile projectile, ArrayList<StandardEnemy> enemyArrayList){
         receiveDamage(projectile.getDamage());
+
+        if (projectile.getFreeze() > 0){
+            freeze(projectile.getFreeze());
+        }
+
+        if (projectile.getHitNeighboursInRange() > 0){
+            impactNeighbours(enemyArrayList, projectile.getHitNeighboursInRange(), projectile.getDamage()/4);
+        }
     }
 
     private void receiveDamage(int damage){

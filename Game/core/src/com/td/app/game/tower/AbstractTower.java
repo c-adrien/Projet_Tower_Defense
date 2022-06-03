@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.td.app.game.Player;
 import com.td.app.game.Position;
 import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Tile;
@@ -15,18 +16,19 @@ import java.util.ArrayList;
 
 
 public abstract class AbstractTower extends Actor {
-    private int level;
-    private static int MAXIMUM_LEVEL = 5;
+    protected int level = 1;
+    private final int MAXIMUM_LEVEL = 5;
     protected static final int PROJECTILE_OFFSET_X = 16;
     protected static final int PROJECTILE_OFFSET_Y = 32;
-    private int projectileSpeed;
-    private int projectileRange;
+    protected int projectileSpeed;
+    protected int projectileRange;
+    protected int projectileDamage;
 
     private int INITIAL_TIMER;
     private int timer;
     private int price;
-    private int sellPrice = (int) (0.7*price);
-    private int upgradePrice = 2*price;
+    private int sellPrice = (price - 5) * level ;
+    private int upgradePrice = price + (10*level);
     private Tile hostingTile;
     private boolean isSelected;
 
@@ -35,11 +37,11 @@ public abstract class AbstractTower extends Actor {
     private Texture texture;
     private Sprite sprite;
 
-    public AbstractTower(int projectileSpeed, int projectileRange, int timer, int price,
+    public AbstractTower(int projectileSpeed, int projectileRange, int projectileDamage, int timer, int price,
                          Tile hostingTile, String imgPath, int X, int Y) {
-        this.level = 1;
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
+        this.projectileDamage = projectileDamage;
         this.timer = timer;
         this.INITIAL_TIMER = timer;
         this.price = price;
@@ -47,7 +49,6 @@ public abstract class AbstractTower extends Actor {
         hostingTile.setOccupied(true);
 
         this.texture = new Texture(Gdx.files.internal(imgPath));
-
         this.position = new Position(X, Y);
     }
 
@@ -81,16 +82,23 @@ public abstract class AbstractTower extends Actor {
         return null;
     }
 
-    public abstract Projectile sendProjectile(StandardEnemy enemy);
+    public Projectile sendProjectile(StandardEnemy enemy){
+        return new Projectile(enemy, projectileDamage, projectileSpeed,
+                new Position(getPosition().getX() + PROJECTILE_OFFSET_X,
+                        getPosition().getY() + PROJECTILE_OFFSET_Y));
 
-    public abstract AbstractTower createTower(Tile hostingTile, int positionX, int positionY);
-
-    public boolean canUpgrade(){
-        return level < MAXIMUM_LEVEL;
     }
 
-    public void upgrade(){
+    public AbstractTower createTower(Tile hostingTile, int positionX, int positionY){
+        // TODO tower types
+        return new SimpleTower(hostingTile, positionX, positionY);
     }
+
+    public boolean canUpgrade(Player player){
+        return level < MAXIMUM_LEVEL && player.getCredit() >= upgradePrice;
+    }
+
+    public abstract void upgrade();
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
