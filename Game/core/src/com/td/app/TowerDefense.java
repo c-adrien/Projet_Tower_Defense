@@ -39,7 +39,7 @@ public class TowerDefense extends Game {
 		startMenuScreen = new StartMenuScreen(this);
 		settingsScreen = new SettingsScreen(this);
 
-		// TODO add sound pref
+		// TODO add sound pref + setVolume
 		if (!pref.contains("user")) {
 			setScreen(new NewUserScreen(this));
 			pref.putInteger("unlockedLevels", 1);
