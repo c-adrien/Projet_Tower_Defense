@@ -30,6 +30,7 @@ public class SettingsScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
+        //TODO Add sounds texture
         if (stage == null) {
             stage = new Stage();
             background = new Image(new Texture(Gdx.files.internal("textures/menu/settingsMenu.png")));
@@ -120,6 +121,7 @@ public class SettingsScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        // TODO update sound pref
         Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
         Actor actor = stage.hit(hover.x,hover.y,true);
 
