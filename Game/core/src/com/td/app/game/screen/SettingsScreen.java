@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.ScreenButtonTexture;
 
@@ -21,6 +22,7 @@ public class SettingsScreen implements Screen, InputProcessor {
     private Image background;
     private Image musicTexture;
     private ScreenButtonTexture musicDisplay;
+    private ScreenButtonTexture soundDisplay;
     private ScreenButtonTexture backButton;
     private ScreenButtonTexture newGameButton;
 
@@ -39,11 +41,17 @@ public class SettingsScreen implements Screen, InputProcessor {
             musicTexture.setPosition(stage.getWidth() * 0.3F, stage.getHeight() * 0.6F);
 
             if (TowerDefense.pref.getBoolean("music")) {
-                musicDisplay = new ScreenButtonTexture("textures/button/musicOn.png", ScreenButtonTexture.ButtonType.MUSICON);
+                musicDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.MUSICON);
             } else {
-                musicDisplay = new ScreenButtonTexture("textures/button/musicOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
+                musicDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
+            }
+            if (TowerDefense.pref.getBoolean("sound")) {
+                soundDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.SOUNDON);
+            } else {
+                soundDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.SOUNDOFF);
             }
             musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+            soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
 
             backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
             backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
@@ -54,6 +62,7 @@ public class SettingsScreen implements Screen, InputProcessor {
             stage.addActor(background);
             stage.addActor(musicTexture);
             stage.addActor(musicDisplay);
+            stage.addActor(soundDisplay);
             stage.addActor(backButton);
             stage.addActor(newGameButton);
         }
@@ -136,7 +145,7 @@ public class SettingsScreen implements Screen, InputProcessor {
                 while (it.hasNext()) {
                     if (it.next().equals(musicDisplay)) {
                         it.remove();
-                        musicDisplay = new ScreenButtonTexture("textures/button/musicOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
+                        musicDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
                         musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
                         stage.addActor(musicDisplay);
                         break;
@@ -149,7 +158,7 @@ public class SettingsScreen implements Screen, InputProcessor {
                 while (it.hasNext()) {
                     if (it.next().equals(musicDisplay)) {
                         it.remove();
-                        musicDisplay = new ScreenButtonTexture("textures/button/musicOn.png", ScreenButtonTexture.ButtonType.MUSICON);
+                        musicDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.MUSICON);
                         musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
                         stage.addActor(musicDisplay);
                         break;
@@ -157,6 +166,34 @@ public class SettingsScreen implements Screen, InputProcessor {
                 }
                 TowerDefense.music.play();
                 TowerDefense.pref.putBoolean("music", true);
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SOUNDON) {
+                Iterator<Actor> it = stage.getActors().iterator();
+                while (it.hasNext()) {
+                    if (it.next().equals(soundDisplay)) {
+                        it.remove();
+                        soundDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.SOUNDOFF);
+                        soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
+                        stage.addActor(soundDisplay);
+                        break;
+                    }
+                }
+                SoundHandler.pauseAll();
+                TowerDefense.pref.putBoolean("sound", false);
+                TowerDefense.pref.flush();
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SOUNDOFF) {
+                Iterator<Actor> it = stage.getActors().iterator();
+                while (it.hasNext()) {
+                    if (it.next().equals(soundDisplay)) {
+                        it.remove();
+                        soundDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.SOUNDON);
+                        soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
+                        stage.addActor(soundDisplay);
+                        break;
+                    }
+                }
+                SoundHandler.playAll();
+                TowerDefense.pref.putBoolean("sound", true);
+                TowerDefense.pref.flush();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.NEWGAME) {
                 Gdx.input.setInputProcessor(null);
                 TowerDefense.music.stop();

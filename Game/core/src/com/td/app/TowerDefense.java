@@ -28,18 +28,17 @@ public class TowerDefense extends Game {
 		music.setLooping(true);
 
 		// TODO Load sound files
-		SoundHandler.add("click", "sound/click.mp3");
-		SoundHandler.add("coins", "sound/coins.mp3");
-		SoundHandler.add("walking", "sound/walking.mp3");
-		SoundHandler.add("hit_enemy", "sound/hit_enemy.mp3");
-		SoundHandler.add("kill_enemy", "sound/kill_enemy.mp3");
+		SoundHandler.add("click", "sound/click_ogg.ogg");
+		SoundHandler.add("coins", "sound/coins_ogg.ogg");
+		SoundHandler.add("walking", "sound/walking_ogg.ogg");
+		SoundHandler.add("hit_enemy", "sound/hit_enemy_ogg.ogg");
+		SoundHandler.add("kill_enemy", "sound/kill_enemy_ogg.ogg");
 
 		arcadeMenuScreen = new ArcadeMenuScreen(this);
 		campaignMenuScreen = new CampaignMenuScreen(this);
 		startMenuScreen = new StartMenuScreen(this);
 		settingsScreen = new SettingsScreen(this);
 
-		// TODO add sound pref + setVolume
 		if (!pref.contains("user")) {
 			setScreen(new NewUserScreen(this));
 			pref.putInteger("unlockedLevels", 1);
@@ -50,7 +49,7 @@ public class TowerDefense extends Game {
 		}
 
 //		toCampaignGameScreen(1);
-		toArcadeGameScreen(1);
+		toArcadeGameScreen(3);
 	}
 
 	@Override
@@ -63,19 +62,22 @@ public class TowerDefense extends Game {
 		pref.flush();
 	}
 
-
 	public void toArcadeMenuScreen() {
 		setScreen(arcadeMenuScreen);
 	}
+
 	public void toCampaignMenuScreen() {
 		setScreen(campaignMenuScreen);
 	}
+
 	public void toStartMenu() {
 		setScreen(startMenuScreen);
 	}
+
 	public void toSettingsScreen() {
 		setScreen(settingsScreen);
 	}
+
 	public void toCampaignGameScreen(int level) {
 		campaignGameScreen = new CampaignGameScreen(this, level);
 		setScreen(campaignGameScreen);

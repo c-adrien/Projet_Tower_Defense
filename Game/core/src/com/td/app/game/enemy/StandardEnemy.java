@@ -100,7 +100,7 @@ public class StandardEnemy extends Actor {
             int enemyY = standardEnemy.getPosition().getY();
 
             double distance = Math.sqrt(Math.pow((position.getX() + 16) - enemyX, 2)
-                    + Math.pow((position.getY() + 32) - enemyY, 2)
+                    + Math.pow((position.getY() + 16) - enemyY, 2)
             );
 
             if(distance < range){

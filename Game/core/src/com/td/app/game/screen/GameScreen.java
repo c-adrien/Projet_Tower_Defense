@@ -62,9 +62,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
         shapeRenderer = new ShapeRenderer();
     }
 
-    public void initGamePlay(Map map, int level) {
-        this.gamePlay = new Game(map, level);
-    }
+    public abstract void initGamePlay(Map map, int level);
 
     @Override
     public void show() {
@@ -139,7 +137,6 @@ public abstract class GameScreen implements Screen, InputProcessor {
         gamePlay.update(stage, delta, creditLabel, lifeLabel);
 
         if (selectedTower != null) {
-            // TODO create class to load texture to show selected tower
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(0, 0, 1, 1);
             shapeRenderer.rect(selectedTower.getX(), selectedTower.getY(), selectedTower.getWidth(), selectedTower.getHeight());
@@ -150,6 +147,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     private void pauseScreen() {
         if (!isPaused) {
+            SoundHandler.pauseAll();
             isPaused = true;
             final Image pauseGame = new Image(new Texture(Gdx.files.internal("textures/game/gamePause.png")));
             pauseGame.setScale(0.7F);
@@ -177,6 +175,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
                     Helper.removeActorFromStage(pauseGame, stage);
                     Helper.removeActorFromStage(playButton, stage);
                     Helper.removeActorFromStage(quitButton, stage);
+                    SoundHandler.stopAll();
                     Gdx.input.setInputProcessor(null);
                     game.toStartMenu();
                     dispose();
@@ -196,6 +195,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
     public void endGameDisplay() {
         if (!isPaused) {
             isPaused = true;
+            SoundHandler.pauseAll();
+
             Image endGame;
             if (gamePlay.getGameState().equals(Game.GameState.GAME_WON)) {
                 endGame = new Image(new Texture(Gdx.files.internal("textures/game/gameWin.png")));
@@ -211,6 +212,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
             exitButton.addListener(new ClickListener() {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    SoundHandler.stopAll();
                     Gdx.input.setInputProcessor(null);
                     game.toStartMenu();
                     dispose();
@@ -296,6 +298,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void resume() {
+        SoundHandler.playAll();
         Gdx.input.setInputProcessor(this);
         gamePlay.setGameState(Game.GameState.GAME_RUNNING);
         isPaused = false;

@@ -19,7 +19,7 @@ public abstract class AbstractTower extends Actor {
     protected int level = 1;
     private final int MAXIMUM_LEVEL = 5;
     protected static final int PROJECTILE_OFFSET_X = 16;
-    protected static final int PROJECTILE_OFFSET_Y = 32;
+    protected static final int PROJECTILE_OFFSET_Y = 16;
     protected int projectileSpeed;
     protected int projectileRange;
     protected int projectileDamage;
@@ -64,17 +64,18 @@ public abstract class AbstractTower extends Actor {
         this.price = price;
     }
 
-    public StandardEnemy findTarget(ArrayList<StandardEnemy> enemies){
+    public StandardEnemy findTarget(ArrayList<StandardEnemy> enemies) {
+        // TODO: update target priority
 
         for (StandardEnemy standardEnemy : enemies) {
             int enemyX = standardEnemy.getPosition().getX();
             int enemyY = standardEnemy.getPosition().getY();
 
             double distance = Math.sqrt(Math.pow((position.getX() + 16) - enemyX, 2)
-                    + Math.pow((position.getY() + 32) - enemyY, 2)
+                    + Math.pow((position.getY() + 16) - enemyY, 2)
             );
 
-            if(distance < projectileRange){
+            if(distance < projectileRange) {
                 return standardEnemy;
             }
         }

@@ -38,6 +38,7 @@ public class StartMenuScreen implements Screen, InputProcessor {
             if (TowerDefense.pref.getBoolean("music")) {
                 TowerDefense.music.play();
             }
+
             stage = new Stage();
 
             backgroundImage = new Image(new Texture(Gdx.files.internal("textures/menu/startMenu.jpg")));
@@ -145,6 +146,7 @@ public class StartMenuScreen implements Screen, InputProcessor {
                     nextButton.getY() + nextButton.getHeight()/2 - pointer.getHeight()/2);
 
         } else if (keycode == Input.Keys.ENTER) {
+            SoundHandler.play("click");
             if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
                 Gdx.input.setInputProcessor(null);
                 game.toArcadeMenuScreen();
@@ -158,9 +160,32 @@ public class StartMenuScreen implements Screen, InputProcessor {
                 game.toSettingsScreen();
                 dispose();
             }
+        } else if (keycode == Input.Keys.ESCAPE) {
+            SoundHandler.play("click");
+            quiGameDisplay();
         }
 
         return false;
+    }
+
+    private void quiGameDisplay() {
+        Gdx.input.setInputProcessor(stage);
+        new Dialog("Quit the game", new Skin(Gdx.files.internal("skin/uiskin.json"))) {
+            {
+                text("Are you sure you want to quit ?");
+                button("Yes", "Yes");
+                button("No", "No");
+            }
+            @Override
+            protected void result(Object object) {
+                if (object.equals("Yes")) {
+                    Gdx.app.exit();
+                } else {
+                    Helper.removeActorFromStage(this, stage);
+                    StartMenuScreen.this.show();
+                }
+            }
+        }.show(stage);
     }
 
     @Override
@@ -186,32 +211,20 @@ public class StartMenuScreen implements Screen, InputProcessor {
         if (actor instanceof ScreenButtonTexture) {
             ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
             if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
-                Gdx.input.setInputProcessor(stage);
-                new Dialog("Quit the game", new Skin(Gdx.files.internal("skin/uiskin.json"))) {
-                    {
-                        text("Are you sure you want to quit ?");
-                        button("Yes", "Yes");
-                        button("No", "No");
-                    }
-                    @Override
-                    protected void result(Object object) {
-                        if (object.equals("Yes")) {
-                            Gdx.app.exit();
-                        } else {
-                            Helper.removeActorFromStage(this, stage);
-                            StartMenuScreen.this.show();
-                        }
-                    }
-                }.show(stage);
+                SoundHandler.play("click");
+                quiGameDisplay();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.ARCADE) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 game.toArcadeMenuScreen();
                 dispose();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 game.toCampaignMenuScreen();
                 dispose();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 game.toSettingsScreen();
                 dispose();

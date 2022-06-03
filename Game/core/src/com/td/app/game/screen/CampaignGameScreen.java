@@ -2,6 +2,7 @@ package com.td.app.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.td.app.TowerDefense;
+import com.td.app.game.Game;
 import com.td.app.game.map.Map;
 
 public class CampaignGameScreen extends GameScreen {
@@ -12,11 +13,20 @@ public class CampaignGameScreen extends GameScreen {
         Map map = new Map(Gdx.files.internal(String.format("./maps/map_%s.txt", level)));
         initGamePlay(map, level);
     }
+
+    @Override
+    public void initGamePlay(Map map, int level) {
+        this.gamePlay = new Game(map);
+        gamePlay.initWaves(level);
+        gamePlay.setGameMode(Game.GameMode.CAMPAIGN);
+    }
+
     @Override
     public void endGameDisplay() {
         super.endGameDisplay();
         int lastLevelUnlock = TowerDefense.pref.getInteger("level");
         if (lastLevelUnlock == LEVEL) {
+            // TODO : unlock new tower
             TowerDefense.pref.putInteger("level", LEVEL + 1);
             TowerDefense.pref.flush();
         }

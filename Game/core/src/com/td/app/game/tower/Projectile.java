@@ -54,11 +54,6 @@ public class Projectile extends Actor {
             return false;
         }
 
-        if (position.getX() == target.getPosition().getX() && position.getY() == target.getPosition().getY()) {
-            target.receiveProjectile(this, enemyArrayList);
-            return false;
-        }
-
         delta = delta * speed;
 
         double delta_x = target.getPosition().getX() - position.getX();
@@ -68,6 +63,11 @@ public class Projectile extends Actor {
 
         position.updateX((float) (delta * Math.cos(position.getAngle())));
         position.updateY((float) (delta * Math.sin(position.getAngle())));
+
+        if (position.getX() == target.getPosition().getX() && position.getY() == target.getPosition().getY()) {
+            target.receiveProjectile(this, enemyArrayList);
+            return false;
+        }
 
         return true;
     }

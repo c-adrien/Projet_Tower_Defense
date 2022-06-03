@@ -9,6 +9,7 @@ import com.td.app.game.Position;
 import java.io.BufferedReader;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Wave {
 
@@ -20,10 +21,21 @@ public class Wave {
     protected LinkedHashMap<StandardEnemy, Integer> enemies;
     protected int delayBetweenEnnemies;
 
+    private static final Random random = new Random();
 
-    private Wave(int level) {
+
+    private Wave(int level, int numberOfEnnemies, Position position) {
         enemies = new LinkedHashMap<>();
         isOver = false;
+
+        for (int i = 0; i < numberOfEnnemies; i++) {
+            enemies.put(new StandardEnemy((int) (random.nextInt(50, 80) * Math.log(level)),
+                    random.nextInt(15, 30),
+                    new Position(position.getX() - 20, position.getY() + 32),
+                    new Texture(Gdx.files.internal("textures/enemy/test.png"))),
+                    (int) (180 - 3 * Math.log(level))
+            );
+        }
     }
 
     private Wave(BufferedReader reader, Position position) {
@@ -38,8 +50,8 @@ public class Wave {
             while ((line = reader.readLine()) != null && !line.equals("endwave")) {
                 String[] splits = line.split(" ");
                 enemies.put(new StandardEnemy(Integer.parseInt(splits[0]), Integer.parseInt(splits[1]),
-                        new Position(position.getX(), position.getY() + 32),
-                        new Texture(Gdx.files.internal(splits[2]))), 60
+                        new Position(position.getX() - 20, position.getY() + 32),
+                        new Texture(Gdx.files.internal(splits[2]))), delayBetweenEnnemies
                 );
             }
         } catch (Exception e) {
@@ -60,8 +72,8 @@ public class Wave {
 
     //=====================================================
 
-    public static Wave createWaveFromLevel(int level){
-        return new Wave(level);
+    public static Wave createWaveFromDifficulty(int level, int numberOfEnnemies, Position position){
+        return new Wave(level, (int) (Math.log(numberOfEnnemies) * 10), position);
     }
 
     public static LinkedList<Wave> createWaveFromFile(FileHandle fileHandle, Position position) {

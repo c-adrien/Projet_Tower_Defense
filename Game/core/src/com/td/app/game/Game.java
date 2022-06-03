@@ -18,13 +18,17 @@ import java.util.LinkedList;
 
 public class Game {
     public enum GameState { GAME_RUNNING, GAME_PAUSED, GAME_WON, GAME_LOST }
+    public enum GameMode { CAMPAIGN, ARCADE }
 
     private GameState gameState = GameState.GAME_RUNNING;
+    private GameMode gameMode;
     private final Player player;
     private final Map map;
 
-    private LinkedList<Wave> waves;
+    private LinkedList<Wave> waves = new LinkedList<>();
     private Wave actualWave;
+    private int difficulty;
+    private int numberOfEnnemies = 5;
 
     private int delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
     private int passiveCreditTimer = Player.PASSIVE_CREDIT_TIMER;
@@ -33,10 +37,9 @@ public class Game {
     private final ArrayList<Projectile> projectileArrayList = new ArrayList<>();
     private final ArrayList<StandardEnemy> enemyArrayList = new ArrayList<>();
 
-    public Game(Map map, int level) {
+    public Game(Map map) {
         this.map = map;
         this.player = new Player();
-        initWaves(level);
     }
 
     public void initWaves(int level){
@@ -48,11 +51,23 @@ public class Game {
     }
 
     public void initInfiniteWaves(int difficulty) {
-        // TODO create random waves
+        this.difficulty = difficulty;
+        createRandomWave();
+
 
     }
 
+    private void createRandomWave() {
+        difficulty *= 1.3;
+        numberOfEnnemies *= 1.3;
+        actualWave = Wave.createWaveFromDifficulty(difficulty, numberOfEnnemies,
+                new Position(map.getEntryTilePosition().getX(), map.getEntryTilePosition().getY())
+        );
+        SoundHandler.playLooping("walking");
+    }
+
     public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel) {
+        // TODO display at which wave we are
         updateCredit(creditLabel);
         updateTowers(stage);
         updateProjectiles(delta, stage);
@@ -178,6 +193,11 @@ public class Game {
                 delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
                 SoundHandler.playLooping("walking");
             }
+        } else if (gameMode.equals(GameMode.ARCADE)) {
+            if (--delayBeforeNextWave <= 0) {
+                createRandomWave();
+                delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
+            }
         } else {
             winGame();
         }
@@ -199,6 +219,10 @@ public class Game {
     public void loseGame() {
         gameState = GameState.GAME_LOST;
         SoundHandler.stop("walking");
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
     }
     public GameState getGameState() {
         return gameState;

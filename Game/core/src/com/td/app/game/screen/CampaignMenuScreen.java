@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.ScreenButtonTexture;
 import com.td.app.game.gui.CampaignLevel;
@@ -86,19 +87,13 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
+            SoundHandler.play("click");
             Gdx.input.setInputProcessor(null);
             game.toStartMenu();
             dispose();
             return true;
         }
 
-        // TODO change
-        if (keycode == Input.Keys.ENTER){
-            Gdx.input.setInputProcessor(null);
-            game.toCampaignGameScreen(1);
-            dispose();
-            return true;
-        }
         return false;
     }
 
@@ -125,6 +120,7 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
         if (actor instanceof ScreenButtonTexture) {
             ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
             if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 game.toStartMenu();
                 dispose();
@@ -133,6 +129,7 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
         if (actor instanceof CampaignLevel) {
             CampaignLevel level = (CampaignLevel) actor;
             if (!level.isLocked()) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 game.toCampaignGameScreen(level.getLevel());
                 dispose();
