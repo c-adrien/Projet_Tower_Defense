@@ -38,4 +38,9 @@ public class BombTower extends AbstractTower {
                 new Position(getPosition().getX() + PROJECTILE_OFFSET_X,
                         getPosition().getY() + PROJECTILE_OFFSET_Y), 0, HIT_NEIGHBOURS_IN_RANGE);
     }
+
+    @Override
+    public AbstractTower createTower(Tile hostingTile, int positionX, int positionY) {
+        return new BombTower(hostingTile, positionX, positionY);
+    }
 }

@@ -39,4 +39,9 @@ public class FreezeTower extends AbstractTower {
                 new Position(getPosition().getX() + PROJECTILE_OFFSET_X,
                         getPosition().getY() + PROJECTILE_OFFSET_Y), FREEZE);
     }
+
+    @Override
+    public AbstractTower createTower(Tile hostingTile, int positionX, int positionY) {
+        return new FreezeTower(hostingTile, positionX, positionY);
+    }
 }

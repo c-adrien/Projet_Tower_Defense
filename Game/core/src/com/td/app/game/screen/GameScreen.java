@@ -343,6 +343,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
         Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
         Actor actor = stage.hit(hover.x,hover.y,true);
 
+        System.out.println(actor.getClass());
+
         if(actor instanceof Map){
 
             if(selectedTower != null){

@@ -24,6 +24,11 @@ public class SimpleTower extends AbstractTower {
     }
 
     @Override
+    public AbstractTower createTower(Tile hostingTile, int positionX, int positionY) {
+        return new SimpleTower(hostingTile, positionX, positionY);
+    }
+
+    @Override
     public void upgrade() {
         level++;
         projectileDamage += 5;

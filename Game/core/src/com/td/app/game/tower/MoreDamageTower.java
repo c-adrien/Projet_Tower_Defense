@@ -23,6 +23,11 @@ public class MoreDamageTower extends AbstractTower{
     }
 
     @Override
+    public AbstractTower createTower(Tile hostingTile, int positionX, int positionY) {
+        return new MoreDamageTower(hostingTile, positionX, positionY);
+    }
+
+    @Override
     public void upgrade() {
         level++;
         projectileDamage += 25;

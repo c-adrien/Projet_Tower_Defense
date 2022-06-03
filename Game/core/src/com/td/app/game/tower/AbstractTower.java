@@ -90,10 +90,7 @@ public abstract class AbstractTower extends Actor {
 
     }
 
-    public AbstractTower createTower(Tile hostingTile, int positionX, int positionY){
-        // TODO tower types
-        return new SimpleTower(hostingTile, positionX, positionY);
-    }
+    public abstract AbstractTower createTower(Tile hostingTile, int positionX, int positionY);
 
     public boolean canUpgrade(Player player){
         return level < MAXIMUM_LEVEL && player.getCredit() >= upgradePrice;
