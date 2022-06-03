@@ -26,6 +26,7 @@ import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.AbstractTower;
+import com.td.app.game.tower.MoreDamageTower;
 import com.td.app.game.tower.SimpleTower;
 
 public abstract class GameScreen implements Screen, InputProcessor {
@@ -35,9 +36,15 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
     private AbstractTower selectedTower;
     private Image creditTexture;
+    private Image creditTexture2;
+    private Image creditTexture3;
     private Label creditLabel;
     private Image lifeTexture;
     private Label lifeLabel;
+    private Image store;
+    private Label towerPrice1;
+    private Label towerPrice2;
+
     private boolean isPaused;
 
     // Debug
@@ -65,29 +72,56 @@ public abstract class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         creditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture.setPosition(stage.getWidth() - 50, stage.getHeight() - 50);
+        creditTexture.setPosition(stage.getWidth() - 128, stage.getHeight() - 128);
         creditTexture.setScale(0.15F);
 
         lifeTexture = new Image(new Texture(Gdx.files.internal("textures/player/heart.png")));
-        lifeTexture.setPosition(Map.TOTAL_SIZE + 30, Map.TOTAL_SIZE - 50);
+        lifeTexture.setPosition(Map.TOTAL_SIZE + 96, Map.TOTAL_SIZE - 128);
         lifeTexture.setScale(0.15F);
 
         creditLabel = new Label(String.valueOf(gamePlay.getPlayer().getCredit()) ,new Skin(Gdx.files.internal("skin/uiskin.json")));
-        creditLabel.setPosition(creditTexture.getX() - 40, creditTexture.getY() + 15);
+        creditLabel.setPosition(creditTexture.getX() - 40, creditTexture.getY()+15);
         creditLabel.setFontScale(1.2F);
 
         lifeLabel = new Label(String.valueOf(gamePlay.getPlayer().getRemainingLives()), new Skin(Gdx.files.internal("skin/uiskin.json")));
         lifeLabel.setPosition(lifeTexture.getX() - 15, lifeTexture.getY() + 15);
         lifeLabel.setFontScale(1.2F);
 
+        AbstractTower simpleTower = new SimpleTower(new Position(863, 194), SimpleTower.price);
+        AbstractTower MoreDamageTower = new MoreDamageTower(new Position(863 + 128, 194), com.td.app.game.tower.MoreDamageTower.price);
+
+        towerPrice1 = new Label(String.valueOf(SimpleTower.price) ,new Skin(Gdx.files.internal("skin/uiskin.json")));
+        towerPrice1.setPosition(Map.TOTAL_SIZE + 96, 130);
+        towerPrice1.setFontScale(1.1F);
+        towerPrice2 = new Label(String.valueOf(((com.td.app.game.tower.MoreDamageTower) MoreDamageTower).price) ,new Skin(Gdx.files.internal("skin/uiskin.json")));
+        towerPrice2.setPosition(Map.TOTAL_SIZE + 96 + 128, 130);
+        towerPrice2.setFontScale(1.1F);
+
+        creditTexture2 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        creditTexture2.setPosition(towerPrice1.getX() + 32, towerPrice1.getY()-3);
+        creditTexture2.setScale(0.08F);
+        creditTexture3 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        creditTexture3.setPosition(towerPrice2.getX() + 32, towerPrice2.getY()-3);
+        creditTexture3.setScale(0.08F);
+
+        store = new Image(new Texture(Gdx.files.internal("textures/store/storeTest.png")));
+        store.setPosition(Map.TOTAL_SIZE, 0);
         AbstractTower simpleTower = new SimpleTower(new Position(Map.TOTAL_SIZE + 30, Map.TOTAL_SIZE - 300));
 
         stage.addActor(gamePlay.getMap());
+        stage.addActor(store);
         stage.addActor(lifeTexture);
         stage.addActor(lifeLabel);
         stage.addActor(creditTexture);
         stage.addActor(creditLabel);
         stage.addActor(simpleTower);
+        stage.addActor(MoreDamageTower);
+        stage.addActor(towerPrice1);
+        stage.addActor(towerPrice2);
+        stage.addActor(creditTexture3);
+        stage.addActor(creditTexture2);
+
+
 
         Gdx.input.setInputProcessor(this);
     }
