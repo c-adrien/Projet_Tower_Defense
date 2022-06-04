@@ -12,7 +12,7 @@ public class MoreDamageTower extends AbstractTower{
     private static final int PROJECTILE_RANGE = 100;
     private static final int PROJECTILE_DAMAGE = 100;
     public static final int TIMER = 150;
-    public static final int price = 150;
+    public static final int price = 50;
 
     public MoreDamageTower(Tile hostingTile, int positionX, int positionY) {
         super(PROJECTILE_SPEED, PROJECTILE_RANGE, PROJECTILE_DAMAGE, TIMER, price, hostingTile,

@@ -25,9 +25,7 @@ import com.td.app.game.Position;
 import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
-import com.td.app.game.tower.AbstractTower;
-import com.td.app.game.tower.MoreDamageTower;
-import com.td.app.game.tower.SimpleTower;
+import com.td.app.game.tower.*;
 
 public abstract class GameScreen implements Screen, InputProcessor {
     public TowerDefense game;
@@ -36,14 +34,26 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
     private AbstractTower selectedTower;
     private Image creditTexture;
-    private Image creditTexture2;
-    private Image creditTexture3;
     private Label creditLabel;
     private Image lifeTexture;
     private Label lifeLabel;
+
     private Image store;
+    private Image upgradeButton;
+    private Image sellButton;
+
+    private Image creditTexture1;
+    private Image creditTexture2;
+    private Image creditTexture3;
+    private Image creditTexture4;
+    private Image creditTexture5;
+    private Image creditTexture6;
     private Label towerPrice1;
     private Label towerPrice2;
+    private Label towerPrice3;
+    private Label towerPrice4;
+    private Label towerPrice5;
+    private Label towerPrice6;
 
     private boolean isPaused;
 
@@ -85,40 +95,72 @@ public abstract class GameScreen implements Screen, InputProcessor {
         lifeLabel.setPosition(lifeTexture.getX() - 15, lifeTexture.getY() + 15);
         lifeLabel.setFontScale(1.2F);
 
-        AbstractTower simpleTower = new SimpleTower(new Position(863, 194));
-        AbstractTower moreDamageTower = new MoreDamageTower(new Position(863 + 128, 194));
+        AbstractTower simpleTower = new SimpleTower(new Position(863, 544+1));
+        AbstractTower moreDamageTower = new MoreDamageTower(new Position(863 + 128, 544+1));
+        AbstractTower freezeTower = new FreezeTower(new Position(863 + 128 + 128, 544+1));
+        AbstractTower bombTower = new BombTower(new Position(863, 544+1 - 192));
 
         towerPrice1 = new Label(String.valueOf(SimpleTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
-        towerPrice1.setPosition(Map.TOTAL_SIZE + 96, 130);
+        towerPrice1.setPosition(863+3, 544+1-64);
         towerPrice1.setFontScale(1.1F);
 
         towerPrice2 = new Label(String.valueOf(MoreDamageTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
-        towerPrice2.setPosition(Map.TOTAL_SIZE + 96 + 128, 130);
+        towerPrice2.setPosition(863+3 + 128, 544+1-64);
         towerPrice2.setFontScale(1.1F);
 
+        towerPrice3 = new Label(String.valueOf(FreezeTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
+        towerPrice3.setPosition(863+3 + 128 + 128, 544+1-64);
+        towerPrice3.setFontScale(1.1F);
+
+        towerPrice4 = new Label(String.valueOf(BombTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
+        towerPrice4.setPosition(863+3 , 544+1-64 - 192);
+        towerPrice4.setFontScale(1.1F);
+
+        creditTexture1 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        creditTexture1.setPosition(towerPrice1.getX() + 32, towerPrice1.getY()-3);
+        creditTexture1.setScale(0.08F);
+
         creditTexture2 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture2.setPosition(towerPrice1.getX() + 32, towerPrice1.getY()-3);
+        creditTexture2.setPosition(towerPrice2.getX() + 32, towerPrice2.getY()-3);
         creditTexture2.setScale(0.08F);
 
         creditTexture3 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture3.setPosition(towerPrice2.getX() + 32, towerPrice2.getY()-3);
+        creditTexture3.setPosition(towerPrice3.getX() + 32, towerPrice3.getY()-3);
         creditTexture3.setScale(0.08F);
+
+        creditTexture4 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        creditTexture4.setPosition(towerPrice4.getX() + 32, towerPrice4.getY()-3);
+        creditTexture4.setScale(0.08F);
 
         store = new Image(new Texture(Gdx.files.internal("textures/store/storeTest.png")));
         store.setPosition(Map.TOTAL_SIZE, 0);
 
+        upgradeButton = new Image(new Texture(Gdx.files.internal("textures/store/upgradeButton.png")));
+        upgradeButton.setPosition(895, 768-577-64);
+
+        sellButton = new Image(new Texture(Gdx.files.internal("textures/store/sellButton.png")));
+        sellButton.setPosition(1087, 768-577-64);
+
         stage.addActor(gamePlay.getMap());
         stage.addActor(store);
+        stage.addActor(upgradeButton);
+        stage.addActor(sellButton);
         stage.addActor(lifeTexture);
         stage.addActor(lifeLabel);
         stage.addActor(creditTexture);
         stage.addActor(creditLabel);
         stage.addActor(simpleTower);
         stage.addActor(moreDamageTower);
+        stage.addActor(freezeTower);
+        stage.addActor(bombTower);
         stage.addActor(towerPrice1);
         stage.addActor(towerPrice2);
-        stage.addActor(creditTexture3);
+        stage.addActor(towerPrice3);
+        stage.addActor(towerPrice4);
+        stage.addActor(creditTexture1);
         stage.addActor(creditTexture2);
+        stage.addActor(creditTexture3);
+        stage.addActor(creditTexture4);
 
         Gdx.input.setInputProcessor(this);
     }
@@ -393,6 +435,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
             if(selectedTower != null && selectedTower != actor){
                 selectedTower.setSelected(false);
             }
+
             selectedTower = (AbstractTower) actor;
             selectedTower.setSelected(!selectedTower.isSelected());
         }
