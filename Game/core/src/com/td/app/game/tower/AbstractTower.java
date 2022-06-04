@@ -65,7 +65,7 @@ public abstract class AbstractTower extends Actor {
     }
 
     public StandardEnemy findTarget(ArrayList<StandardEnemy> enemies) {
-        // TODO: update target priority
+        StandardEnemy furthestEnnemy = null;
 
         for (StandardEnemy standardEnemy : enemies) {
             int enemyX = standardEnemy.getPosition().getX();
@@ -76,11 +76,43 @@ public abstract class AbstractTower extends Actor {
             );
 
             if(distance < projectileRange) {
-                return standardEnemy;
+                if (furthestEnnemy == null) {
+                    furthestEnnemy = standardEnemy;
+                } else {
+                    furthestEnnemy = furthestEnnemy(furthestEnnemy, standardEnemy);
+                }
             }
         }
 
-        return null;
+        return furthestEnnemy;
+    }
+
+    private StandardEnemy furthestEnnemy(StandardEnemy furthestEnnemy, StandardEnemy enemy) {
+        if (furthestEnnemy.getPosition().getX() > enemy.getPosition().getX()) {
+            return furthestEnnemy;
+        }
+        if (furthestEnnemy.getPosition().getX() < enemy.getPosition().getX()) {
+            return enemy;
+        }
+        if (furthestEnnemy.getPosition().getX() == enemy.getPosition().getX()) {
+            if (furthestEnnemy.getPosition().getAngle() == (3 * Math.PI) / 2 // Going downwards
+                && enemy.getPosition().getAngle() == (3 * Math.PI) / 2) {
+                if (furthestEnnemy.getPosition().getY() > enemy.getPosition().getY()) {
+                    return furthestEnnemy;
+                } else {
+                    return enemy;
+                }
+            }
+            if (furthestEnnemy.getPosition().getAngle() == Math.PI / 2 // Going upwards
+                && enemy.getPosition().getAngle() == Math.PI / 2) {
+                if (furthestEnnemy.getPosition().getY() < enemy.getPosition().getY()) {
+                    return furthestEnnemy;
+                } else {
+                    return enemy;
+                }
+            }
+        }
+        return furthestEnnemy;
     }
 
     public Projectile sendProjectile(StandardEnemy enemy){

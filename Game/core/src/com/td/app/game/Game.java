@@ -53,8 +53,6 @@ public class Game {
     public void initInfiniteWaves(int difficulty) {
         this.difficulty = difficulty;
         createRandomWave();
-
-
     }
 
     private void createRandomWave() {
@@ -68,11 +66,12 @@ public class Game {
 
     public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel) {
         // TODO display at which wave we are
-        updateCredit(creditLabel);
+
         updateTowers(stage);
         updateProjectiles(delta, stage);
         updateEnemies(delta, stage, lifeLabel);
         updateWaves(stage);
+        updateCredit(creditLabel);
     }
 
     // Player commands
