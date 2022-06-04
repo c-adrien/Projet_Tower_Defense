@@ -152,8 +152,6 @@ public abstract class GameScreen implements Screen, InputProcessor {
             final Image pauseGame = new Image(new Texture(Gdx.files.internal("textures/game/gamePause.png")));
             pauseGame.setScale(0.7F);
             pauseGame.setPosition(stage.getWidth() * 0.15F, stage.getHeight() * 0.15F);
-            // TODO remove debug
-            pauseGame.debug();
 
             final TextButton playButton = new TextButton("Play", new Skin(Gdx.files.internal("skin/uiskin.json")));
             final TextButton quitButton = new TextButton("Quit", new Skin(Gdx.files.internal("skin/uiskin.json")));
@@ -205,8 +203,6 @@ public abstract class GameScreen implements Screen, InputProcessor {
             }
             endGame.setScale(0.7F);
             endGame.setPosition(stage.getWidth() * 0.15F, stage.getHeight() * 0.15F);
-            // TODO remove debug
-            endGame.debug();
 
             TextButton exitButton = new TextButton("Exit", new Skin(Gdx.files.internal("skin/uiskin.json")));
             exitButton.addListener(new ClickListener() {
