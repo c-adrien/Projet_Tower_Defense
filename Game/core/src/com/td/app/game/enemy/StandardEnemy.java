@@ -87,7 +87,7 @@ public class StandardEnemy extends Actor {
         super.draw(batch, parentAlpha);
     }
 
-    public void freeze(int time){
+    public void freeze(int time) {
         this.freezeTime = elapsedTime + time;
     }
 
@@ -118,14 +118,14 @@ public class StandardEnemy extends Actor {
     }
 
     // TODO implement hit options
-    public void receiveProjectile(Projectile projectile, ArrayList<StandardEnemy> enemyArrayList){
+    public void receiveProjectile(Projectile projectile, ArrayList<StandardEnemy> enemyArrayList) {
         receiveDamage(projectile.getDamage());
 
-        if (projectile.getFreeze() > 0){
+        if (projectile.getFreeze() > 0) {
             freeze(projectile.getFreeze());
         }
 
-        if (projectile.getHitNeighboursInRange() > 0){
+        if (projectile.getHitNeighboursInRange() > 0) {
             impactNeighbours(enemyArrayList, projectile.getHitNeighboursInRange(), projectile.getDamage()/4);
         }
     }
@@ -153,11 +153,11 @@ public class StandardEnemy extends Actor {
 
         delta = delta * speed;
 
-        if(freezeTime > elapsedTime){
+        if (freezeTime > elapsedTime) {
             return true;
         }
 
-        if(isAlive && freezeTime <= 0) {
+        if (isAlive) {
 
             int x = this.position.getX();
             int y = this.position.getY();

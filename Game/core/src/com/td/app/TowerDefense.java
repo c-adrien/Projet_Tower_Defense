@@ -4,7 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
-import com.td.app.game.screen.*;
+import com.td.app.game.screen.game.ArcadeGameScreen;
+import com.td.app.game.screen.game.CampaignGameScreen;
+import com.td.app.game.screen.menu.*;
+
+import java.util.HashMap;
 
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
@@ -20,6 +24,7 @@ public class TowerDefense extends Game {
 	public TowerDefense() {
 		super();
 	}
+
 	@Override
 	public void create () {
 		pref = Gdx.app.getPreferences("towerDefensePrefs");
@@ -27,7 +32,6 @@ public class TowerDefense extends Game {
 		music.setVolume(0.7F);
 		music.setLooping(true);
 
-		// TODO Load sound files
 		SoundHandler.add("click", "sound/click_ogg.ogg");
 		SoundHandler.add("coins", "sound/coins_ogg.ogg");
 		SoundHandler.add("walking", "sound/walking_ogg.ogg");
@@ -41,15 +45,22 @@ public class TowerDefense extends Game {
 
 		if (!pref.contains("user")) {
 			setScreen(new NewUserScreen(this));
-			pref.putInteger("unlockedLevels", 1);
-			pref.putBoolean("music", true);
-			pref.putBoolean("sound", true);
+			pref.putInteger("unlockedLevels", 1); // Campaign unlocked levels
+			pref.putBoolean("bombTower", false); // Bomb tower locked
+			pref.putBoolean("freezeTower", false); // Freeze tower locked
+			pref.putBoolean("moreDamageTower", false); // MoreDamage tower locked
+			pref.putInteger("arcadeLevel1", 1); // Wave record on arcade level 1
+			pref.putInteger("arcadeLevel2", 1); // Wave record on arcade level 2
+			pref.putInteger("arcadeLevel3", 1); // Wave record on arcade level 3
+			pref.putBoolean("music", true); // Display music
+			pref.putBoolean("sound", true); // Display sound
+			pref.flush();
 		} else {
 			toStartMenu();
 		}
 
 //		toCampaignGameScreen(1);
-		toArcadeGameScreen(3);
+//		toArcadeGameScreen(3);
 	}
 
 	@Override
@@ -82,8 +93,9 @@ public class TowerDefense extends Game {
 		campaignGameScreen = new CampaignGameScreen(this, level);
 		setScreen(campaignGameScreen);
 	}
-	public void toArcadeGameScreen(int difficulty) {
-		arcadeGameScreen = new ArcadeGameScreen(this, difficulty);
+
+	public void toArcadeGameScreen(int level) {
+		arcadeGameScreen = new ArcadeGameScreen(this, level);
 		setScreen(arcadeGameScreen);
 	}
 

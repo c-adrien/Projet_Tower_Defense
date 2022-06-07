@@ -1,4 +1,4 @@
-package com.td.app.game.screen;
+package com.td.app.game.screen.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.td.app.Helper;
 import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.ScreenButtonTexture;
@@ -130,71 +131,60 @@ public class SettingsScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // TODO update sound pref
         Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
         Actor actor = stage.hit(hover.x,hover.y,true);
 
         if (actor instanceof ScreenButtonTexture) {
             ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
             if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 game.toStartMenu();
                 dispose();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.MUSICON) {
-                Iterator<Actor> it = stage.getActors().iterator();
-                while (it.hasNext()) {
-                    if (it.next().equals(musicDisplay)) {
-                        it.remove();
-                        musicDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
-                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
-                        stage.addActor(musicDisplay);
-                        break;
-                    }
-                }
+                SoundHandler.play("click");
+                Helper.removeActorFromStage(musicDisplay, stage);
+
+                musicDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.MUSICOFF);
+                musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+                stage.addActor(musicDisplay);
+
                 TowerDefense.music.stop();
                 TowerDefense.pref.putBoolean("music", false);
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.MUSICOFF) {
-                Iterator<Actor> it = stage.getActors().iterator();
-                while (it.hasNext()) {
-                    if (it.next().equals(musicDisplay)) {
-                        it.remove();
-                        musicDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.MUSICON);
-                        musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
-                        stage.addActor(musicDisplay);
-                        break;
-                    }
-                }
+                SoundHandler.play("click");
+                Helper.removeActorFromStage(musicDisplay, stage);
+
+                musicDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.MUSICON);
+                musicDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.58F);
+                stage.addActor(musicDisplay);
+
                 TowerDefense.music.play();
                 TowerDefense.pref.putBoolean("music", true);
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SOUNDON) {
-                Iterator<Actor> it = stage.getActors().iterator();
-                while (it.hasNext()) {
-                    if (it.next().equals(soundDisplay)) {
-                        it.remove();
-                        soundDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.SOUNDOFF);
-                        soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
-                        stage.addActor(soundDisplay);
-                        break;
-                    }
-                }
+                SoundHandler.play("click");
+                Helper.removeActorFromStage(soundDisplay, stage);
+
+                soundDisplay = new ScreenButtonTexture("textures/button/soundOff.png", ScreenButtonTexture.ButtonType.SOUNDOFF);
+                soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
+                stage.addActor(soundDisplay);
+
                 SoundHandler.pauseAll();
                 TowerDefense.pref.putBoolean("sound", false);
                 TowerDefense.pref.flush();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SOUNDOFF) {
-                Iterator<Actor> it = stage.getActors().iterator();
-                while (it.hasNext()) {
-                    if (it.next().equals(soundDisplay)) {
-                        it.remove();
-                        soundDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.SOUNDON);
-                        soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
-                        stage.addActor(soundDisplay);
-                        break;
-                    }
-                }
+                Helper.removeActorFromStage(soundDisplay, stage);
+                SoundHandler.play("click");
+
+                soundDisplay = new ScreenButtonTexture("textures/button/soundOn.png", ScreenButtonTexture.ButtonType.SOUNDON);
+                soundDisplay.setPosition(stage.getWidth() * 0.6F, stage.getHeight() * 0.34F);
+                stage.addActor(soundDisplay);
+
                 SoundHandler.playAll();
                 TowerDefense.pref.putBoolean("sound", true);
                 TowerDefense.pref.flush();
             } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.NEWGAME) {
+                SoundHandler.play("click");
                 Gdx.input.setInputProcessor(null);
                 TowerDefense.music.stop();
                 game.newGame();

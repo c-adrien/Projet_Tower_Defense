@@ -31,6 +31,7 @@ public class SimpleTower extends AbstractTower {
     @Override
     public void upgrade() {
         level++;
-        projectileDamage += 5;
+        projectileDamage += 10;
+        updatePrices();
     }
 }

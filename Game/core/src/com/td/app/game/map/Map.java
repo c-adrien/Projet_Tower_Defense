@@ -121,7 +121,7 @@ public class Map extends Actor {
             /*=========
              === UP ===
              =========*/
-            if(direction == up && i>1){
+            if(direction == up && i > 1){
                 if (map[i-1][j].getTexture().toString().contains("DALLE")){
                     i--; // ↑
                     map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
@@ -133,11 +133,11 @@ public class Map extends Actor {
 
                     int nbVertical = new Random().nextInt(nbTiles) - i;
                     for (int k = 0; k <  nbVertical; k++) {
-                        i--;
                         if (i <= 1) {
                             map[i][j] = new Tile(MapElements.CHEMIN_BAS_DROITE);
                             break;
                         }
+                        i--;
                         map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
                     }
                 }
@@ -146,7 +146,7 @@ public class Map extends Actor {
             /*===========
              === DOWN ===
              ===========*/
-            else if(direction == down && i<nbTiles-2){
+            else if(direction == down && i < nbTiles - 2){
                 if (map[i+1][j].getTexture().toString().contains("DALLE")){
                     i++; // ↓
                     map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
@@ -158,11 +158,11 @@ public class Map extends Actor {
 
                     int nbVertical = new Random().nextInt(nbTiles) - i;
                     for (int k = 0; k <  nbVertical; k++) {
-                        i++;
                         if (i >= nbTiles - 2) {
                             map[i][j] = new Tile(MapElements.CHEMIN_HAUT_DROITE);
                             break;
                         }
+                        i++;
                         map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
                     }
                 }
@@ -180,7 +180,7 @@ public class Map extends Actor {
                 }
 
                 double toFill = Math.random();
-                double chanceOfElt = 0.20;
+                double chanceOfElt = 0.10;
                 double chanceOfGrass = 0.90;
                 if (map[k][l].getTexture().toString().contains("DALLE")){
                     if (toFill>chanceOfGrass){

@@ -1,4 +1,4 @@
-package com.td.app.game.screen;
+package com.td.app.game.screen.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

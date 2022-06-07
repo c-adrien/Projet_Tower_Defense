@@ -27,8 +27,8 @@ public abstract class AbstractTower extends Actor {
     private int INITIAL_TIMER;
     private int timer;
     private int price;
-    private int sellPrice = (price - 5) * level ;
-    private int upgradePrice = price + (10*level);
+    private int sellPrice;
+    private int upgradePrice;
     private Tile hostingTile;
     private boolean isSelected;
 
@@ -42,18 +42,22 @@ public abstract class AbstractTower extends Actor {
         this.projectileSpeed = projectileSpeed;
         this.projectileRange = projectileRange;
         this.projectileDamage = projectileDamage;
+
         this.timer = timer;
         this.INITIAL_TIMER = timer;
+
         this.price = price;
+        this.sellPrice = Math.round(0.7F * price);
+        this.upgradePrice = price + (10 * level);
+
         this.hostingTile = hostingTile;
         hostingTile.setOccupied(true);
-
         this.texture = new Texture(Gdx.files.internal(imgPath));
         this.position = new Position(X, Y);
     }
 
     /**
-     * Constructor for texture shop
+     * Constructor for tower's texture only in shop
      * @param texture tower's texture
      * @param position tower's position
      * @param price tower's price
@@ -118,48 +122,58 @@ public abstract class AbstractTower extends Actor {
     public Projectile sendProjectile(StandardEnemy enemy){
         return new Projectile(enemy, projectileDamage, projectileSpeed,
                 new Position(getPosition().getX() + PROJECTILE_OFFSET_X,
-                        getPosition().getY() + PROJECTILE_OFFSET_Y));
-
+                        getPosition().getY() + PROJECTILE_OFFSET_Y)
+        );
     }
 
     public abstract AbstractTower createTower(Tile hostingTile, int positionX, int positionY);
 
-    public boolean canUpgrade(Player player){
+    public boolean canUpgrade(Player player) {
         return level < MAXIMUM_LEVEL && player.getCredit() >= upgradePrice;
     }
 
     public abstract void upgrade();
 
+    public void updatePrices() {
+        sellPrice = Math.round(0.7F * upgradePrice); // Actual turret's price after upgrade
+        upgradePrice = price + (10 * level);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if(isSelected){
-
-            batch.end(); // pause batch drawing and start shape drawing
-
-            // Init renderer
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.FIREBRICK);
-            shapeRenderer.circle(position.getX() + 32, position.getY() + 32, projectileRange);
-            shapeRenderer.end();
-
-            batch.begin(); // restart batch drawing
+        if (isSelected) {
+            drawRange(batch);
         }
 
         setBounds(position.getX(), position.getY(), texture.getWidth(), texture.getHeight());
         sprite = new Sprite(texture);
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
-                texture.getWidth(), texture.getHeight(), 1, 1,0);
+                texture.getWidth(), texture.getHeight(), 1, 1,0
+        );
+
         super.draw(batch, parentAlpha);
+    }
+
+    private void drawRange(Batch batch) {
+        batch.end(); // Pause batch drawing and start shape drawing
+
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.FIREBRICK);
+        shapeRenderer.circle(position.getX() + 32, position.getY() + 32, projectileRange);
+        shapeRenderer.end();
+
+        batch.begin(); // Restart batch drawing
     }
 
     public void destroy(){
         texture.dispose();
     }
 
+    // Getter & Setter
     //========================================================
 
     public int getLevel() {

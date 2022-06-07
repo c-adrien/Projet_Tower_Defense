@@ -7,13 +7,12 @@ import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Tile;
 
 public class FreezeTower extends AbstractTower {
-
     private static final String IMAGE_PATH = "textures/tower/freeze_tower.png";
     private static final int PROJECTILE_SPEED = 200;
     private static final int PROJECTILE_RANGE = 100;
     private static final int PROJECTILE_DAMAGE = 5;
-    public static final int TIMER = 50;
-    public static final int price = 30;
+    public static final int TIMER = 120;
+    public static final int price = 100;
 
     private int FREEZE = 1;
 
@@ -31,6 +30,7 @@ public class FreezeTower extends AbstractTower {
     public void upgrade() {
         level++;
         FREEZE++;
+        updatePrices();
     }
 
     @Override

@@ -31,5 +31,6 @@ public class MoreDamageTower extends AbstractTower{
     public void upgrade() {
         level++;
         projectileDamage += 25;
+        updatePrices();
     }
 }

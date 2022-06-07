@@ -27,6 +27,7 @@ public class Game {
 
     private LinkedList<Wave> waves = new LinkedList<>();
     private Wave actualWave;
+    private int waveNumber = 1;
     private int difficulty;
     private int numberOfEnnemies = 5;
 
@@ -64,13 +65,11 @@ public class Game {
         SoundHandler.playLooping("walking");
     }
 
-    public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel) {
-        // TODO display at which wave we are
-
+    public void update(Stage stage, float delta, Label creditLabel, Label lifeLabel, Label waveNumberLabel) {
         updateTowers(stage);
         updateProjectiles(delta, stage);
         updateEnemies(delta, stage, lifeLabel);
-        updateWaves(stage);
+        updateWaves(stage, waveNumberLabel);
         updateCredit(creditLabel);
     }
 
@@ -107,6 +106,19 @@ public class Game {
                 }
             }
         }
+    }
+
+    public void upgradeTower(AbstractTower tower) {
+        if (tower.canUpgrade(player)) {
+            player.removeCredit(tower.getUpgradePrice());
+            tower.upgrade();
+        }
+    }
+
+    public void sellTower(AbstractTower tower, Stage stage) {
+        player.addCredit(tower.getSellPrice());
+        tower.getHostingTile().setOccupied(false);
+        removeTower(tower, stage);
     }
 
     public void addTower(AbstractTower tower){
@@ -171,7 +183,7 @@ public class Game {
     // Waves
     //======================================================
 
-    public void updateWaves(Stage stage) {
+    public void updateWaves(Stage stage, Label waveNumberLabel) {
         if (!actualWave.isOver()) {
             if (!actualWave.getEnemies().isEmpty()) {
                 java.util.Map.Entry<StandardEnemy, Integer> enemy;
@@ -185,6 +197,8 @@ public class Game {
             } else if (enemyArrayList.isEmpty()) {
                 SoundHandler.stop("walking");
                 actualWave.waveEnded();
+                waveNumber++;
+                waveNumberLabel.setText("Wave: " + waveNumber);
             }
         } else if (waves.size() != 0) {
             if (--delayBeforeNextWave <= 0) {
@@ -235,6 +249,10 @@ public class Game {
     }
     public Player getPlayer() {
         return player;
+    }
+
+    public int getWaveNumber() {
+        return waveNumber;
     }
 
     public ArrayList<StandardEnemy> getEnemyArrayList() {

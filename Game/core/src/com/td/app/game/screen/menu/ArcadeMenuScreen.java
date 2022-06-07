@@ -1,4 +1,4 @@
-package com.td.app.game.screen;
+package com.td.app.game.screen.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,42 +13,37 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.gui.ScreenButtonTexture;
-import com.td.app.game.gui.CampaignLevel;
+import com.td.app.game.gui.level.ArcadeLevel;
 
-public class CampaignMenuScreen implements Screen, InputProcessor {
+public class ArcadeMenuScreen implements Screen, InputProcessor {
     public TowerDefense game;
     private Stage stage;
     private Image background;
     private ScreenButtonTexture backButton;
-    private final int NUMBER_OF_LEVEL = 10;
 
-    public CampaignMenuScreen(TowerDefense game) {
+    public ArcadeMenuScreen(TowerDefense game) {
         this.game = game;
     }
 
     @Override
     public void show() {
-        stage = new Stage();
+        if (stage == null) {
+            stage = new Stage();
+            background = new Image(new Texture(Gdx.files.internal("textures/menu/arcadeMenu.png")));
 
-        background = new Image(new Texture(Gdx.files.internal("textures/menu/campaignMenu.png")));
-        backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
-        backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
+            backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
+            backButton.setPosition(stage.getWidth() / 30, stage.getHeight() / 30);
 
-        stage.addActor(background);
-        stage.addActor(backButton);
+            stage.addActor(background);
+            stage.addActor(backButton);
 
-        for (int i = 0; i < TowerDefense.pref.getInteger("unlockedLevels"); i++) {
-            CampaignLevel levelButton = new CampaignLevel(String.format("textures/level/level%s.png", i + 1), i + 1);
-            levelButton.unlockLevel();
-            levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
-            stage.addActor(levelButton);
+            for (int i = 1; i < 4; i++) {
+                ArcadeLevel levelButton = new ArcadeLevel(String.format("textures/level/level%s.png", i), i);
+                levelButton.setPosition(((i % 4) * stage.getWidth() / 4) - 50, stage.getHeight() / 4);
+                stage.addActor(levelButton);
+            }
+
         }
-        for (int i = TowerDefense.pref.getInteger("unlockedLevels"); i < NUMBER_OF_LEVEL; i++) {
-            CampaignLevel levelButton = new CampaignLevel("textures/level/lock.png", i + 1);
-            levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
-            stage.addActor(levelButton);
-        }
-
         Gdx.input.setInputProcessor(this);
     }
 
@@ -56,6 +51,7 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.draw();
     }
 
@@ -91,9 +87,7 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
             Gdx.input.setInputProcessor(null);
             game.toStartMenu();
             dispose();
-            return true;
         }
-
         return false;
     }
 
@@ -126,14 +120,12 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
                 dispose();
             }
         }
-        if (actor instanceof CampaignLevel) {
-            CampaignLevel level = (CampaignLevel) actor;
-            if (!level.isLocked()) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toCampaignGameScreen(level.getLevel());
-                dispose();
-            }
+
+        if (actor instanceof ArcadeLevel) {
+            ArcadeLevel level = (ArcadeLevel) actor;
+            Gdx.input.setInputProcessor(null);
+            game.toArcadeGameScreen(level.getLEVEL());
+            dispose();
         }
         return false;
     }

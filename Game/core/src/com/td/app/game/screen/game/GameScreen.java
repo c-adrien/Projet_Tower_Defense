@@ -1,4 +1,4 @@
-package com.td.app.game.screen;
+package com.td.app.game.screen.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -23,6 +23,7 @@ import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.Position;
 import com.td.app.game.enemy.StandardEnemy;
+import com.td.app.game.gui.ShopButton;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
 import com.td.app.game.tower.*;
@@ -30,30 +31,38 @@ import com.td.app.game.tower.*;
 public abstract class GameScreen implements Screen, InputProcessor {
     public TowerDefense game;
     protected Game gamePlay;
-    private Stage stage;
+    protected Stage stage;
     private SpriteBatch batch;
     private AbstractTower selectedTower;
     private Image creditTexture;
     private Label creditLabel;
     private Image lifeTexture;
     private Label lifeLabel;
+    protected Label waveNumberLabel;
+
+    private AbstractTower moreDamageTower;
+    private AbstractTower freezeTower;
+    private AbstractTower bombTower;
 
     private Image store;
     private Image upgradeButton;
     private Image sellButton;
+    private Image selectedTowerPointer;
 
-    private Image creditTexture1;
-    private Image creditTexture2;
-    private Image creditTexture3;
-    private Image creditTexture4;
-    private Image creditTexture5;
-    private Image creditTexture6;
-    private Label towerPrice1;
-    private Label towerPrice2;
-    private Label towerPrice3;
-    private Label towerPrice4;
-    private Label towerPrice5;
-    private Label towerPrice6;
+    private Image simpleTowerCreditTexture;
+    private Image moreDamageTowerCreditTexture;
+    private Image freezeTowerCreditTexture;
+    private Image bombTowerCreditTexture;
+
+    private Label simpleTowerPrice;
+    private Label moreDamageTowerPrice;
+    private Label freezeTowerPrice;
+    private Label bombTowerPrice;
+
+    private Label upgradePrice;
+    private Image updradeCreditTexture;
+    private Label sellPrice;
+    private Image sellCreditTexture;
 
     private boolean isPaused;
 
@@ -69,6 +78,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
         this.game = game;
 
         // Debug
+        // TODO suppr it
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -78,6 +88,15 @@ public abstract class GameScreen implements Screen, InputProcessor {
     public void show() {
         stage = new Stage();
         batch = new SpriteBatch();
+
+        store = new Image(new Texture(Gdx.files.internal("textures/store/store.png")));
+        store.setPosition(Map.TOTAL_SIZE, 0);
+
+        upgradeButton = new ShopButton("textures/store/upgradeButton.png", ShopButton.ShopButtonType.UPGRADE);
+        upgradeButton.setPosition(895, 768-577-64);
+
+        sellButton = new ShopButton("textures/store/sellButton.png", ShopButton.ShopButtonType.SELL);
+        sellButton.setPosition(1087, 768-577-64);
 
         creditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
         creditTexture.setPosition(stage.getWidth() - 128, stage.getHeight() - 128);
@@ -95,72 +114,101 @@ public abstract class GameScreen implements Screen, InputProcessor {
         lifeLabel.setPosition(lifeTexture.getX() - 15, lifeTexture.getY() + 15);
         lifeLabel.setFontScale(1.2F);
 
-        AbstractTower simpleTower = new SimpleTower(new Position(863, 544+1));
-        AbstractTower moreDamageTower = new MoreDamageTower(new Position(863 + 128, 544+1));
-        AbstractTower freezeTower = new FreezeTower(new Position(863 + 128 + 128, 544+1));
-        AbstractTower bombTower = new BombTower(new Position(863, 544+1 - 192));
+        waveNumberLabel = new Label("Wave: " + gamePlay.getWaveNumber(), new Skin(Gdx.files.internal("skin/uiskin.json")));
+        waveNumberLabel.setPosition(lifeTexture.getX() + 130, lifeTexture.getY() + 30);
 
-        towerPrice1 = new Label(String.valueOf(SimpleTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
-        towerPrice1.setPosition(863+3, 544+1-64);
-        towerPrice1.setFontScale(1.1F);
+        selectedTowerPointer = new Image(new Texture(Gdx.files.internal("textures/menu/pointer.png")));
+        selectedTowerPointer.setPosition(-100, -100);
+        selectedTowerPointer.setScale(0.4F);
 
-        towerPrice2 = new Label(String.valueOf(MoreDamageTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
-        towerPrice2.setPosition(863+3 + 128, 544+1-64);
-        towerPrice2.setFontScale(1.1F);
+        upgradePrice = new Label("0", new Skin(Gdx.files.internal("skin/uiskin.json")));
+        upgradePrice.setPosition(upgradeButton.getX() + 10, upgradeButton.getY() - 42);
 
-        towerPrice3 = new Label(String.valueOf(FreezeTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
-        towerPrice3.setPosition(863+3 + 128 + 128, 544+1-64);
-        towerPrice3.setFontScale(1.1F);
+        updradeCreditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        updradeCreditTexture.setScale(0.08F);
+        updradeCreditTexture.setPosition(upgradePrice.getX() + 20, upgradePrice.getY() - 3);
 
-        towerPrice4 = new Label(String.valueOf(BombTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
-        towerPrice4.setPosition(863+3 , 544+1-64 - 192);
-        towerPrice4.setFontScale(1.1F);
+        sellPrice = new Label("0", new Skin(Gdx.files.internal("skin/uiskin.json")));
+        sellPrice.setPosition(sellButton.getX() + 10, sellButton.getY() - 42);
 
-        creditTexture1 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture1.setPosition(towerPrice1.getX() + 32, towerPrice1.getY()-3);
-        creditTexture1.setScale(0.08F);
-
-        creditTexture2 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture2.setPosition(towerPrice2.getX() + 32, towerPrice2.getY()-3);
-        creditTexture2.setScale(0.08F);
-
-        creditTexture3 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture3.setPosition(towerPrice3.getX() + 32, towerPrice3.getY()-3);
-        creditTexture3.setScale(0.08F);
-
-        creditTexture4 = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
-        creditTexture4.setPosition(towerPrice4.getX() + 32, towerPrice4.getY()-3);
-        creditTexture4.setScale(0.08F);
-
-        store = new Image(new Texture(Gdx.files.internal("textures/store/storeTest.png")));
-        store.setPosition(Map.TOTAL_SIZE, 0);
-
-        upgradeButton = new Image(new Texture(Gdx.files.internal("textures/store/upgradeButton.png")));
-        upgradeButton.setPosition(895, 768-577-64);
-
-        sellButton = new Image(new Texture(Gdx.files.internal("textures/store/sellButton.png")));
-        sellButton.setPosition(1087, 768-577-64);
+        sellCreditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        sellCreditTexture.setScale(0.08F);
+        sellCreditTexture.setPosition(sellPrice.getX() + 20, sellPrice.getY() - 3);
 
         stage.addActor(gamePlay.getMap());
         stage.addActor(store);
         stage.addActor(upgradeButton);
         stage.addActor(sellButton);
-        stage.addActor(lifeTexture);
-        stage.addActor(lifeLabel);
         stage.addActor(creditTexture);
+        stage.addActor(lifeTexture);
         stage.addActor(creditLabel);
+        stage.addActor(lifeLabel);
+        stage.addActor(waveNumberLabel);
+        stage.addActor(upgradePrice);
+        stage.addActor(updradeCreditTexture);
+        stage.addActor(sellPrice);
+        stage.addActor(sellCreditTexture);
+
+        AbstractTower simpleTower = new SimpleTower(new Position(863, 544 + 1));
+
+        simpleTowerPrice = new Label(String.valueOf(SimpleTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
+        simpleTowerPrice.setPosition(863 + 3, 544 + 1 - 64);
+        simpleTowerPrice.setFontScale(1.1F);
+
+        simpleTowerCreditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+        simpleTowerCreditTexture.setPosition(simpleTowerPrice.getX() + 32, simpleTowerPrice.getY() - 3);
+        simpleTowerCreditTexture.setScale(0.08F);
+
         stage.addActor(simpleTower);
-        stage.addActor(moreDamageTower);
-        stage.addActor(freezeTower);
-        stage.addActor(bombTower);
-        stage.addActor(towerPrice1);
-        stage.addActor(towerPrice2);
-        stage.addActor(towerPrice3);
-        stage.addActor(towerPrice4);
-        stage.addActor(creditTexture1);
-        stage.addActor(creditTexture2);
-        stage.addActor(creditTexture3);
-        stage.addActor(creditTexture4);
+        stage.addActor(simpleTowerPrice);
+        stage.addActor(simpleTowerCreditTexture);
+
+        if (TowerDefense.pref.getBoolean("moreDamageTower")) {
+            moreDamageTower = new MoreDamageTower(new Position(863 + 128, 544 + 1));
+            moreDamageTowerPrice = new Label(String.valueOf(MoreDamageTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
+            moreDamageTowerPrice.setPosition(863 + 3 + 128, 544 + 1 - 64);
+            moreDamageTowerPrice.setFontScale(1.1F);
+
+            moreDamageTowerCreditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+            moreDamageTowerCreditTexture.setPosition(moreDamageTowerPrice.getX() + 32, moreDamageTowerPrice.getY() - 3);
+            moreDamageTowerCreditTexture.setScale(0.08F);
+
+            stage.addActor(moreDamageTower);
+            stage.addActor(moreDamageTowerPrice);
+            stage.addActor(moreDamageTowerCreditTexture);
+        }
+
+        if (TowerDefense.pref.getBoolean("freezeTower")) {
+            freezeTower = new FreezeTower(new Position(863 + 128 + 128, 544 + 1));
+            freezeTowerPrice = new Label(String.valueOf(FreezeTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
+            freezeTowerPrice.setPosition(863 + 3 + 128 + 128, 544 + 1 - 64);
+            freezeTowerPrice.setFontScale(1.1F);
+
+            freezeTowerCreditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+            freezeTowerCreditTexture.setPosition(freezeTowerPrice.getX() + 32, freezeTowerPrice.getY() - 3);
+            freezeTowerCreditTexture.setScale(0.08F);
+
+            stage.addActor(freezeTower);
+            stage.addActor(freezeTowerPrice);
+            stage.addActor(freezeTowerCreditTexture);
+        }
+
+        if (TowerDefense.pref.getBoolean("bombTower")) {
+            bombTower = new BombTower(new Position(863, 544 + 1 - 192));
+            bombTowerPrice = new Label(String.valueOf(BombTower.price), new Skin(Gdx.files.internal("skin/uiskin.json")));
+            bombTowerPrice.setPosition(863 + 3 , 544 + 1 - 64 - 192);
+            bombTowerPrice.setFontScale(1.1F);
+
+            bombTowerCreditTexture = new Image(new Texture(Gdx.files.internal("textures/player/coin.png")));
+            bombTowerCreditTexture.setPosition(bombTowerPrice.getX() + 32, bombTowerPrice.getY() - 3);
+            bombTowerCreditTexture.setScale(0.08F);
+
+            stage.addActor(bombTower);
+            stage.addActor(bombTowerPrice);
+            stage.addActor(bombTowerCreditTexture);
+        }
+
+        stage.addActor(selectedTowerPointer);
 
         Gdx.input.setInputProcessor(this);
     }
@@ -176,15 +224,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
     }
 
     private void updateStage(float delta) {
-        gamePlay.update(stage, delta, creditLabel, lifeLabel);
-
-        if (selectedTower != null) {
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(0, 0, 1, 1);
-            shapeRenderer.rect(selectedTower.getX(), selectedTower.getY(), selectedTower.getWidth(), selectedTower.getHeight());
-            shapeRenderer.end();
-        }
-
+        gamePlay.update(stage, delta, creditLabel, lifeLabel, waveNumberLabel);
     }
 
     private void pauseScreen() {
@@ -383,8 +423,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
         System.out.println(actor.getClass());
 
-        if(actor instanceof Map){
-
+        if (actor instanceof Map) {
             if(selectedTower != null){
                 selectedTower.setSelected(false);
             }
@@ -397,7 +436,6 @@ public abstract class GameScreen implements Screen, InputProcessor {
 //            int column = x;
 
             Tile tile = gamePlay.getMap().getTileFromPosition(screenX, screenY);
-
             if(tile.isSelected() && !tile.isOccupied()){
                 if (selectedTower != null) {
                     AbstractTower tower = gamePlay.placeTower(selectedTower, tile, screenX, screenY);
@@ -427,13 +465,34 @@ public abstract class GameScreen implements Screen, InputProcessor {
         }
 
         // Select tower
-        else if (actor instanceof AbstractTower) {
-            if(selectedTower != null && selectedTower != actor){
+        if (actor instanceof AbstractTower) {
+            if (selectedTower != null && selectedTower != actor) {
                 selectedTower.setSelected(false);
             }
 
             selectedTower = (AbstractTower) actor;
             selectedTower.setSelected(!selectedTower.isSelected());
+
+            if (selectedTower.getPosition().getX() > Map.TOTAL_SIZE) { // Shop tower selected
+                selectedTowerPointer.setPosition(selectedTower.getPosition().getX() - 50, selectedTower.getPosition().getY() + 10);
+                upgradePrice.setText("0");
+                sellPrice.setText("0");
+            } else {
+                upgradePrice.setText(selectedTower.getUpgradePrice());
+                sellPrice.setText(selectedTower.getSellPrice());
+            }
+        }
+
+        if (actor instanceof ShopButton) {
+            ShopButton shopButton = (ShopButton) actor;
+
+            if (shopButton.getType().equals(ShopButton.ShopButtonType.SELL) && selectedTower.isSelected()) {
+                gamePlay.sellTower(selectedTower, stage);
+            }
+
+            if (shopButton.getType().equals(ShopButton.ShopButtonType.UPGRADE) && selectedTower.isSelected()) {
+                gamePlay.upgradeTower(selectedTower);
+            }
         }
 
         return false;

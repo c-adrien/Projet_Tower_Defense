@@ -7,13 +7,12 @@ import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.map.Tile;
 
 public class BombTower extends AbstractTower {
-
     private static final String IMAGE_PATH = "textures/tower/bomb_tower.png";
     private static final int PROJECTILE_SPEED = 100;
     private static final int PROJECTILE_RANGE = 200;
     private static final int PROJECTILE_DAMAGE = 40;
     public static final int TIMER = 100;
-    public static final int price = 40;
+    public static final int price = 120;
 
     private int HIT_NEIGHBOURS_IN_RANGE = 100;
 
@@ -29,7 +28,8 @@ public class BombTower extends AbstractTower {
     @Override
     public void upgrade() {
         level++;
-        projectileDamage += 10;
+        projectileDamage += 12;
+        updatePrices();
     }
 
     @Override
