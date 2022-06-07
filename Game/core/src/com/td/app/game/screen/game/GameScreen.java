@@ -231,7 +231,13 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
         // Automatically update prices
         if(selectedTower != null) {
-            upgradePrice.setText(selectedTower.getUpgradePrice());
+            if(selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL){
+                upgradePrice.setText("--");
+            }
+            else {
+                upgradePrice.setText(selectedTower.getUpgradePrice());
+            }
+
             sellPrice.setText(selectedTower.getSellPrice());
             selectedTowerLevel.setText("Level: "+selectedTower.getLevel());
         }
@@ -443,7 +449,13 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 sellPrice.setText("0");
                 selectedTowerLevel.setText("");
             } else {
-                upgradePrice.setText(selectedTower.getUpgradePrice());
+                if(selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL){
+                    upgradePrice.setText("--");
+                }
+                else {
+                    upgradePrice.setText(selectedTower.getUpgradePrice());
+                }
+
                 sellPrice.setText(selectedTower.getSellPrice());
                 selectedTowerLevel.setText("Level: "+selectedTower.getLevel());
             }

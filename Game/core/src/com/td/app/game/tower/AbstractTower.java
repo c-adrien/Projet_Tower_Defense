@@ -19,7 +19,7 @@ public abstract class AbstractTower extends Actor {
     public static int GAME_SPEED = 1;
 
     protected int level = 1;
-    private final int MAXIMUM_LEVEL = 5;
+    public static final int MAXIMUM_LEVEL = 5;
     protected static final int PROJECTILE_OFFSET_X = 16;
     protected static final int PROJECTILE_OFFSET_Y = 16;
     protected int projectileSpeed;
