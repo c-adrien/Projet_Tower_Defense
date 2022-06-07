@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 
 public abstract class AbstractTower extends Actor {
+    public static int GAME_SPEED = 1;
+
     protected int level = 1;
     private final int MAXIMUM_LEVEL = 5;
     protected static final int PROJECTILE_OFFSET_X = 16;
@@ -33,6 +35,7 @@ public abstract class AbstractTower extends Actor {
     private boolean isSelected;
 
     private Position position;
+
 
     private Texture texture;
     private Sprite sprite;
@@ -185,7 +188,7 @@ public abstract class AbstractTower extends Actor {
     }
 
     public int getTimer() {
-        return timer;
+        return timer / GAME_SPEED;
     }
 
     public void setTimer(int timer) {

@@ -257,4 +257,8 @@ public class Game {
     public ArrayList<StandardEnemy> getEnemyArrayList() {
         return enemyArrayList;
     }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
 }

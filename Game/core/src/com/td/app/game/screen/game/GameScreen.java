@@ -21,6 +21,7 @@ import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.Position;
+import com.td.app.game.gui.ScreenButtonTexture;
 import com.td.app.game.gui.ShopButton;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
@@ -62,10 +63,14 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private Label sellPrice;
     private Image sellCreditTexture;
 
+    private ScreenButtonTexture speedController;
+    private int speed;
+
     private boolean isPaused;
 
     public GameScreen(TowerDefense game) {
         this.game = game;
+        this.speed = 1;
     }
 
     public abstract void initGamePlay(Map map, int level);
@@ -77,6 +82,11 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
         store = new Image(new Texture(Gdx.files.internal("textures/store/store.png")));
         store.setPosition(Map.TOTAL_SIZE, 0);
+
+        speedController = new ScreenButtonTexture("textures/button/speedButton.png",
+                ScreenButtonTexture.ButtonType.SPEED_CONTROLLER);
+        speedController.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
+        speedController.setSize(40, 40);
 
         upgradeButton = new ShopButton("textures/store/upgradeButton.png", ShopButton.ShopButtonType.UPGRADE);
         upgradeButton.setPosition(895, 768-577-64);
@@ -122,6 +132,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
         sellCreditTexture.setPosition(sellPrice.getX() + 20, sellPrice.getY() - 3);
 
         stage.addActor(gamePlay.getMap());
+
+        stage.addActor(speedController);
         stage.addActor(store);
         stage.addActor(upgradeButton);
         stage.addActor(sellButton);
@@ -210,6 +222,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
     }
 
     private void updateStage(float delta) {
+        delta *= speed;
+
         // Automatically update prices
         if(selectedTower != null) {
             upgradePrice.setText(selectedTower.getUpgradePrice());
@@ -284,7 +298,17 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     SoundHandler.stopAll();
                     Gdx.input.setInputProcessor(null);
-                    game.toStartMenu();
+
+                    if(gamePlay.getGameMode() == Game.GameMode.ARCADE){
+                        game.toArcadeMenuScreen();
+                    }
+                    else if(gamePlay.getGameMode() == Game.GameMode.CAMPAIGN){
+                        game.toCampaignMenuScreen();
+                    }
+                    else {
+                        game.toStartMenu();
+                    }
+
                     dispose();
                 }
             });
@@ -426,6 +450,25 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
             if (shopButton.getType().equals(ShopButton.ShopButtonType.UPGRADE) && selectedTower.isSelected()) {
                 gamePlay.upgradeTower(selectedTower);
+            }
+        }
+
+        if(actor instanceof ScreenButtonTexture){
+            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
+
+            final int speedValue = 4;
+
+            if (screenButton.getType().equals(ScreenButtonTexture.ButtonType.SPEED_CONTROLLER)){
+
+                if(speed == 1){
+                    speed = speedValue;
+                    AbstractTower.GAME_SPEED = speedValue / 2;
+                }
+
+                else if(speed == speedValue){
+                    speed = 1;
+                    AbstractTower.GAME_SPEED = 1;
+                }
             }
         }
 
