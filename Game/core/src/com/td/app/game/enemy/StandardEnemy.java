@@ -16,8 +16,6 @@ import java.util.ArrayList;
 
 public class StandardEnemy extends Actor {
 
-//    public static ArrayList<StandardEnemy> enemies = new ArrayList<>();
-
     public final static int TEXTURE_SIZE = 64/2;
 
     protected int MAXIMUM_HP;
@@ -93,8 +91,6 @@ public class StandardEnemy extends Actor {
 
     public void impactNeighbours(ArrayList<StandardEnemy> enemyArrayList, int range, int damage){
 
-//        ArrayList<StandardEnemy> standardEnemies = new ArrayList<>();
-
         for (StandardEnemy standardEnemy : enemyArrayList) {
             int enemyX = standardEnemy.getPosition().getX();
             int enemyY = standardEnemy.getPosition().getY();
@@ -107,17 +103,8 @@ public class StandardEnemy extends Actor {
                 standardEnemy.receiveDamage(damage);
             }
         }
-
-//        for (StandardEnemy standardEnemy: standardEnemies) {
-//            if (freezeTime > 0){
-//                standardEnemy.freeze(freezeTime);
-//            }
-//            standardEnemy.receiveDamage(damage);
-//        }
-
     }
 
-    // TODO implement hit options
     public void receiveProjectile(Projectile projectile, ArrayList<StandardEnemy> enemyArrayList) {
         receiveDamage(projectile.getDamage());
 
@@ -226,27 +213,6 @@ public class StandardEnemy extends Actor {
     }
 
     //==================================================
-
-
-//    public static void updateEnemies(float delta, Map map, Stage stage) {
-//        for (StandardEnemy enemy : enemies) {
-//            if (!enemy.isAlive) {
-//                Iterator<Actor> actorIterator = stage.getActors().iterator();
-//                while (actorIterator.hasNext()) {
-//                    if (actorIterator.next().equals(enemy)) {
-//                        actorIterator.remove();
-//                        break;
-//                    }
-//                }
-//                removeEnemy(enemy);
-//                break;
-//            } else {
-//                if (!enemy.update(delta * enemy.speed, map)) {
-//                    break;
-//                }
-//            }
-//        }
-//    }
 
     public int getCreditDeathValue() {
         return creditDeathValue;

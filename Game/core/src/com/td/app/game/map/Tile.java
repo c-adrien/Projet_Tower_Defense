@@ -9,7 +9,6 @@ import java.util.List;
 public class Tile {
 
     private static final List<MapElements> notOccupiedElements = Arrays.asList(MapElements.DALLE);
-    public static Tile SELECTED_TILE;
 
     public final MapElements mapElement;
     private boolean isOccupied;
@@ -56,27 +55,13 @@ public class Tile {
 
     public void select(){
         isSelected = true;
-        SELECTED_TILE = this;
     }
 
     public void unselect(){
         isSelected = false;
-        SELECTED_TILE = null;
     }
 
     public boolean isSelected() {
         return isSelected;
     }
-
-    public static void clearSelection(){
-        SELECTED_TILE = null;
-    }
-
-//    public boolean isDalle(){
-//        return texture.toString().contains("CHEMIN_HORIZONTAL");
-//    }
-
-
-
-
 }

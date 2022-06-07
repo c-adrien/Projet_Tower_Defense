@@ -33,10 +33,6 @@ public class Player {
         return gameOver;
     }
 
-    public void setGameOver() {
-        gameOver = true;
-    }
-
     public int getCredit() {
         return credit;
     }

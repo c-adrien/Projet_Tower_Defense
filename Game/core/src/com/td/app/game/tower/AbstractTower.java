@@ -184,22 +184,6 @@ public abstract class AbstractTower extends Actor {
         this.level = level;
     }
 
-    public int getProjectileSpeed() {
-        return projectileSpeed;
-    }
-
-    public void setProjectileSpeed(int projectileSpeed) {
-        this.projectileSpeed = projectileSpeed;
-    }
-
-    public int getProjectileRange() {
-        return projectileRange;
-    }
-
-    public void setProjectileRange(int projectileRange) {
-        this.projectileRange = projectileRange;
-    }
-
     public int getTimer() {
         return timer;
     }
@@ -216,16 +200,8 @@ public abstract class AbstractTower extends Actor {
         return sellPrice;
     }
 
-    public void setSellPrice(int sellPrice) {
-        this.sellPrice = sellPrice;
-    }
-
     public int getUpgradePrice() {
         return upgradePrice;
-    }
-
-    public void setUpgradePrice(int upgradePrice) {
-        this.upgradePrice = upgradePrice;
     }
 
     public Tile getHostingTile() {

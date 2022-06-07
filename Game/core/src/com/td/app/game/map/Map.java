@@ -49,6 +49,7 @@ public class Map extends Actor {
             for (int j = 0; j < nbTiles; j++) {
                 if (map[i][j] == null){
                     map[i][j] = new Tile(MapElements.DALLE);
+                    // Debug
 //                    System.out.println(map[i][j].getTexture().toString().contains("DALLE"));
                 }
             }
@@ -61,6 +62,8 @@ public class Map extends Actor {
 
         // margin to start NOR at the very top NEITHER at the very bottom of the map
         int RANDOM_START = new Random().nextInt(6)+3;
+
+        // Debug
         System.out.println("RANDOM START i = " + RANDOM_START + " (for random map) ");
         i = RANDOM_START;
         map[i][j] = new Tile(MapElements.CHEMIN_HORIZONTAL);
@@ -250,8 +253,7 @@ public class Map extends Actor {
         int line = y;
         int column = x;
 
-        Tile tile = map[line][column];
-        return tile;
+        return map[line][column];
     }
 
     public void toggleTile(Tile tile){
@@ -274,7 +276,6 @@ public class Map extends Actor {
         for (int i = 0; i < nbTiles; i++) {
                 if (map[i][0].mapElement.name().contains("CHEMIN_GAUCHE") ||
                         map[i][0].mapElement.name().contains("CHEMIN_HORIZONTAL")) {
-//                    System.out.println((nbTiles - 1 - i));
                     return new Position(0, (nbTiles-1 - i) * 64);
                 }
             }
