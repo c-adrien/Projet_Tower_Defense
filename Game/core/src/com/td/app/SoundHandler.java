@@ -92,4 +92,13 @@ public final class SoundHandler {
         loopedSound.clear();
         isPaused = false;
     }
+
+    /**
+     * Clear sounds and paused condition
+     */
+    public static void dispose() {
+        soundMap.clear();
+        loopedSound.clear();
+        isPaused = false;
+    }
 }

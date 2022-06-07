@@ -100,6 +100,7 @@ public class TowerDefense extends Game {
 	}
 
 	public void newGame() {
+		SoundHandler.dispose();
 		pref.clear();
 		pref.flush();
 		create();
