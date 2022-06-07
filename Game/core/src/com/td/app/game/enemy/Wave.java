@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Wave {
 
-    public static int DELAY_BETWEEN_WAVES = 600;
+    public static int DELAY_BETWEEN_WAVES = 9;
     // Wave status
     protected boolean isOver;
 

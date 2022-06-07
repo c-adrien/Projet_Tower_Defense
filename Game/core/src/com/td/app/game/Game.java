@@ -31,7 +31,7 @@ public class Game {
     private int numberOfEnnemies = 5;
 
     private int delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
-    private int passiveCreditTimer = Player.PASSIVE_CREDIT_TIMER;
+    private double passiveCreditTimer = Player.PASSIVE_CREDIT_TIMER;
 
     private final ArrayList<AbstractTower> towerArrayList = new ArrayList<>();
     private final ArrayList<Projectile> projectileArrayList = new ArrayList<>();
@@ -68,8 +68,8 @@ public class Game {
         updateTowers(stage);
         updateProjectiles(delta, stage);
         updateEnemies(delta, stage, lifeLabel);
-        updateWaves(stage, waveNumberLabel);
-        updateCredit(creditLabel);
+        updateWaves(delta, stage, waveNumberLabel);
+        updateCredit(delta, creditLabel);
     }
 
     // Player commands
@@ -182,7 +182,7 @@ public class Game {
     // Waves
     //======================================================
 
-    public void updateWaves(Stage stage, Label waveNumberLabel) {
+    public void updateWaves(float delta, Stage stage, Label waveNumberLabel) {
         if (!actualWave.isOver()) {
             if (!actualWave.getEnemies().isEmpty()) {
                 java.util.Map.Entry<StandardEnemy, Integer> enemy;
@@ -200,7 +200,8 @@ public class Game {
                 waveNumberLabel.setText("Wave: " + waveNumber);
             }
         } else if (waves.size() != 0) {
-            if (--delayBeforeNextWave <= 0) {
+            delayBeforeNextWave -= delta;
+            if (delayBeforeNextWave <= 0) {
                 actualWave = waves.pop();
                 delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
                 SoundHandler.playLooping("walking");
@@ -218,8 +219,9 @@ public class Game {
     // Others
     //======================================================
 
-    public void updateCredit(Label creditLabel) {
-        if (--passiveCreditTimer <= 0) {
+    public void updateCredit(float delta, Label creditLabel) {
+        passiveCreditTimer -= delta;
+        if (passiveCreditTimer <= 0) {
             passiveCreditTimer = Player.PASSIVE_CREDIT_TIMER;
             player.addCredit(1);
             creditLabel.setText(player.getCredit());

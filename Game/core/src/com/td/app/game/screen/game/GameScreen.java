@@ -47,6 +47,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
     private Image upgradeButton;
     private Image sellButton;
     private Image selectedTowerPointer;
+    private Label selectedTowerLevel;
 
     private Image simpleTowerCreditTexture;
     private Image moreDamageTowerCreditTexture;
@@ -131,6 +132,9 @@ public abstract class GameScreen implements Screen, InputProcessor {
         sellCreditTexture.setScale(0.08F);
         sellCreditTexture.setPosition(sellPrice.getX() + 20, sellPrice.getY() - 3);
 
+        selectedTowerLevel = new Label("", new Skin(Gdx.files.internal("skin/uiskin.json")));
+        selectedTowerLevel.setPosition(upgradeButton.getX() + 100, upgradeButton.getY() + 35);
+
         stage.addActor(gamePlay.getMap());
 
         stage.addActor(speedController);
@@ -146,6 +150,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
         stage.addActor(updradeCreditTexture);
         stage.addActor(sellPrice);
         stage.addActor(sellCreditTexture);
+        stage.addActor(selectedTowerLevel);
 
         AbstractTower simpleTower = new SimpleTower(new Position(863, 544 + 1));
 
@@ -228,6 +233,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
         if(selectedTower != null) {
             upgradePrice.setText(selectedTower.getUpgradePrice());
             sellPrice.setText(selectedTower.getSellPrice());
+            selectedTowerLevel.setText("Level: "+selectedTower.getLevel());
         }
 
         gamePlay.update(stage, delta, creditLabel, lifeLabel, waveNumberLabel);
@@ -435,9 +441,11 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 selectedTowerPointer.setPosition(selectedTower.getPosition().getX() - 50, selectedTower.getPosition().getY() + 10);
                 upgradePrice.setText("0");
                 sellPrice.setText("0");
+                selectedTowerLevel.setText("");
             } else {
                 upgradePrice.setText(selectedTower.getUpgradePrice());
                 sellPrice.setText(selectedTower.getSellPrice());
+                selectedTowerLevel.setText("Level: "+selectedTower.getLevel());
             }
         }
 
@@ -453,19 +461,19 @@ public abstract class GameScreen implements Screen, InputProcessor {
             }
         }
 
-        if(actor instanceof ScreenButtonTexture){
+        if (actor instanceof ScreenButtonTexture) {
             ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
 
             final int speedValue = 4;
 
-            if (screenButton.getType().equals(ScreenButtonTexture.ButtonType.SPEED_CONTROLLER)){
+            if (screenButton.getType().equals(ScreenButtonTexture.ButtonType.SPEED_CONTROLLER)) {
 
-                if(speed == 1){
+                if (speed == 1) {
                     speed = speedValue;
                     AbstractTower.GAME_SPEED = speedValue / 2;
                 }
 
-                else if(speed == speedValue){
+                else if (speed == speedValue) {
                     speed = 1;
                     AbstractTower.GAME_SPEED = 1;
                 }

@@ -1,6 +1,6 @@
 package com.td.app.game;
 public class Player {
-    public static int PASSIVE_CREDIT_TIMER = 120;
+    public static double PASSIVE_CREDIT_TIMER = 1.8;
     private int remainingLives;
     private int credit;
     private boolean gameOver;
