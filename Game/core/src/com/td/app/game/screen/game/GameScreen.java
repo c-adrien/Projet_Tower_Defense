@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,7 +21,6 @@ import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.Position;
-import com.td.app.game.enemy.StandardEnemy;
 import com.td.app.game.gui.ShopButton;
 import com.td.app.game.map.Map;
 import com.td.app.game.map.Tile;
@@ -66,20 +64,8 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     private boolean isPaused;
 
-    // Debug
-    ShapeRenderer shapeRenderer;
-    int x = 0;
-    int y = 0;
-    StandardEnemy enemy;
-    float i = 0;
-    float j = 0;
-
     public GameScreen(TowerDefense game) {
         this.game = game;
-
-        // Debug
-        // TODO suppr it
-        shapeRenderer = new ShapeRenderer();
     }
 
     public abstract void initGamePlay(Map map, int level);
@@ -224,6 +210,12 @@ public abstract class GameScreen implements Screen, InputProcessor {
     }
 
     private void updateStage(float delta) {
+        // Automatically update prices
+        if(selectedTower != null) {
+            upgradePrice.setText(selectedTower.getUpgradePrice());
+            sellPrice.setText(selectedTower.getSellPrice());
+        }
+
         gamePlay.update(stage, delta, creditLabel, lifeLabel, waveNumberLabel);
     }
 
@@ -324,43 +316,6 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 break;
         }
         cleanStage();
-
-
-        // Debug
-        /*shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        // Selected tile
-        shapeRenderer.setColor(1, 0, 0, 1); // Red line
-        shapeRenderer.line(x, y, x+64, y+64);
-        shapeRenderer.end();
-
-        // Enemy
-//        if(enemy != null){
-//            i = enemy.getPosition().getX();
-//            j = enemy.getPosition().getY();
-//        }
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//        shapeRenderer.setColor(0, 0, 1, 1); // Blue line
-//        shapeRenderer.line(i, j, i+32, j+32);
-//        shapeRenderer.end();
-        if(enemy != null){
-            i = enemy.getPosition().getX();
-            j = enemy.getPosition().getY();
-        }
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(0, 0, 1, 1); // Blue line
-        shapeRenderer.line(i, j, i+32, j+32);
-        shapeRenderer.end();*/
-
-        /*
-        // Grid
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (int k = 0; k < 24; k++) {
-            shapeRenderer.setColor(0, 0, 1, 1); // Blue line
-            shapeRenderer.line(0, k*32, 768, k*32);
-        }
-        shapeRenderer.end();
-         */
-
     }
 
     @Override
@@ -413,6 +368,7 @@ public abstract class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        // Debug
         System.out.println("screen X : " + screenX);
         System.out.println("screen Y : " + screenY);
         System.out.println("pointer : " + pointer);
@@ -421,19 +377,13 @@ public abstract class GameScreen implements Screen, InputProcessor {
         Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
         Actor actor = stage.hit(hover.x,hover.y,true);
 
+        // Debug
         System.out.println(actor.getClass());
 
         if (actor instanceof Map) {
             if(selectedTower != null){
                 selectedTower.setSelected(false);
             }
-
-            int x = screenX / 64;
-            int y = screenY / 64;
-
-//
-//            int line = y;
-//            int column = x;
 
             Tile tile = gamePlay.getMap().getTileFromPosition(screenX, screenY);
             if(tile.isSelected() && !tile.isOccupied()){
@@ -443,25 +393,9 @@ public abstract class GameScreen implements Screen, InputProcessor {
                         stage.addActor(tower);
                     }
                 }
-
-                // Debug
-                //enemy = new StandardEnemy(50, 1, new Position(gamePlay.getMap().getEntryTilePosition().getX(),
-                //        gamePlay.getMap().getEntryTilePosition().getY()+32),
-                //        new Texture(Gdx.files.internal("textures/enemy/test.png")));
-
-                // enemy = new StandardEnemy(60, 10, new Position(entryTilePosition.getX(), entryTilePosition.getY()+32),
-                //                        new Texture(Gdx.files.internal("textures/enemy/test.png")));
-
-                //gamePlay.addEnemy(enemy);
-                //stage.addActor(enemy);
             }
 
             gamePlay.getMap().toggleTile(tile);
-            // System.out.println(Tile.SELECTED_TILE);
-
-            // Debug
-            this.x = x*64;
-            this.y = 704 - y*64;
         }
 
         // Select tower
