@@ -449,6 +449,11 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 sellPrice.setText("0");
                 selectedTowerLevel.setText("");
             } else {
+
+                // Avoid tile & tower selected
+                Tile tile = selectedTower.getHostingTile();
+                gamePlay.getMap().toggleTile(tile);
+
                 if(selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL){
                     upgradePrice.setText("--");
                 }
