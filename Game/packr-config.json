@@ -1,0 +1,10 @@
+{
+    "platform": "windows64",
+    "jdk": "OpenJDK11U-jre_x64_windows_hotspot_11.0.15_10.zip",
+    "executable": "Tower_Defense",
+    "classpath": [
+        "desktop/build/libs/desktop-1.0.jar"
+    ],
+    "mainclass": "com.td.app.DesktopLauncher",
+    "output": "out-windows"
+}
