@@ -30,7 +30,7 @@ public class Wave {
         isOver = false;
 
         for (int i = 0; i < numberOfEnnemies; i++) {
-            enemies.put(new StandardEnemy((int) ((random.nextInt(30) + 50) * Math.log(level)),
+            enemies.put(new StandardEnemy((int) ((random.nextInt(30) + 50) * (Math.log(level) + 1)),
                     random.nextInt(15) + 15,
                     new Position(position.getX() - 20, position.getY() + 32),
                     new Texture(Gdx.files.internal("textures/enemy/test.png"))),

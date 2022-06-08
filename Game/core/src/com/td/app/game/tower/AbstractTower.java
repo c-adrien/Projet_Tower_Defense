@@ -105,17 +105,17 @@ public abstract class AbstractTower extends Actor {
             if (furthestEnnemy.getPosition().getAngle() == (3 * Math.PI) / 2 // Going downwards
                 && enemy.getPosition().getAngle() == (3 * Math.PI) / 2) {
                 if (furthestEnnemy.getPosition().getY() > enemy.getPosition().getY()) {
-                    return furthestEnnemy;
-                } else {
                     return enemy;
+                } else {
+                    return furthestEnnemy;
                 }
             }
             if (furthestEnnemy.getPosition().getAngle() == Math.PI / 2 // Going upwards
                 && enemy.getPosition().getAngle() == Math.PI / 2) {
                 if (furthestEnnemy.getPosition().getY() < enemy.getPosition().getY()) {
-                    return furthestEnnemy;
-                } else {
                     return enemy;
+                } else {
+                    return furthestEnnemy;
                 }
             }
         }
