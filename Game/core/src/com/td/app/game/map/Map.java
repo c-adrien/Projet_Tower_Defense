@@ -9,6 +9,7 @@ import com.td.app.Helper;
 import com.td.app.game.Position;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Random;
 
 public class Map extends Actor {
@@ -207,7 +208,7 @@ public class Map extends Actor {
 
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
-            BufferedReader reader = Helper.getBufferedReader(fileHandle);
+            BufferedReader reader = fileHandle.reader(8192);
 
             int mapLength = Integer.parseInt(reader.readLine());
             int mapWidth = Integer.parseInt(reader.readLine());

@@ -12,7 +12,7 @@ public class CampaignGameScreen extends GameScreen {
     public CampaignGameScreen(TowerDefense game, int level) {
         super(game);
         LEVEL = level;
-        Map map = new Map(Gdx.files.internal(String.format("./maps/map_%s.txt", level)));
+        Map map = new Map(Gdx.files.internal(String.format("maps/map_%s.txt", level)));
         initGamePlay(map, level);
     }
 

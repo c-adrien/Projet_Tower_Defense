@@ -14,9 +14,11 @@ import java.util.List;
 
 public class Helper {
 
+    /**
+     * Deprecated
+     */
     public static BufferedReader getBufferedReader(FileHandle fileHandle){
-
-        List<String> patterns = Arrays.asList("Game/assets/", "./assets/");
+        List<String> patterns = Arrays.asList("Game/assets/", "./assets/", "");
 
         for (String pattern: patterns) {
             try {

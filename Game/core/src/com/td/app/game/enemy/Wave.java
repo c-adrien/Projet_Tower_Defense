@@ -7,6 +7,7 @@ import com.td.app.Helper;
 import com.td.app.game.Position;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Random;
@@ -80,7 +81,7 @@ public class Wave {
         LinkedList<Wave> waves = new LinkedList<>();
 
         try {
-            BufferedReader reader = Helper.getBufferedReader(fileHandle);
+            BufferedReader reader = fileHandle.reader(8192);
             while (reader.readLine() != null) {
                 waves.add(new Wave(reader, position));
             }

@@ -27,10 +27,10 @@ public class Tile {
         isSelected = false;
 
         texture = new Texture(Gdx.files.internal(String.format(
-                "./textures/landscape/%s.png", mapElement.name())));
+                "textures/landscape/%s.png", mapElement.name())));
         try {
             alternativeTexture = new Texture(Gdx.files.internal(String.format(
-                    "./textures/landscape/%s_alt.png", mapElement.name())));
+                    "textures/landscape/%s_alt.png", mapElement.name())));
         }
         catch (Exception e){
             alternativeTexture = null;
