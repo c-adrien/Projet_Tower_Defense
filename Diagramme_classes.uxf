@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
   <help_text/>
-  <zoom_level>8</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
-      <y>672</y>
-      <w>168</w>
-      <h>96</h>
+      <x>875</x>
+      <y>126</y>
+      <w>203</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>Map: Class
 --
@@ -18,16 +18,18 @@
 + Map()
 + randomMapGeneration()
 + Map(str)
-+ loadMapFile(str)</panel_attributes>
++ loadMapFile(str)
++ toggleTile(Tile)
++ getTileFromPosition(int, int) : Tile</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>184</x>
-      <y>584</y>
-      <w>168</w>
-      <h>120</h>
+      <x>630</x>
+      <y>637</y>
+      <w>196</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>Projectile: Class
 --
@@ -45,10 +47,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>96</x>
-      <y>624</y>
-      <w>56</w>
-      <h>56</h>
+      <x>553</x>
+      <y>651</y>
+      <w>49</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>Position
 --
@@ -60,10 +62,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>392</x>
-      <y>824</y>
-      <w>168</w>
-      <h>160</h>
+      <x>308</x>
+      <y>553</y>
+      <w>196</w>
+      <h>182</h>
     </coordinates>
     <panel_attributes>Enemy: Class
 --
@@ -73,8 +75,11 @@
 - speed : int
 - position : Position
 - isAlive : boolean
+- creditDeathValue : int
+- freezeTime : int
 --
 + freeze(int)
++ impactNeighbours(Enemy[])
 + receiveProjectile(Projectile)
 + receiveDamage(int)
 + die()
@@ -84,10 +89,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>376</x>
-      <y>688</y>
-      <w>216</w>
-      <h>112</h>
+      <x>308</x>
+      <y>427</y>
+      <w>196</w>
+      <h>98</h>
     </coordinates>
     <panel_attributes>Wave: Class
 --
@@ -104,10 +109,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>592</x>
-      <y>176</y>
-      <w>168</w>
-      <h>56</h>
+      <x>1169</x>
+      <y>364</y>
+      <w>147</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>Constants
 --
@@ -119,10 +124,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>184</x>
-      <y>344</y>
-      <w>168</w>
-      <h>216</h>
+      <x>630</x>
+      <y>406</y>
+      <w>196</w>
+      <h>203</h>
     </coordinates>
     <panel_attributes>Tower: Class
 --
@@ -130,6 +135,7 @@
 - level : int
 - projectileSpeed : int
 - projectileRange : int
+- projectileDamage : int
 - timer : int
 - sellPrice : int
 - updatePrice : int
@@ -147,76 +153,53 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>472</x>
-      <y>792</y>
-      <w>24</w>
-      <h>48</h>
+      <x>399</x>
+      <y>518</y>
+      <w>21</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>408</x>
-      <y>344</y>
-      <w>152</w>
-      <h>136</h>
+      <x>203</x>
+      <y>182</y>
+      <w>196</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>Player: Class
 --
 --
 - remainingLives : int
 - credit : int
+- gameOver ; boolean
 --
 + addCredit(int)
 + removeCredit(int)
 + removeLife()
-+ placeTower(Tower)
-
-</panel_attributes>
++ isGameOver</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>344</x>
-      <y>360</y>
-      <w>80</w>
-      <h>32</h>
+      <x>721</x>
+      <y>602</y>
+      <w>21</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>256</x>
-      <y>552</y>
-      <w>24</w>
-      <h>48</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>256</x>
-      <y>696</y>
-      <w>152</w>
-      <h>152</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>170.0;170.0;10.0;170.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>144</x>
-      <y>640</y>
-      <w>56</w>
-      <h>32</h>
+      <x>595</x>
+      <y>665</y>
+      <w>49</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
@@ -224,58 +207,42 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>112</x>
-      <y>672</y>
-      <w>296</w>
-      <h>224</h>
+      <x>567</x>
+      <y>511</y>
+      <w>77</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>350.0;260.0;10.0;260.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>112</x>
-      <y>448</y>
-      <w>88</w>
-      <h>192</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>90.0;10.0;10.0;10.0;10.0;220.0</additional_attributes>
+    <additional_attributes>90.0;10.0;10.0;10.0;10.0;200.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>744</x>
-      <y>328</y>
-      <w>168</w>
-      <h>112</h>
+      <x>1344</x>
+      <y>364</y>
+      <w>147</w>
+      <h>49</h>
     </coordinates>
-    <panel_attributes>Save: Class
+    <panel_attributes>Save
 --
 --
-- userLevel : int
-- userName : string
---
-+ loadFromJSON()
-+ initJSON()
-+ updateJSON()
-+ newSave()</panel_attributes>
+LibGDX Preferences</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
-      <y>808</y>
-      <w>168</w>
-      <h>96</h>
+      <x>903</x>
+      <y>343</y>
+      <w>147</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>Tile: Class
 --
 --
 - mapElement : MapElements
 - occupied : boolean
+- select : boolean
 --
 + isSelected()
 </panel_attributes>
@@ -284,44 +251,64 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1032</x>
-      <y>672</y>
-      <w>168</w>
-      <h>232</h>
+      <x>903</x>
+      <y>497</y>
+      <w>147</w>
+      <h>308</h>
     </coordinates>
     <panel_attributes>MapElements: Enum
 --
 --
-+ ARBRE
 + DALLE
-+ CHEMIN_NORD
-+ CHEMIN_SUD
-+ CHEMIN_EST
-+ CHEMIN_OUEST
-+ SORTIE_NORD
-+ SORTIE_SUD
-+ SORTIE_EST
-+ SORTIE_OUEST
-+ DEPART_NORD
-+ DEPART_SUD
-+ DEPART_EST
-+ DEPART_OUEST</panel_attributes>
++ DALLE2
++ ARBRE
++ ARBRE2
++ ARBRE3
++ ARBRE4
++ BOIS
++ BUISSON
++ CAILLOU
++ EAU_PETIT2
++ FOIN1
++ FOIN2
++ WATER_FULL
++ WATER_LINE
++ CHEMIN_HORIZONTAL
++ CHEMIN_VERTICAL
++ CHEMIN_BAS_DROITE
++ CHEMIN_GAUCHE_BAS
++ CHEMIN_GAUCHE_HAUT
++ CHEMIN_HAUT_DROITE
++ CHEMIN_TRIPLE_DROITE
++ CHEMIN_TRIPLE_GAUCHE
++ CHEMIN_TRIPLE_BAS
++ CHEMIN_TRIPLE_HAUT
++ CHEMIN_CARREFOUR</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>544</x>
-      <y>504</y>
-      <w>184</w>
-      <h>168</h>
+      <x>448</x>
+      <y>105</y>
+      <w>196</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Game: Class
 --
 --
 - player : Player
+- map : Map
 - waves : Wave[]
-- numberOfWaves : int
+- currentWave : Wave
+- gameMode : GameMode
+- gameState : GameState
+
+- passiveCreditTimer : int
+
+- towersArrayList : ArrayList
+- projectilesArrayList : ArrayList
+- enemiesArrayList : ArrayList
 --
 + Game(File)
 + Game(int)
@@ -329,82 +316,20 @@
 + createWaves()
 + createWavesFromFile(str)
 + createWavesFromLevel(int)
-+ endGame()</panel_attributes>
++ update()
++ winGame()
++ loseGame()
+
+</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>472</x>
-      <y>472</y>
-      <w>88</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;10.0;120.0;90.0;120.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>472</x>
-      <y>576</y>
-      <w>88</w>
-      <h>128</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;140.0;10.0;10.0;90.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>720</x>
-      <y>592</y>
-      <w>96</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;50.0;10.0;50.0;160.0;100.0;160.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>872</x>
-      <y>760</y>
-      <w>24</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>960</x>
-      <y>824</y>
-      <w>88</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>672</x>
-      <y>400</y>
-      <w>88</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;130.0;10.0;10.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>296</x>
-      <y>200</y>
-      <w>208</w>
-      <h>72</h>
+      <x>1232</x>
+      <y>462</y>
+      <w>196</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>SoundHandler: Class
 --
@@ -412,37 +337,130 @@
 - soundMap : HashMap&lt;String,Sound&gt;
 --
 + add(str)
-+ play(str)</panel_attributes>
++ play(str)
++ playLooping(str)
++ stop(str)
++ playAll()
++ pauseAll()
++ stopAll()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>392</x>
-      <y>1024</y>
-      <w>168</w>
-      <h>96</h>
+      <x>308</x>
+      <y>763</y>
+      <w>196</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>HealthBar: Class
 --
 --
 - maxHealth : int
 - currentHealth : int
+- enemy : Enemy
+- position : Position
 --
-+ reduceHealth(int)
-+ setHealth(int)
-+ draw(Batch)</panel_attributes>
++ updateValues()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>472</x>
-      <y>976</y>
-      <w>24</w>
-      <h>64</h>
+      <x>399</x>
+      <y>728</y>
+      <w>21</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>665</y>
+      <w>70</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>966</x>
+      <y>413</y>
+      <w>21</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>966</x>
+      <y>238</y>
+      <w>21</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>231</y>
+      <w>70</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>399</x>
+      <y>315</y>
+      <w>63</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>70.0;10.0;10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>637</x>
+      <y>175</y>
+      <w>252</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>340.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>637</x>
+      <y>301</y>
+      <w>245</w>
+      <h>406</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>270.0;560.0;330.0;560.0;330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>637</x>
+      <y>329</y>
+      <w>224</w>
+      <h>203</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>270.0;270.0;300.0;270.0;300.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
