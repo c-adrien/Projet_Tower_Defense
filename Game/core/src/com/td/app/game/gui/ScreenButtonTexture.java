@@ -11,9 +11,23 @@ public class ScreenButtonTexture extends Actor {
     private final Sprite sprite;
     private final ButtonType type;
 
-    public enum ButtonType {ARCADE, CAMPAIGN, MUSICON, MUSICOFF, NEWGAME, RETURN, SETTINGS, SOUNDON, SOUNDOFF,
-        SPEED_CONTROLLER }
+    /**
+     * Enums all button types used for a specific screen button
+     */
+    public enum ButtonType { ARCADE, CAMPAIGN, MUSICON, MUSICOFF, NEWGAME, RETURN, SETTINGS,
+        SOUNDON, SOUNDOFF, SPEED_CONTROLLER
+    }
 
+    /**
+     * <p>
+     *     Creates a button with a texture
+     * </p>
+     * <p>
+     *     The button's type is handled by {@link ButtonType}
+     * </p>
+     * @param imgPath the path to the texture's location
+     * @param type the button's type
+     */
     public ScreenButtonTexture(String imgPath, ButtonType type) {
         this.type = type;
         texture = new Texture(Gdx.files.internal(imgPath));

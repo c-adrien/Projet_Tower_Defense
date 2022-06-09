@@ -1,0 +1,91 @@
+startwave
+delay=2.7
+200 20 textures/enemy/test.png
+200 20 textures/enemy/test.png
+200 20 textures/enemy/test.png
+200 20 textures/enemy/test.png
+200 20 textures/enemy/test.png
+200 20 textures/enemy/test.png
+200 20 textures/enemy/test.png
+endwave
+startwave
+delay=2.7
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+120 50 textures/enemy/test.png
+endwave
+startwave
+delay=2.7
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+280 10 textures/enemy/test.png
+endwave
+startwave
+delay=1.8
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+150 70 textures/enemy/test.png
+endwave

@@ -8,8 +8,6 @@ import com.td.app.game.screen.game.ArcadeGameScreen;
 import com.td.app.game.screen.game.CampaignGameScreen;
 import com.td.app.game.screen.menu.*;
 
-import java.util.HashMap;
-
 public class TowerDefense extends Game {
 	private ArcadeMenuScreen arcadeMenuScreen;
 	private ArcadeGameScreen arcadeGameScreen;
@@ -21,6 +19,14 @@ public class TowerDefense extends Game {
 	public static Music music;
 	public static Preferences pref;
 
+	/**
+	 * <p>
+	 *     Creates an {@link com.badlogic.gdx.ApplicationListener} that initializes and handle all game's screens
+	 * </p>
+	 * <p>
+	 *     It also loads game's save and all sounds used when created
+	 * </p>
+	 */
 	public TowerDefense() {
 		super();
 	}
@@ -44,7 +50,7 @@ public class TowerDefense extends Game {
 		settingsScreen = new SettingsScreen(this);
 
 		if (!pref.contains("user")) {
-			setScreen(new NewUserScreen(this));
+			setScreen(new NewGameScreen(this));
 			pref.putInteger("unlockedLevels", 1); // Campaign unlocked levels
 			pref.putBoolean("bombTower", false); // Bomb tower locked
 			pref.putBoolean("freezeTower", false); // Freeze tower locked
@@ -58,9 +64,6 @@ public class TowerDefense extends Game {
 		} else {
 			toStartMenu();
 		}
-
-//		toCampaignGameScreen(1);
-//		toArcadeGameScreen(3);
 	}
 
 	@Override

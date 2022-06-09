@@ -28,6 +28,10 @@ public class StartMenuScreen implements Screen, InputProcessor {
     private ScreenButtonTexture backButton;
     private PointerTexture pointer;
 
+    /**
+     * Represents the mode selection menu
+     * @param game the game's screen handler
+     */
     public StartMenuScreen(TowerDefense game) {
         this.game = game;
     }
@@ -78,31 +82,6 @@ public class StartMenuScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-
-    @Override
     public boolean keyDown(int keycode) {
 
         // Order of menu buttons
@@ -112,7 +91,7 @@ public class StartMenuScreen implements Screen, InputProcessor {
         int index;
         ScreenButtonTexture nextButton;
 
-        if (keycode == Input.Keys.DPAD_DOWN || keycode == Input.Keys.DPAD_UP) {
+        if (keycode == Input.Keys.DPAD_DOWN || keycode == Input.Keys.DPAD_UP) { // Select button with the pointer
 
             SoundHandler.play("click");
 
@@ -147,20 +126,20 @@ public class StartMenuScreen implements Screen, InputProcessor {
 
         } else if (keycode == Input.Keys.ENTER) {
             SoundHandler.play("click");
-            if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) {
+            if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.ARCADE) { // Goes to arcade menu
                 Gdx.input.setInputProcessor(null);
                 game.toArcadeMenuScreen();
                 dispose();
-            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
+            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) { // Goes to campaign menu
                 Gdx.input.setInputProcessor(null);
                 game.toCampaignMenuScreen();
                 dispose();
-            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
+            } else if (pointer.getPointedButton().getType() == ScreenButtonTexture.ButtonType.SETTINGS) { // Goes to settings menu
                 Gdx.input.setInputProcessor(null);
                 game.toSettingsScreen();
                 dispose();
             }
-        } else if (keycode == Input.Keys.ESCAPE) {
+        } else if (keycode == Input.Keys.ESCAPE) { // Displays quit game screen
             SoundHandler.play("click");
             quiGameDisplay();
         }
@@ -168,6 +147,40 @@ public class StartMenuScreen implements Screen, InputProcessor {
         return false;
     }
 
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, final int button) {
+        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
+        Actor actor = stage.hit(hover.x,hover.y,true);
+
+        if (actor instanceof ScreenButtonTexture) {
+            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
+            if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) { // Displays quit game screen
+                SoundHandler.play("click");
+                quiGameDisplay();
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.ARCADE) { // Goes to arcade menu
+                SoundHandler.play("click");
+                Gdx.input.setInputProcessor(null);
+                game.toArcadeMenuScreen();
+                dispose();
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) { // Goes to campaign menu
+                SoundHandler.play("click");
+                Gdx.input.setInputProcessor(null);
+                game.toCampaignMenuScreen();
+                dispose();
+            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SETTINGS) { // Goes to settings menu
+                SoundHandler.play("click");
+                Gdx.input.setInputProcessor(null);
+                game.toSettingsScreen();
+                dispose();
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Displays the quit game screen
+     */
     private void quiGameDisplay() {
         Gdx.input.setInputProcessor(stage);
         new Dialog("Quit the game", new Skin(Gdx.files.internal("skin/uiskin.json"))) {
@@ -188,6 +201,32 @@ public class StartMenuScreen implements Screen, InputProcessor {
         }.show(stage);
     }
 
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
     @Override
     public boolean keyUp(int keycode) {
         return false;
@@ -200,37 +239,6 @@ public class StartMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, final int button) {
-        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
-        Actor actor = stage.hit(hover.x,hover.y,true);
-
-        if (actor instanceof ScreenButtonTexture) {
-            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
-            if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
-                SoundHandler.play("click");
-                quiGameDisplay();
-            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.ARCADE) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toArcadeMenuScreen();
-                dispose();
-            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.CAMPAIGN) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toCampaignMenuScreen();
-                dispose();
-            } else if (screenButton.getType() == ScreenButtonTexture.ButtonType.SETTINGS) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toSettingsScreen();
-                dispose();
-            }
-        }
-
         return false;
     }
 

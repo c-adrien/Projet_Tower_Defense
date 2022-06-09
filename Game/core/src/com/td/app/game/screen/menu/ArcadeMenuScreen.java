@@ -19,8 +19,13 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
     public TowerDefense game;
     private Stage stage;
     private Image background;
+    private Image arcadeDifficulty;
     private ScreenButtonTexture backButton;
 
+    /**
+     * Represents the menu for the arcade game mode
+     * @param game the game's screen handler
+     */
     public ArcadeMenuScreen(TowerDefense game) {
         this.game = game;
     }
@@ -31,10 +36,14 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
             stage = new Stage();
             background = new Image(new Texture(Gdx.files.internal("textures/menu/arcadeMenu.png")));
 
+            arcadeDifficulty = new Image(new Texture(Gdx.files.internal("textures/menu/arcadeDifficulty.png")));
+            arcadeDifficulty.setPosition(stage.getWidth() * 0.16F, stage.getHeight() * 0.5F);
+
             backButton = new ScreenButtonTexture("textures/button/backButton.png", ScreenButtonTexture.ButtonType.RETURN);
             backButton.setPosition(stage.getWidth() / 200, stage.getHeight() / 200);
 
             stage.addActor(background);
+            stage.addActor(arcadeDifficulty);
             stage.addActor(backButton);
 
             for (int i = 1; i < 4; i++) {
@@ -42,8 +51,8 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
                 levelButton.setPosition(((i % 4) * stage.getWidth() / 4) - 50, stage.getHeight() / 4);
                 stage.addActor(levelButton);
             }
-
         }
+
         Gdx.input.setInputProcessor(this);
     }
 
@@ -54,6 +63,42 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
 
         stage.draw();
     }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
+        Actor actor = stage.hit(hover.x,hover.y,true);
+
+        if (actor instanceof ScreenButtonTexture) {
+            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
+            if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) { // Go back to previous screen (StartMenu)
+                SoundHandler.play("click");
+                Gdx.input.setInputProcessor(null);
+                game.toStartMenu();
+                dispose();
+            }
+        }
+
+        if (actor instanceof ArcadeLevel) { // Start arcade level
+            ArcadeLevel level = (ArcadeLevel) actor;
+            Gdx.input.setInputProcessor(null);
+            game.toArcadeGameScreen(level.getLEVEL());
+            dispose();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) { // Go back to previous screen (StartMenu)
+            SoundHandler.play("click");
+            Gdx.input.setInputProcessor(null);
+            game.toStartMenu();
+            dispose();
+        }
+        return false;
+    }
+
 
     @Override
     public void resize(int width, int height) {
@@ -81,17 +126,6 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
-            SoundHandler.play("click");
-            Gdx.input.setInputProcessor(null);
-            game.toStartMenu();
-            dispose();
-        }
-        return false;
-    }
-
-    @Override
     public boolean keyUp(int keycode) {
         return false;
     }
@@ -103,30 +137,6 @@ public class ArcadeMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
-        Actor actor = stage.hit(hover.x,hover.y,true);
-
-        if (actor instanceof ScreenButtonTexture) {
-            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
-            if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toStartMenu();
-                dispose();
-            }
-        }
-
-        if (actor instanceof ArcadeLevel) {
-            ArcadeLevel level = (ArcadeLevel) actor;
-            Gdx.input.setInputProcessor(null);
-            game.toArcadeGameScreen(level.getLEVEL());
-            dispose();
-        }
         return false;
     }
 

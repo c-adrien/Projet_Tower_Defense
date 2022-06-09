@@ -13,13 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.td.app.TowerDefense;
 
-public class NewUserScreen implements Screen {
+public class NewGameScreen implements Screen {
     private final TowerDefense game;
     private Stage stage;
     private TextField textField;
     private TextButton textButton;
 
-    public NewUserScreen(TowerDefense game) {
+    /**
+     * Represents the menu used when a new game is created
+     * @param game the game's screen handler
+     */
+    public NewGameScreen(TowerDefense game) {
         this.game = game;
     }
 
@@ -55,6 +59,9 @@ public class NewUserScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    /**
+     * Creates new user and goes to {@link StartMenuScreen}
+     */
     private void buttonClicked() {
         TowerDefense.pref.putString("user", textField.getText());
         TowerDefense.pref.flush();

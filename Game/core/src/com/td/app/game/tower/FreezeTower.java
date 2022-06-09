@@ -16,7 +16,6 @@ public class FreezeTower extends AbstractTower {
 
     private int FREEZE = 1;
 
-
     public FreezeTower(Tile hostingTile, int positionX, int positionY) {
         super(PROJECTILE_SPEED, PROJECTILE_RANGE, PROJECTILE_DAMAGE, TIMER, price, hostingTile,
                 IMAGE_PATH, positionX, positionY);
@@ -36,8 +35,9 @@ public class FreezeTower extends AbstractTower {
     @Override
     public Projectile sendProjectile(StandardEnemy enemy) {
         return new Projectile(enemy, projectileDamage, projectileSpeed,
-                new Position(getPosition().getX() + PROJECTILE_OFFSET_X,
-                        getPosition().getY() + PROJECTILE_OFFSET_Y), FREEZE);
+                new Position(getPosition().getX() + PROJECTILE_OFFSET_X, getPosition().getY() + PROJECTILE_OFFSET_Y),
+                FREEZE
+        );
     }
 
     @Override

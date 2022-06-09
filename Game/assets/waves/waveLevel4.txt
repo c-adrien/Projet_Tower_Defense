@@ -1,0 +1,37 @@
+startwave
+delay=1.8
+100 40 textures/enemy/test.png
+100 40 textures/enemy/test.png
+100 40 textures/enemy/test.png
+100 40 textures/enemy/test.png
+100 40 textures/enemy/test.png
+endwave
+startwave
+delay=1.8
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+150 60 textures/enemy/test.png
+endwave
+startwave
+delay=1.8
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+220 60 textures/enemy/test.png
+endwave

@@ -21,14 +21,38 @@ public class Projectile extends Actor {
     private final int freeze;
     private final int hitNeighboursInRange;
 
+    /**
+     * Creates a simple projectile with different stats
+     * @param target the enemy target
+     * @param damage the projectile's amount of damage
+     * @param speed the projectile's speed
+     * @param position the projectile's initial position
+     */
     public Projectile(StandardEnemy target, int damage, int speed, Position position) {
         this(target, damage, speed, position, 0, 0);
     }
 
+    /**
+     * Creates a freezing projectile with different stats
+     * @param target the enemy target
+     * @param damage the projectile's amount of damage
+     * @param speed the projectile's speed
+     * @param position the projectile's initial position
+     * @param freeze the time the target will be frozen
+     */
     public Projectile(StandardEnemy target, int damage, int speed, Position position, int freeze) {
         this(target, damage, speed, position, freeze, 0);
     }
 
+    /**
+     * Creates a freezing or AOE projectile with different stats
+     * @param target the enemy target
+     * @param damage the projectile's amount of damage
+     * @param speed the projectile's speed
+     * @param position the projectile's initial position
+     * @param freeze the time the target will be frozen
+     * @param hitNeighboursInRange the area where the enemies are damaged
+     */
     public Projectile(StandardEnemy target, int damage, int speed, Position position,
                       int freeze, int hitNeighboursInRange) {
         this.target = target;
@@ -49,9 +73,15 @@ public class Projectile extends Actor {
         super.draw(batch, parentAlpha);
     }
 
+    /**
+     * Updates the projectile's position on stage
+     * @param delta the time in seconds since the last render
+     * @param enemyArrayList the enemies hit by the projectile
+     * @return whether the projectile hits the enemy
+     */
     public boolean update(float delta, ArrayList<StandardEnemy> enemyArrayList) {
         if(!target.isAlive()){
-            return false;
+            return true;
         }
 
         delta = delta * speed;
@@ -66,10 +96,10 @@ public class Projectile extends Actor {
 
         if (position.getX() == target.getPosition().getX() && position.getY() == target.getPosition().getY()) {
             target.receiveProjectile(this, enemyArrayList);
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public int getDamage() {

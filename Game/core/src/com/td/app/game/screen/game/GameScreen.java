@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import com.td.app.Helper;
 import com.td.app.SoundHandler;
 import com.td.app.TowerDefense;
@@ -74,6 +75,11 @@ public abstract class GameScreen implements Screen, InputProcessor {
         this.speed = 1;
     }
 
+    /**
+     * Initialize the game (map and wave)
+     * @param map the map used for the game
+     * @param level the level's number/difficulty
+     */
     public abstract void initGamePlay(Map map, int level);
 
     @Override
@@ -216,7 +222,15 @@ public abstract class GameScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
     }
 
-    private void cleanStage() {
+    /**
+     * <p>
+     *     Clear the stage
+     * </p>
+     * <p>
+     *     Used to prepare the render of the next frame
+     * </p>
+     */
+    private void clearStage() {
         batch.begin();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -226,12 +240,16 @@ public abstract class GameScreen implements Screen, InputProcessor {
         batch.end();
     }
 
+    /**
+     * Updates the elements on the stage
+     * @param delta the time in seconds since the last render
+     */
     private void updateStage(float delta) {
         delta *= speed;
 
         // Automatically update prices
-        if(selectedTower != null) {
-            if(selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL){
+        if (selectedTower != null) {
+            if (selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL) {
                 upgradePrice.setText("--");
             }
             else {
@@ -245,6 +263,9 @@ public abstract class GameScreen implements Screen, InputProcessor {
         gamePlay.update(stage, delta, creditLabel, lifeLabel, waveNumberLabel);
     }
 
+    /**
+     * Displays the pause screen
+     */
     private void pauseScreen() {
         if (!isPaused) {
             SoundHandler.pauseAll();
@@ -290,6 +311,9 @@ public abstract class GameScreen implements Screen, InputProcessor {
         }
     }
 
+    /**
+     * Displays the end game screen
+     */
     public void endGameDisplay() {
         if (!isPaused) {
             isPaused = true;
@@ -311,10 +335,10 @@ public abstract class GameScreen implements Screen, InputProcessor {
                     SoundHandler.stopAll();
                     Gdx.input.setInputProcessor(null);
 
-                    if(gamePlay.getGameMode() == Game.GameMode.ARCADE){
+                    if (gamePlay.getGameMode() == Game.GameMode.ARCADE) {
                         game.toArcadeMenuScreen();
                     }
-                    else if(gamePlay.getGameMode() == Game.GameMode.CAMPAIGN){
+                    else if (gamePlay.getGameMode() == Game.GameMode.CAMPAIGN) {
                         game.toCampaignMenuScreen();
                     }
                     else {
@@ -351,7 +375,101 @@ public abstract class GameScreen implements Screen, InputProcessor {
                 endGameDisplay();
                 break;
         }
-        cleanStage();
+        clearStage();
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
+        Actor actor = stage.hit(hover.x,hover.y,true);
+
+        if (actor instanceof Map) {
+            if (selectedTower != null) {
+                selectedTower.setSelected(false);
+            }
+
+            Tile tile = gamePlay.getMap().getTileFromPosition(screenX, screenY);
+            if (tile.isSelected() && !tile.isOccupied()) { // Place tower on stage
+                if (selectedTower != null) {
+                    AbstractTower tower = gamePlay.placeTower(selectedTower, tile, screenX, screenY);
+                    if (tower != null) {
+                        stage.addActor(tower);
+                    }
+                }
+            }
+
+            gamePlay.getMap().toggleTile(tile);
+        }
+
+        if (actor instanceof AbstractTower) { // Select tower
+            if (selectedTower != null && selectedTower != actor) {
+                selectedTower.setSelected(false);
+            }
+
+            selectedTower = (AbstractTower) actor;
+            selectedTower.setSelected(!selectedTower.isSelected());
+
+            if (selectedTower.getPosition().getX() > Map.TOTAL_SIZE) { // Shop tower selected
+                selectedTowerPointer.setPosition(selectedTower.getPosition().getX() - 50, selectedTower.getPosition().getY() + 10);
+                upgradePrice.setText("0");
+                sellPrice.setText("0");
+                selectedTowerLevel.setText("");
+            } else {
+
+                // Avoid tile & tower selected
+                Tile tile = selectedTower.getHostingTile();
+                gamePlay.getMap().toggleTile(tile);
+
+                if (selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL) {
+                    upgradePrice.setText("--");
+                }
+                else {
+                    upgradePrice.setText(selectedTower.getUpgradePrice());
+                }
+
+                sellPrice.setText(selectedTower.getSellPrice());
+                selectedTowerLevel.setText("Level: "+selectedTower.getLevel());
+            }
+        }
+
+        if (actor instanceof ShopButton) {
+            ShopButton shopButton = (ShopButton) actor;
+
+            if (shopButton.getType().equals(ShopButton.ShopButtonType.SELL) && selectedTower.isSelected()) {
+                gamePlay.sellTower(selectedTower, stage);
+            }
+
+            if (shopButton.getType().equals(ShopButton.ShopButtonType.UPGRADE) && selectedTower.isSelected()) {
+                gamePlay.upgradeTower(selectedTower);
+            }
+        }
+
+        if (actor instanceof ScreenButtonTexture) {
+            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
+
+            final int speedValue = 4;
+
+            if (screenButton.getType().equals(ScreenButtonTexture.ButtonType.SPEED_CONTROLLER)) { // Change stage speed
+                if (speed == 1) {
+                    speed = speedValue;
+                    AbstractTower.GAME_SPEED = speedValue / 2;
+                }
+                else if (speed == speedValue) {
+                    speed = 1;
+                    AbstractTower.GAME_SPEED = 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) { // Pause game
+            pause();
+        }
+        return false;
     }
 
     @Override
@@ -385,118 +503,12 @@ public abstract class GameScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
-            pause();
-        }
-        return false;
-    }
-
-    @Override
     public boolean keyUp(int keycode) {
         return false;
     }
 
     @Override
     public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // Debug
-        System.out.println("screen X : " + screenX);
-        System.out.println("screen Y : " + screenY);
-        System.out.println("pointer : " + pointer);
-        System.out.println("button : " + button + "\n");
-
-        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
-        Actor actor = stage.hit(hover.x,hover.y,true);
-
-        // Debug
-        System.out.println(actor.getClass());
-
-        if (actor instanceof Map) {
-            if(selectedTower != null){
-                selectedTower.setSelected(false);
-            }
-
-            Tile tile = gamePlay.getMap().getTileFromPosition(screenX, screenY);
-            if(tile.isSelected() && !tile.isOccupied()){
-                if (selectedTower != null) {
-                    AbstractTower tower = gamePlay.placeTower(selectedTower, tile, screenX, screenY);
-                    if (tower != null) {
-                        stage.addActor(tower);
-                    }
-                }
-            }
-
-            gamePlay.getMap().toggleTile(tile);
-        }
-
-        // Select tower
-        if (actor instanceof AbstractTower) {
-            if (selectedTower != null && selectedTower != actor) {
-                selectedTower.setSelected(false);
-            }
-
-            selectedTower = (AbstractTower) actor;
-            selectedTower.setSelected(!selectedTower.isSelected());
-
-            if (selectedTower.getPosition().getX() > Map.TOTAL_SIZE) { // Shop tower selected
-                selectedTowerPointer.setPosition(selectedTower.getPosition().getX() - 50, selectedTower.getPosition().getY() + 10);
-                upgradePrice.setText("0");
-                sellPrice.setText("0");
-                selectedTowerLevel.setText("");
-            } else {
-
-                // Avoid tile & tower selected
-                Tile tile = selectedTower.getHostingTile();
-                gamePlay.getMap().toggleTile(tile);
-
-                if(selectedTower.getLevel() == AbstractTower.MAXIMUM_LEVEL){
-                    upgradePrice.setText("--");
-                }
-                else {
-                    upgradePrice.setText(selectedTower.getUpgradePrice());
-                }
-
-                sellPrice.setText(selectedTower.getSellPrice());
-                selectedTowerLevel.setText("Level: "+selectedTower.getLevel());
-            }
-        }
-
-        if (actor instanceof ShopButton) {
-            ShopButton shopButton = (ShopButton) actor;
-
-            if (shopButton.getType().equals(ShopButton.ShopButtonType.SELL) && selectedTower.isSelected()) {
-                gamePlay.sellTower(selectedTower, stage);
-            }
-
-            if (shopButton.getType().equals(ShopButton.ShopButtonType.UPGRADE) && selectedTower.isSelected()) {
-                gamePlay.upgradeTower(selectedTower);
-            }
-        }
-
-        if (actor instanceof ScreenButtonTexture) {
-            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
-
-            final int speedValue = 4;
-
-            if (screenButton.getType().equals(ScreenButtonTexture.ButtonType.SPEED_CONTROLLER)) {
-
-                if (speed == 1) {
-                    speed = speedValue;
-                    AbstractTower.GAME_SPEED = speedValue / 2;
-                }
-
-                else if (speed == speedValue) {
-                    speed = 1;
-                    AbstractTower.GAME_SPEED = 1;
-                }
-            }
-        }
-
         return false;
     }
 

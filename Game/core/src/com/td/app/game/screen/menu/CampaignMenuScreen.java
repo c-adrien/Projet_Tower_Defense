@@ -22,6 +22,10 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
     private ScreenButtonTexture backButton;
     public static final int NUMBER_OF_LEVEL = 10;
 
+    /**
+     * Represents the menu for the campaign game mode
+     * @param game the game's screen handler
+     */
     public CampaignMenuScreen(TowerDefense game) {
         this.game = game;
     }
@@ -45,7 +49,8 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
         }
         for (int i = TowerDefense.pref.getInteger("unlockedLevels"); i < NUMBER_OF_LEVEL; i++) {
             CampaignLevel levelButton = new CampaignLevel("textures/level/lock.png", i + 1);
-            levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 75, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
+            levelButton.setScale(0.3F);
+            levelButton.setPosition(((i % 5) * stage.getWidth() / 5) + 93, (float) ((2 - Math.floor(i/5F)) * stage.getHeight() / 4));
             stage.addActor(levelButton);
         }
 
@@ -57,6 +62,45 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
+        Actor actor = stage.hit(hover.x,hover.y,true);
+
+        if (actor instanceof ScreenButtonTexture) {
+            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
+            if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) { // Go back to previous screen (StartMenu)
+                SoundHandler.play("click");
+                Gdx.input.setInputProcessor(null);
+                game.toStartMenu();
+                dispose();
+            }
+        }
+        if (actor instanceof CampaignLevel) { // Start campaign level
+            CampaignLevel level = (CampaignLevel) actor;
+            if (!level.isLocked()) {
+                SoundHandler.play("click");
+                Gdx.input.setInputProcessor(null);
+                game.toCampaignGameScreen(level.getLEVEL());
+                dispose();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) { // Go back to previous screen (StartMenu)
+            SoundHandler.play("click");
+            Gdx.input.setInputProcessor(null);
+            game.toStartMenu();
+            dispose();
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -85,19 +129,6 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
-            SoundHandler.play("click");
-            Gdx.input.setInputProcessor(null);
-            game.toStartMenu();
-            dispose();
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean keyUp(int keycode) {
         return false;
     }
@@ -109,32 +140,6 @@ public class CampaignMenuScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector2 hover = stage.screenToStageCoordinates(new Vector2(screenX,screenY));
-        Actor actor = stage.hit(hover.x,hover.y,true);
-
-        if (actor instanceof ScreenButtonTexture) {
-            ScreenButtonTexture screenButton = (ScreenButtonTexture) actor;
-            if (screenButton.getType() == ScreenButtonTexture.ButtonType.RETURN) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toStartMenu();
-                dispose();
-            }
-        }
-        if (actor instanceof CampaignLevel) {
-            CampaignLevel level = (CampaignLevel) actor;
-            if (!level.isLocked()) {
-                SoundHandler.play("click");
-                Gdx.input.setInputProcessor(null);
-                game.toCampaignGameScreen(level.getLEVEL());
-                dispose();
-            }
-        }
         return false;
     }
 

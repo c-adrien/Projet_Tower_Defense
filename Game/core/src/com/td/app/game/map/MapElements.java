@@ -1,5 +1,8 @@
 package com.td.app.game.map;
 
+/**
+ * Enums all map elements available
+ */
 public enum MapElements {
     DALLE, // 0
 

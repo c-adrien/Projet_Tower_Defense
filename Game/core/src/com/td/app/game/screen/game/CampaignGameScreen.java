@@ -4,11 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.td.app.TowerDefense;
 import com.td.app.game.Game;
 import com.td.app.game.map.Map;
-import com.td.app.game.screen.game.GameScreen;
 import com.td.app.game.screen.menu.CampaignMenuScreen;
 
 public class CampaignGameScreen extends GameScreen {
     private final int LEVEL;
+
+    /**
+     * Creates the game and the screen for the campaign game mode
+     * @param game the game screen handler
+     * @param level the level's number
+     */
     public CampaignGameScreen(TowerDefense game, int level) {
         super(game);
         LEVEL = level;
@@ -33,9 +38,11 @@ public class CampaignGameScreen extends GameScreen {
                 case 3:
                     TowerDefense.pref.putBoolean("moreDamageTower", true);
                     break;
+
                 case 5:
                     TowerDefense.pref.putBoolean("bombTower", true);
                     break;
+
                 case 8:
                     TowerDefense.pref.putBoolean("freezeTower", true);
                     break;

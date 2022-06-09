@@ -1,0 +1,24 @@
+startwave
+delay=1.8
+60 40 textures/enemy/test.png
+100 20 textures/enemy/test.png
+60 40 textures/enemy/test.png
+100 20 textures/enemy/test.png
+60 40 textures/enemy/test.png
+endwave
+startwave
+delay=1.8
+100 20 textures/enemy/test.png
+200 10 textures/enemy/test.png
+100 20 textures/enemy/test.png
+200 10 textures/enemy/test.png
+100 20 textures/enemy/test.png
+endwave
+startwave
+delay=1.8
+80 60 textures/enemy/test.png
+80 60 textures/enemy/test.png
+80 60 textures/enemy/test.png
+80 60 textures/enemy/test.png
+80 60 textures/enemy/test.png
+endwave

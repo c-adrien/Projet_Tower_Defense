@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.td.app.game.Position;
 import com.td.app.game.map.Tile;
 
-public class MoreDamageTower extends AbstractTower{
-
+public class MoreDamageTower extends AbstractTower {
     private static final String IMAGE_PATH = "textures/tower/simple_tower_2.png";
     private static final int PROJECTILE_SPEED = 200;
     private static final int PROJECTILE_RANGE = 100;
@@ -18,6 +17,7 @@ public class MoreDamageTower extends AbstractTower{
         super(PROJECTILE_SPEED, PROJECTILE_RANGE, PROJECTILE_DAMAGE, TIMER, price, hostingTile,
                 IMAGE_PATH, positionX, positionY);
     }
+
     public MoreDamageTower(Position position) {
         super(new Texture(Gdx.files.internal(IMAGE_PATH)), position, price);
     }

@@ -15,7 +15,6 @@ import com.td.app.game.tower.Projectile;
 import java.util.ArrayList;
 
 public class StandardEnemy extends Actor {
-
     public final static int TEXTURE_SIZE = 64/2;
 
     protected int MAXIMUM_HP;
@@ -23,14 +22,14 @@ public class StandardEnemy extends Actor {
     protected HealthBar healthBar;
     protected int creditDeathValue;
 
-    protected int speed;
+    protected int movementSpeed;
     protected Position position;
 
-    protected boolean isAlive;
+    private boolean isAlive;
 
-    protected Texture texture;
+    protected Texture whiteEnemyTexture;
 
-    protected Texture texture2;
+    protected Texture redEnemyTexture;
     private float elapsedTime;
 
     protected Sprite sprite;
@@ -38,31 +37,36 @@ public class StandardEnemy extends Actor {
 
     protected float freezeTime;
 
-    public StandardEnemy(int MAXIMUM_HP, int speed, Position position, Texture texture) {
+    /**
+     * Creates an enemy with different stats
+     * @param MAXIMUM_HP enemy's maximum HP
+     * @param movementSpeed enemy's movement speed
+     * @param position enemy's spawning position
+     * @param whiteEnemyTexture enemy's texture
+     */
+    public StandardEnemy(int MAXIMUM_HP, int movementSpeed, Position position, Texture whiteEnemyTexture) {
         this.MAXIMUM_HP = MAXIMUM_HP;
         this.HP = MAXIMUM_HP;
-        this.speed = speed;
+        this.movementSpeed = movementSpeed;
         this.position = position;
         this.isAlive = true;
 
-        this.texture = texture;
+        this.whiteEnemyTexture = whiteEnemyTexture;
         this.currentTile = null;
         this.freezeTime = 0;
         this.creditDeathValue = 10;
 
         this.healthBar = new HealthBar(this);
 
-        // TODO Walking texture
-        texture2 = new Texture(Gdx.files.internal("textures/enemy/test2.png"));
+        redEnemyTexture = new Texture(Gdx.files.internal("textures/enemy/test2.png"));
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-
         int x = this.position.getX();
         int y = this.position.getY();
 
-        if (x > 12*64 || y > 12*64 || !isAlive){
+        if (x > 12*64 || y > 12*64 || !isAlive) {
             return;
         }
 
@@ -72,25 +76,33 @@ public class StandardEnemy extends Actor {
         setBounds(position.getX(), position.getY(), TEXTURE_SIZE, TEXTURE_SIZE);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
-        if(elapsedTime % 1 > 0.5){
-            sprite = new Sprite(texture);
+        if (elapsedTime % 1 > 0.5) {
+            sprite = new Sprite(whiteEnemyTexture);
         }
         else {
-            sprite = new Sprite(texture2);
+            sprite = new Sprite(redEnemyTexture);
         }
-
 
         batch.draw(sprite, position.getX(), position.getY(), position.getX(), position.getY(),
                 TEXTURE_SIZE, TEXTURE_SIZE, 1, 1,0);
         super.draw(batch, parentAlpha);
     }
 
+    /**
+     * Freezes enemy's movement
+     * @param time time for which the enemy is frozen
+     */
     public void freeze(int time) {
         this.freezeTime = elapsedTime + time;
     }
 
-    public void impactNeighbours(ArrayList<StandardEnemy> enemyArrayList, int range, int damage){
-
+    /**
+     * Damages all nearby enemies from initial targeted enemy (AOE damage)
+     * @param enemyArrayList the enemies impacted by the AOE
+     * @param range the range in which enemies are impacted
+     * @param damage the amount of damage received
+     */
+    public void impactNeighbours(ArrayList<StandardEnemy> enemyArrayList, int range, int damage) {
         for (StandardEnemy standardEnemy : enemyArrayList) {
             int enemyX = standardEnemy.getPosition().getX();
             int enemyY = standardEnemy.getPosition().getY();
@@ -99,12 +111,17 @@ public class StandardEnemy extends Actor {
                     + Math.pow((position.getY() + 16) - enemyY, 2)
             );
 
-            if(distance < range){
+            if (distance < range) {
                 standardEnemy.receiveDamage(damage);
             }
         }
     }
 
+    /**
+     * Updates enemy's status when a projectile touch it
+     * @param projectile the projectile received
+     * @param enemyArrayList the enemies impacted
+     */
     public void receiveProjectile(Projectile projectile, ArrayList<StandardEnemy> enemyArrayList) {
         receiveDamage(projectile.getDamage());
 
@@ -117,57 +134,72 @@ public class StandardEnemy extends Actor {
         }
     }
 
-    private void receiveDamage(int damage){
+    /**
+     * Updates enemy's health
+     * @param damage the amount of damage received
+     */
+    private void receiveDamage(int damage) {
         this.HP -= damage;
-        if (this.HP <= 0){
+        if (this.HP <= 0) {
             die();
-        }
-        else {
+        } else {
             SoundHandler.play("hit_enemy");
         }
     }
 
-    public void die(){
+    /**
+     * Changes enemy's alive status to dead
+     */
+    public void die() {
         SoundHandler.play("kill_enemy");
         this.isAlive = false;
     }
 
+    /**
+     * Tests a value contained in an interval
+     * @param low lower bound
+     * @param high upper bound
+     * @param n value to test
+     * @return whether is contained between lower bound (inclusive) and upper bound (inclusive)
+     */
     public static boolean intervalContains(int low, int high, int n) {
         return n >= low && n <= high;
     }
 
-    public boolean update(float delta, Map map){
-
-        delta = delta * speed;
+    /**
+     * Updates enemy's position values
+     * @param delta the time in seconds since last render
+     * @param map the game's map
+     * @return whether the enemy is still on the map
+     */
+    public boolean update(float delta, Map map) {
+        delta = delta * movementSpeed;
 
         if (freezeTime > elapsedTime) {
             return true;
         }
 
         if (isAlive) {
-
             int x = this.position.getX();
             int y = this.position.getY();
 
-            // Si sorti du cadre
-            if (x >= Map.TOTAL_SIZE || y >= Map.TOTAL_SIZE){
+            // If leaves map's bound
+            if (x >= Map.TOTAL_SIZE || y >= Map.TOTAL_SIZE) {
                 this.isAlive = false;
                 return false;
             }
 
-            // Si entré dans le cadre
-            if(!(x < 0 || y < 0)){
-
+            // If enters map's bounds
+            if (!(x < 0 || y < 0)) {
                 this.currentTile = map.getTileFromPosition(x, 728 - y + 32);
-                // currentTile.select(); // Debug
 
-                // Tuile (%64) + intervale à choisir => changement de direction à mi-chemin de la tuile
-                if(intervalContains(28, 40, x%64) || intervalContains(28, 40, y%64)){
+                // Tile (%64) + interval to choose => changes direction in tile's middle way
+                if (intervalContains(28, 40, x%64) || intervalContains(28, 40, y%64)) {
                     if (currentTile != null) {
-                        if(!currentTile.mapElement.equals(MapElements.CHEMIN_HORIZONTAL)
-                                && !currentTile.mapElement.equals(MapElements.CHEMIN_VERTICAL)){
+                        if (!currentTile.mapElement.equals(MapElements.CHEMIN_HORIZONTAL)
+                                && !currentTile.mapElement.equals(MapElements.CHEMIN_VERTICAL)) {
 
-                            switch (currentTile.mapElement){
+                            switch (currentTile.mapElement) {
                                 case CHEMIN_BAS_DROITE:
                                     this.position.setAngle(0);
                                     break;
@@ -184,34 +216,25 @@ public class StandardEnemy extends Actor {
                                     this.position.setAngle(Math.PI/2);
                                     break;
                             }
-
                         }
                     }
                 }
             }
 
-
-            // Debug
-//            System.out.println("Angle : " + position.getAngle());
-//            if(currentTile != null) System.out.println(currentTile.mapElement.name());
-//            System.out.println("X " + x);
-//            System.out.println("Y " + y);
-
-
-            // Nouvelles positions
+            // New positions
             float i = (float) (delta * Math.cos(position.getAngle()));
             float j = (float) (delta * Math.sin(position.getAngle()));
 
-            updatePosition(i, j);
+            this.position.updateX(i);
+            this.position.updateY(j);
+
+            return true;
         }
-        return true;
+
+        return false;
     }
 
-    public void updatePosition(float i, float j){
-        this.position.updateX(i);
-        this.position.updateY(j);
-    }
-
+    // Getters
     //==================================================
 
     public int getCreditDeathValue() {

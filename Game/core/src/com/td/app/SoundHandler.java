@@ -12,7 +12,7 @@ public final class SoundHandler {
     private static boolean isPaused;
 
     /**
-     * Add a sound file to the sound map
+     * Adds a sound file to the sound map
      * @param name sound's name used as key in the sound map
      * @param fileLocation path to file's location
      */
@@ -22,7 +22,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Play a sound
+     * Plays a sound
      * @param name sound's name in sound map
      */
     public static void play(String name) {
@@ -34,7 +34,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Play a sound in loop mode
+     * Plays a sound in loop mode
      * @param name sound's name in sound map
      */
     public static void playLooping(String name) {
@@ -50,7 +50,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Stop a sound
+     * Stops a sound
      * @param name sound's name in sound map
      */
     public static void stop(String name) {
@@ -61,7 +61,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Pause all sounds
+     * Pauses all sounds
      */
     public static void pauseAll() {
         for (Sound sound: loopedSound) {
@@ -71,7 +71,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Play all sounds
+     * Plays all sounds
      */
     public static void playAll() {
         if (TowerDefense.pref.getBoolean("sound")) {
@@ -83,7 +83,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Stop all sounds
+     * Stops all sounds
      */
     public static void stopAll() {
         for (Sound sound : loopedSound) {
@@ -94,7 +94,7 @@ public final class SoundHandler {
     }
 
     /**
-     * Clear sounds and paused condition
+     * Clears sounds and paused condition
      */
     public static void dispose() {
         soundMap.clear();

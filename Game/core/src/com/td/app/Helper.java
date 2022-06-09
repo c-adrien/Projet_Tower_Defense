@@ -1,34 +1,17 @@
 package com.td.app;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
-public class Helper {
+public final class Helper {
 
     /**
-     * Deprecated
+     * Removes an actor from stage
+     * @param actor the actor to remove
+     * @param stage the stage where the actor is displayed
      */
-    public static BufferedReader getBufferedReader(FileHandle fileHandle){
-        List<String> patterns = Arrays.asList("Game/assets/", "./assets/", "");
-
-        for (String pattern: patterns) {
-            try {
-                File file = new File(pattern+ fileHandle.path());
-                return new BufferedReader(new FileReader(file));
-            } catch (FileNotFoundException ignored) {}
-        }
-        return null;
-    }
-
     public static void removeActorFromStage(Actor actor, Stage stage){
         Iterator<Actor> actorIterator = stage.getActors().iterator();
         while (actorIterator.hasNext()) {
@@ -38,5 +21,4 @@ public class Helper {
             }
         }
     }
-
 }

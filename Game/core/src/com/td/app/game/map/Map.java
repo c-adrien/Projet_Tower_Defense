@@ -5,11 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.td.app.Helper;
 import com.td.app.game.Position;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.Random;
 
 public class Map extends Actor {
@@ -22,12 +20,23 @@ public class Map extends Actor {
     private static final int nbTiles = 12;
     public static final int TOTAL_SIZE = size * nbTiles;
 
+    /**
+     * Creates a random map
+     */
     public Map() {
         this.map = createRandomMap();
         this.entryTilePosition = findEntryTilePosition();
     }
 
-    // FileHandle : Gdx.files.internal("./maps/map_*.txt")
+    /**
+     * <p>
+     *    Creates a map from a file
+     * </p>
+     * <p>
+     *     If the file is not found, creates a random map instead
+     * </p>
+     * @param fileHandle the file's location
+     */
     public Map(FileHandle fileHandle) {
         Tile[][] map1;
         if ((map1 = createMapFromFile(fileHandle)) == null) {
@@ -38,49 +47,50 @@ public class Map extends Actor {
         this.entryTilePosition = findEntryTilePosition();
     }
 
-
-    private Tile[][] createRandomMap(){
-
-        /* FILLING MAP WITH DALLE
-         * (0,0) at top corner left
+    /**
+     * <p>
+     *     Creates a random map
+     * </p>
+     * <p>
+     *     The path always starts on the left and goes from left to right with some up and down pathing
+     * </p>
+     * <p>
+     *     A path's part can never be at the very top nor very bottom of the map
+     * </p>
+     * @return the random map created
+     */
+    private Tile[][] createRandomMap() {
+        /* FILLS MAP WITH DALLE
+         * (0,0) at top left corner
          */
         Tile[][] map = new Tile[nbTiles][nbTiles];
 
         for (int i = 0; i < nbTiles; i++) {
             for (int j = 0; j < nbTiles; j++) {
-                if (map[i][j] == null){
+                if (map[i][j] == null) {
                     map[i][j] = new Tile(MapElements.DALLE);
-                    // Debug
-//                    System.out.println(map[i][j].getTexture().toString().contains("DALLE"));
                 }
             }
         }
 
-
-        /* CREATING START OF PATH */
-        int i = 0;
+        /* CREATES START OF PATH
+         * Margin to start NOR at the very top NEITHER at the very bottom of the map
+         */
+        int i = new Random().nextInt(6)+3;
         int j = 0;
 
-        // margin to start NOR at the very top NEITHER at the very bottom of the map
-        int RANDOM_START = new Random().nextInt(6)+3;
-
-        // Debug
-        System.out.println("RANDOM START i = " + RANDOM_START + " (for random map) ");
-        i = RANDOM_START;
         map[i][j] = new Tile(MapElements.CHEMIN_HORIZONTAL);
 
-
-
-        /* CREATING REST OF PATH */
+        // CREATES REST OF PATH
         int up = 0; // i--
         int right = 1; // j++
         int down = 2; // i++
 
         int previousDirection = -1;
 
-        while(j < nbTiles - 1) {
+        while (j < nbTiles - 1) {
             int direction = random.nextInt(3);
-            switch (previousDirection) { // Seek for new direction when conflicts with opposite direction
+            switch (previousDirection) { // Seeks for new direction when conflicts with opposite direction (e.g up & down)
                 case -1:
                     previousDirection = direction;
                     break;
@@ -98,39 +108,31 @@ public class Map extends Actor {
                     break;
             }
 
-            System.out.println(" i,j = " + i + "," + j + " | DIRECTION = " + direction);
-
-            /*==============
-             === RIGHT → ===
-             ==============*/
-            if (direction == right){
+            // RIGHT →
+            if (direction == right) {
                 j++; // →
                 map[i][j] = new Tile(MapElements.CHEMIN_HORIZONTAL);
 
-                /* ADAPTING PREVIOUS TILE TO ACTUAL TILE */
-                if (!map[i][j-1].getTexture().toString().contains("DALLE")){ // previous tile
-                    if (!map[i-1][j-1].getTexture().toString().contains("DALLE")){ // previous previous tile
+                // ADAPTS PREVIOUS TILE TO ACTUAL TILE
+                if (!map[i][j-1].getTexture().toString().contains("DALLE")) { // Previous tile
+                    if (!map[i-1][j-1].getTexture().toString().contains("DALLE")) { // Previous previous tile
                         map[i][j-1] = new Tile(MapElements.CHEMIN_HAUT_DROITE);
                     }
-                    else if (!map[i+1][j-1].getTexture().toString().contains("DALLE")){ // previous previous tile
+                    else if (!map[i+1][j-1].getTexture().toString().contains("DALLE")) { // Previous previous tile
                         map[i][j-1] = new Tile(MapElements.CHEMIN_BAS_DROITE);
                     }
                }
             }
 
-            /*==============
-             === TURN ↑↓ ===
-             ==============*/
-
-            /*=========
-             === UP ===
-             =========*/
-            if(direction == up && i > 1){
-                if (map[i-1][j].getTexture().toString().contains("DALLE")){
+            /* TURN ↑↓
+             * UP
+             */
+            if (direction == up && i > 1) {
+                if (map[i-1][j].getTexture().toString().contains("DALLE")) {
                     i--; // ↑
                     map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
 
-                    /* ADAPTING PREVIOUS TILE TO ACTUAL TILE */
+                    // ADAPTS PREVIOUS TILE TO ACTUAL TILE
                     if (map[i + 1][j].getTexture().toString().contains("CHEMIN_HORIZONTAL")) { // previous tile
                         map[i + 1][j] = new Tile(MapElements.CHEMIN_GAUCHE_HAUT);
                     }
@@ -147,16 +149,14 @@ public class Map extends Actor {
                 }
             }
 
-            /*===========
-             === DOWN ===
-             ===========*/
-            else if(direction == down && i < nbTiles - 2){
-                if (map[i+1][j].getTexture().toString().contains("DALLE")){
+            // DOWN
+            else if(direction == down && i < nbTiles - 2) {
+                if (map[i+1][j].getTexture().toString().contains("DALLE")) {
                     i++; // ↓
                     map[i][j] = new Tile(MapElements.CHEMIN_VERTICAL);
 
-                    /* ADAPTING PREVIOUS TILE TO ACTUAL TILE */
-                    if (map[i-1][j].getTexture().toString().contains("CHEMIN_HORIZONTAL")){ // previous tile
+                    // ADAPTS PREVIOUS TILE TO ACTUAL TILE
+                    if (map[i-1][j].getTexture().toString().contains("CHEMIN_HORIZONTAL")) { // previous tile
                         map[i-1][j] = new Tile(MapElements.CHEMIN_GAUCHE_BAS);
                     }
 
@@ -173,29 +173,27 @@ public class Map extends Actor {
             }
         }
 
-        /* FILLING REST OF MAP WITH LANDSCAPE ELEMENTS */
+        // FILLS REST OF MAP WITH LANDSCAPE ELEMENTS
         int nbOfElt = 0;
         int nbOfEltMax = 35;
 
         for (int k = 0; k < nbTiles-1; k++) {
             for (int l = 0; l < nbTiles-1; l++) {
-                if (nbOfElt == nbOfEltMax){
+                if (nbOfElt == nbOfEltMax) {
                     break;
                 }
 
-                double toFill = Math.random();
+                double toFill = random.nextDouble();
                 double chanceOfElt = 0.10;
                 double chanceOfGrass = 0.90;
-                if (map[k][l].getTexture().toString().contains("DALLE")){
-                    if (toFill>chanceOfGrass){
+                if (map[k][l].getTexture().toString().contains("DALLE")) {
+                    if (toFill > chanceOfGrass) {
                         map[k][l] = new Tile(MapElements.DALLE2);
-//                        continue;
                     }
-                    else if (toFill<chanceOfElt){ // distributing evenly elements through the map
-                        if (map[k][l].getTexture().toString().contains("DALLE")){
+                    else if (toFill < chanceOfElt) { // Distributing evenly elements through the map
+                        if (map[k][l].getTexture().toString().contains("DALLE")) {
                             int eltChoice = new Random().nextInt(11)+1;
                             map[k][l] = new Tile(MapElements.values()[eltChoice]);
-//                        map[k][l] = new Tile(MapElements.BUISSON);
                             nbOfElt++;
                         }
                     }
@@ -206,6 +204,11 @@ public class Map extends Actor {
         return map;
     }
 
+    /**
+     * Creates a map from a file
+     * @param fileHandle the file's location
+     * @return the map created
+     */
     private Tile[][] createMapFromFile(FileHandle fileHandle) {
         try {
             BufferedReader reader = fileHandle.reader(8192);
@@ -232,7 +235,7 @@ public class Map extends Actor {
             reader.close();
             return map;
         }
-        catch (Exception e){
+        catch (Exception e) {
             System.out.println("Unable to read file");
             e.printStackTrace();
             return null;
@@ -247,6 +250,12 @@ public class Map extends Actor {
         return entryTilePosition;
     }
 
+    /**
+     * Seeks for a specific tile from position
+     * @param x the x position
+     * @param y the y position
+     * @return the tile in position (x, y)
+     */
     public Tile getTileFromPosition(int x, int y){
         x = x / 64;
         y = y / 64;
@@ -257,6 +266,10 @@ public class Map extends Actor {
         return map[line][column];
     }
 
+    /**
+     * Selects a lite
+     * @param tile the tile selected
+     */
     public void toggleTile(Tile tile){
         if(tile.isSelected()){
             tile.unselect();
@@ -273,6 +286,10 @@ public class Map extends Actor {
         tile.select();
     }
 
+    /**
+     * Seeks for the map's entry tile
+     * @return the tile's position
+     */
     private Position findEntryTilePosition(){
         for (int i = 0; i < nbTiles; i++) {
                 if (map[i][0].mapElement.name().contains("CHEMIN_GAUCHE") ||
@@ -281,20 +298,6 @@ public class Map extends Actor {
                 }
             }
         return null;
-    }
-
-    public void toggleTile(int x, int y){
-        if(map[x][y].isSelected()){
-            map[x][y].unselect();
-            return;
-        }
-
-        for (int i = 0; i < nbTiles; i++) {
-            for (int j = 0; j < nbTiles; j++) {
-                map[i][j].unselect();
-            }
-        }
-        map[x][y].select();
     }
 
     @Override

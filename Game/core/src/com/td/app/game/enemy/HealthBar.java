@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class HealthBar {
-
     private final static int BAR_OFFSET = 15;
 
     private final float maxHealth;
@@ -16,21 +15,28 @@ public class HealthBar {
 
     protected StandardEnemy enemy;
 
+    /**
+     * Creates an heath bar owned by an enemy
+     * @param enemy the enemy with which the health bar is linked
+     */
     public HealthBar(StandardEnemy enemy) {
         this.enemy = enemy;
         this.maxHealth = enemy.MAXIMUM_HP;
     }
 
+    /**
+     * Draws the health bar
+     * @param batch batch used to draw
+     */
     public void draw(Batch batch) {
-
         updateHealthBarValues();
 
         int border = (int) (health/maxHealth * StandardEnemy.TEXTURE_SIZE);
-        if(border < 0 || border > StandardEnemy.TEXTURE_SIZE){
+        if (border < 0 || border > StandardEnemy.TEXTURE_SIZE) {
             throw new IllegalArgumentException("Negative HealthBar Error");
         }
 
-        batch.end(); // pause batch drawing and start shape drawing
+        batch.end(); // Pause batch drawing and start shape drawing
 
         // Init renderer
         ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -48,10 +54,13 @@ public class HealthBar {
         shapeRenderer.rect(x + border, y, StandardEnemy.TEXTURE_SIZE - border, 2);
         shapeRenderer.end();
 
-        batch.begin(); // restart batch drawing
+        batch.begin(); // Restart batch drawing
     }
 
-    private void updateHealthBarValues(){
+    /**
+     * Update enemy's health bar
+     */
+    private void updateHealthBarValues() {
         this.health = enemy.HP;
         this.x = enemy.position.getX();
         this.y = enemy.position.getY() + StandardEnemy.TEXTURE_SIZE + BAR_OFFSET;

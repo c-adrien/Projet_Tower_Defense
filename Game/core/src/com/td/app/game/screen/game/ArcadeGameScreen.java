@@ -10,6 +10,11 @@ import com.td.app.game.map.Map;
 public class ArcadeGameScreen extends GameScreen {
     private final int LEVEL;
 
+    /**
+     * Creates the game and the screen for the arcade game mode
+     * @param game the game screen handler
+     * @param level the level's difficulty
+     */
     public ArcadeGameScreen(TowerDefense game, int level) {
         super(game);
         this.LEVEL = level;

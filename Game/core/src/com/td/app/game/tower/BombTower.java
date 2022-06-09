@@ -14,7 +14,7 @@ public class BombTower extends AbstractTower {
     public static final int TIMER = 100;
     public static final int price = 120;
 
-    private int HIT_NEIGHBOURS_IN_RANGE = 100;
+    private final int HIT_NEIGHBOURS_IN_RANGE = 100;
 
     public BombTower(Tile hostingTile, int positionX, int positionY) {
         super(PROJECTILE_SPEED, PROJECTILE_RANGE, PROJECTILE_DAMAGE, TIMER, price, hostingTile,
@@ -35,8 +35,9 @@ public class BombTower extends AbstractTower {
     @Override
     public Projectile sendProjectile(StandardEnemy enemy) {
         return new Projectile(enemy, projectileDamage, projectileSpeed,
-                new Position(getPosition().getX() + PROJECTILE_OFFSET_X,
-                        getPosition().getY() + PROJECTILE_OFFSET_Y), 0, HIT_NEIGHBOURS_IN_RANGE);
+                new Position(getPosition().getX() + PROJECTILE_OFFSET_X, getPosition().getY() + PROJECTILE_OFFSET_Y),
+                0, HIT_NEIGHBOURS_IN_RANGE
+        );
     }
 
     @Override
