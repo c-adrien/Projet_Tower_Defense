@@ -116,7 +116,7 @@ public abstract class AbstractTower extends Actor {
      * @param enemy the enemy in tower's range
      * @return the furthest enemy between the both
      */
-    private StandardEnemy furthestEnemy(StandardEnemy furthestEnemy, StandardEnemy enemy) {
+    protected StandardEnemy furthestEnemy(StandardEnemy furthestEnemy, StandardEnemy enemy) {
         if (furthestEnemy.getPosition().getX() > enemy.getPosition().getX()) {
             return furthestEnemy;
         }

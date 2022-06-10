@@ -36,6 +36,7 @@ public class StandardEnemy extends Actor {
     protected Tile currentTile;
 
     protected float freezeTime;
+    private boolean isFrozen;
 
     /**
      * Creates an enemy with different stats
@@ -94,6 +95,7 @@ public class StandardEnemy extends Actor {
      */
     public void freeze(int time) {
         this.freezeTime = elapsedTime + time;
+        isFrozen = true;
     }
 
     /**
@@ -177,6 +179,8 @@ public class StandardEnemy extends Actor {
 
         if (freezeTime > elapsedTime) {
             return true;
+        } else {
+            isFrozen = false;
         }
 
         if (isAlive) {
@@ -247,5 +251,9 @@ public class StandardEnemy extends Actor {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public boolean isFrozen() {
+        return isFrozen;
     }
 }

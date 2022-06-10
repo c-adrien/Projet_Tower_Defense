@@ -25,6 +25,65 @@ public class FreezeTower extends AbstractTower {
         super(new Texture(Gdx.files.internal(IMAGE_PATH)), position, price);
     }
 
+    /**
+     * <p>
+     *     Finds the priority target (i.e. the furthest enemy) from the tower
+     * </p>
+     * <p>
+     *     If the priority target is frozen, it focuses the other enemy
+     * </p>
+     * @param furthestEnemy the last furthest enemy known
+     * @param enemy the enemy in tower's range
+     * @return the furthest enemy non-frozen
+     */
+    @Override
+    protected StandardEnemy furthestEnemy(StandardEnemy furthestEnemy, StandardEnemy enemy) {
+        if (furthestEnemy.getPosition().getX() > enemy.getPosition().getX()) {
+            if (furthestEnemy.isFrozen()) {
+                return enemy;
+            }
+            return furthestEnemy;
+        }
+        if (furthestEnemy.getPosition().getX() < enemy.getPosition().getX()) {
+            if (enemy.isFrozen()) {
+                return furthestEnemy;
+            }
+            return enemy;
+        }
+        if (furthestEnemy.getPosition().getX() == enemy.getPosition().getX()) {
+            if (furthestEnemy.getPosition().getAngle() == (3 * Math.PI) / 2 // Enemy goes downwards
+                    && enemy.getPosition().getAngle() == (3 * Math.PI) / 2) {
+                if (furthestEnemy.getPosition().getY() > enemy.getPosition().getY()) {
+                    if (enemy.isFrozen()) {
+                        return furthestEnemy;
+                    }
+                    return enemy;
+                } else {
+                    if (furthestEnemy.isFrozen()) {
+                        return enemy;
+                    }
+                    return furthestEnemy;
+                }
+            }
+            if (furthestEnemy.getPosition().getAngle() == Math.PI / 2 // Enemy goes upwards
+                    && enemy.getPosition().getAngle() == Math.PI / 2) {
+                if (furthestEnemy.getPosition().getY() < enemy.getPosition().getY()) {
+                    if (enemy.isFrozen()) {
+                        return furthestEnemy;
+                    }
+                    return enemy;
+                } else {
+                    if (furthestEnemy.isFrozen()) {
+                        return enemy;
+                    }
+                    return furthestEnemy;
+                }
+            }
+        }
+
+        return furthestEnemy;
+    }
+
     @Override
     public void upgrade() {
         level++;
