@@ -307,6 +307,7 @@ public class Game {
             if (delayBeforeNextWave <= 0) {
                 createRandomWave();
                 delayBeforeNextWave = Wave.DELAY_BETWEEN_WAVES;
+                SoundHandler.playLooping("walking");
             }
         } else {
             winGame();

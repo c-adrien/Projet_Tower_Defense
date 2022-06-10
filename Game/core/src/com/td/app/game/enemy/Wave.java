@@ -34,7 +34,7 @@ public class Wave {
                     random.nextInt(15) + 15,
                     new Position(position.getX() - 20, position.getY() + 32),
                     new Texture(Gdx.files.internal("textures/enemy/test.png"))),
-                    (180 - 3 * Math.log(level))
+                    (2.7 - 0.04 * (Math.log(level) + 1))
             );
         }
     }
