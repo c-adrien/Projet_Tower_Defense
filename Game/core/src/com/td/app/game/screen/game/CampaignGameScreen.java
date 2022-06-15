@@ -34,18 +34,10 @@ public class CampaignGameScreen extends GameScreen {
         int lastLevelUnlock = TowerDefense.pref.getInteger("unlockedLevels");
 
         if (lastLevelUnlock == LEVEL && LEVEL < CampaignMenuScreen.NUMBER_OF_LEVEL) {
-            switch (LEVEL) {
-                case 3:
-                    TowerDefense.pref.putBoolean("moreDamageTower", true);
-                    break;
-
-                case 5:
-                    TowerDefense.pref.putBoolean("bombTower", true);
-                    break;
-
-                case 8:
-                    TowerDefense.pref.putBoolean("freezeTower", true);
-                    break;
+            if (LEVEL == 1) {
+                TowerDefense.pref.putBoolean("moreDamageTower", true);
+                TowerDefense.pref.putBoolean("bombTower", true);
+                TowerDefense.pref.putBoolean("freezeTower", true);
             }
 
             TowerDefense.pref.putInteger("unlockedLevels", LEVEL + 1);
